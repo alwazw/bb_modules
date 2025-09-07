@@ -1,69 +1,98 @@
-# Best Buy Marketplace - Python Order Automation
+# Best Buy Marketplace - Python Automation Suite
 
-This project provides a command-line based Python application to automate the acceptance of orders and creation of shipping labels from the Best Buy Marketplace.
+This project provides a robust, database-driven automation suite for managing orders from the Best Buy Marketplace. It handles the end-to-end process from order acceptance to shipping and tracking, with a focus on reliability, logging, and scalability.
 
-## Project Status
-This project is under active development. The core order automation features are functional, and the shipping module has been enhanced for better robustness and logging.
+## Architecture Overview
 
-## Project Phases
+The application has been refactored from a script-based, JSON file-driven system to a modern, database-centric architecture.
 
-This project is broken down into five distinct phases, each with its own main orchestrator script:
+-   **Database Backend:** At its core, the application uses a **PostgreSQL** database to store all order data, logs, and workflow states. This provides data integrity, scalability, and a single source of truth.
+-   **Containerization:** The database and its environment are managed via **Docker and Docker Compose**, ensuring a consistent and easy-to-set-up development environment.
+-   **Modular Workflows:** The logic for each major process (e.g., Order Acceptance) is encapsulated in its own workflow module, providing a clean separation of concerns.
+-   **Configuration:** The system is configured through environment variables, allowing for flexible deployment across different environments (dev, staging, prod) without code changes.
 
-1.  **Phase 1: Order Acceptance (`main_acceptance.py`)** - Fetches and accepts new orders from Best Buy.
-2.  **Phase 2: Retrieve for Shipping (`retrieve_pending_shipping.py`)** - Gets orders that are ready for shipment. This is not a standalone phase, but part of the shipping workflow.
-3.  **Phase 3: Create Shipping Labels (`main_shipping.py`)** - Generates XML payloads and creates Canada Post shipping labels.
-4.  **Phase 4: Update Tracking Numbers (`main_tracking.py`)** - Updates Best Buy with the new tracking numbers.
-5.  **Phase 5: Customer Service (`main_customer_service.py`)** - Fetches and aggregates customer messages from Best Buy.
+## Project Modules
 
-## Fulfillment Service
+The project is broken down into several key modules:
 
-In addition to the core automation scripts, this project now includes a **Fulfillment Service**, a standalone Flask application designed to guide technicians through the physical assembly and labeling process. This service helps prevent assembly errors and shipping mix-ups.
+-   **`order_management`**: Handles the initial ingestion and acceptance of new orders from Best Buy. This module is responsible for the crucial first step of acknowledging an order and preparing it for the next phase.
+-   **`shipping`**: Manages the creation of shipping labels via the Canada Post API for orders that are ready for fulfillment.
+-   **`tracking`**: Updates Best Buy with the new tracking information and marks the order as shipped.
+-   **`database`**: Contains all database-related utilities, including the master `schema.sql` file, connection helpers, and migration scripts.
+-   **Other Modules**: `accounting`, `customer_service`, `catalog`, etc., are other components of the larger system.
 
-For detailed information on the service, its API, and how to run it, please see the dedicated documentation:
-[**Fulfillment Service README**](./fulfillment_service/README.md)
-
-## Shipping Module
-
-The shipping module has been enhanced for better error handling and logging. For detailed information on the shipping module, its components, and how to troubleshoot common issues, please see the dedicated documentation:
-[**Shipping Module README**](./shipping/README.md)
+For more detailed documentation on each module and the overall project vision, please refer to the files in the `/docs` directory.
 
 ## 🚀 Getting Started
 
+Follow these steps to set up and run the application locally.
+
 ### 1. Prerequisites
 
-*   Python 3.6+
-*   `requests` library
+-   [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/)
+-   Python 3.8+
+-   A `secrets.txt` file in the project root (this is not tracked by git). See `common/utils.py` for details on what keys are needed (e.g., `BEST_BUY_API_KEY`).
 
-### 2. Installation
+### 2. Environment Setup
 
-1.  **Clone the repository** and navigate into the directory.
+1.  **Clone the Repository:**
+    `git clone <repository_url>`
 
-2.  **Create and activate a virtual environment:**
-    *   `python3 -m venv venv`
-    *   On macOS/Linux: `source venv/bin/activate`
-    *   On Windows: `.\venv\Scripts\activate`
+2.  **Start the Database:**
+    Navigate to the project root and run Docker Compose. This will start the PostgreSQL database in a container.
+    ```bash
+    docker-compose up -d
+    ```
 
-3.  **Install dependencies:**
-    *   `pip install requests`
+3.  **Set Up Python Environment:**
+    It is highly recommended to use a virtual environment.
+    ```bash
+    # Create a virtual environment
+    python3 -m venv venv
 
-4.  **Add your API Keys:**
-    *   Open `secrets.txt` and add your Best Buy and Canada Post credentials.
-    *   **IMPORTANT:** In `shipping/canada_post/cp_shipping/cp_pdf_labels.py`, you must replace `"YOUR_CUSTOMER_NUMBER"` with your actual Canada Post customer number.
+    # Activate it
+    source venv/bin/activate  # On macOS/Linux
+    # .\venv\Scripts\activate  # On Windows
+    ```
+
+4.  **Install Dependencies:**
+    The required Python libraries are `requests` (for API calls) and `psycopg2-binary` (for PostgreSQL connection).
+    ```bash
+    pip install requests psycopg2-binary
+    ```
+
+5.  **Initialize the Database Schema:**
+    Run the database utility script to create all the necessary tables. You will be prompted to confirm this action.
+    ```bash
+    python3 database/db_utils.py
+    ```
+    *Note: This is a destructive operation that will drop and recreate tables if they already exist.*
+
+6.  **(Optional) Migrate Old Data:**
+    If you have old data in the legacy JSON files (`logs/best_buy/pending_acceptance.json`, etc.), you can migrate it to the new database by running:
+    ```bash
+    python3 database/migrate_json_to_db.py
+    ```
 
 ### 3. Running the Application
 
-Run each phase in order using the main orchestrator scripts:
+Each major workflow has its own main entry point script.
 
 ```bash
-# Phase 1: Accept new orders
+# Run the Order Acceptance workflow
 python3 main_acceptance.py
 
-# Phase 3: Create shipping labels
-python3 main_shipping.py
+# Run the Shipping Label Creation workflow (once refactored)
+# python3 main_shipping.py
 
-# Phase 4: Update tracking info on Best Buy
-python3 main_tracking.py
-
-# Phase 5: Fetch customer messages
-python3 main_customer_service.py
+# Run the Tracking Update workflow (once refactored)
+# python3 main_tracking.py
 ```
+
+### 4. Running Tests
+
+To run the entire test suite:
+```bash
+python3 -m unittest discover tests
+```
+*Note: Some older, out-of-scope tests may currently be disabled in the repository to allow for a clean test run of the core modules. These are named with a leading underscore (e.g., `_test_accounting.py`).*
