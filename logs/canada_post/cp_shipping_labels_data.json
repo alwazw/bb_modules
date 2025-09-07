@@ -1,0 +1,18 @@
+[
+    {
+        "order_id": "ORDER-1",
+        "tracking_pin": "TRACK-123",
+        "label_url": "http://example.com/label.pdf",
+        "timestamp": "2025-09-04T18:01:00.692047",
+        "api_response": "\n        <shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\">\n            <tracking-pin>TRACK-123</tracking-pin>\n            <links>\n                <link rel=\"label\" href=\"http://example.com/label.pdf\"/>\n                <link rel=\"details\" href=\"http://example.com/details\"/>\n            </links>\n        </shipment-info>\n        ",
+        "error": null
+    },
+    {
+        "order_id": "ORDER-1",
+        "tracking_pin": "TRACK-123",
+        "label_url": "http://example.com/label.pdf",
+        "timestamp": "2025-09-04T18:57:02.680561",
+        "api_response": "\n        <shipment-info xmlns=\"http://www.canadapost.ca/ws/shipment-v8\">\n            <tracking-pin>TRACK-123</tracking-pin>\n            <links>\n                <link rel=\"label\" href=\"http://example.com/label.pdf\"/>\n                <link rel=\"details\" href=\"http://example.com/details\"/>\n            </links>\n        </shipment-info>\n        ",
+        "error": null
+    }
+]

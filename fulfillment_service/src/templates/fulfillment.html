@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fulfillment - {{ order_id }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .container { max-width: 800px; margin: auto; }
+        .component-list { list-style-type: none; padding: 0; }
+        .component-list li { background: #f0f0f0; margin: 5px 0; padding: 10px; border-radius: 5px; }
+        .scanned { background: #d4edda; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fulfillment for Order: {{ order_id }}</h1>
+
+        <h2>Required Components</h2>
+        <ul class="component-list">
+            {% for barcode, name in required_components.items() %}
+                <li class="{{ 'scanned' if name in scanned_components else '' }}">
+                    {{ name }} ({{ barcode }})
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Scan Component</h2>
+        <form id="scan-form">
+            <input type="text" id="barcode-input" placeholder="Scan barcode..." autofocus>
+            <button type="submit">Scan</button>
+        </form>
+        <p id="scan-status"></p>
+
+        <hr>
+
+        <button id="finalize-button">Finalize Order</button>
+        <p id="finalize-status"></p>
+    </div>
+
+    <script>
+        document.getElementById('scan-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const barcode = document.getElementById('barcode-input').value;
+            const orderId = '{{ order_id }}';
+            const statusEl = document.getElementById('scan-status');
+
+            fetch('/api/fulfillment/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_id: orderId, barcode: barcode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                statusEl.textContent = data.message;
+                if (data.validation_status === 'success') {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                statusEl.textContent = 'Error: ' + error;
+            });
+
+            document.getElementById('barcode-input').value = '';
+        });
+
+        document.getElementById('finalize-button').addEventListener('click', function() {
+            const orderId = '{{ order_id }}';
+            const statusEl = document.getElementById('finalize-status');
+
+            fetch('/api/fulfillment/finalize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_id: orderId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    statusEl.textContent = 'Error: ' + data.error;
+                    if (data.missing_components) {
+                        statusEl.textContent += ' Missing: ' + data.missing_components.join(', ');
+                    }
+                } else {
+                    statusEl.textContent = data.message + ' Tracking: ' + data.tracking_number;
+                }
+            })
+            .catch(error => {
+                statusEl.textContent = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+[
+  {
+    "base_product": {
+      "product_id": "lp-pro-1",
+      "brand": "FutureBrand",
+      "model": "Laptop Pro 1",
+      "series": "Pro",
+      "description": null
+    },
+    "variants": [
+      {
+        "sku": "FB-LPP1-G1-16-512",
+        "attributes": {
+          "ram": "18GB",
+          "storage": "512GB SSD",
+          "color": "Galactic Gray"
+        },
+        "upc": null
+      },
+      {
+        "sku": "FB-LPP1-G1-32-1024",
+        "attributes": {
+          "ram": "32GB",
+          "storage": "1TB SSD",
+          "color": "Galactic Gray"
+        },
+        "upc": null
+      }
+    ]
+  }
+]

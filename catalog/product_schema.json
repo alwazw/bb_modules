@@ -1,0 +1,68 @@
+{
+  "description": "Schema for a product catalog, including base product information and an array of variants.",
+  "type": "object",
+  "properties": {
+    "base_product": {
+      "description": "Common attributes for a group of product variants.",
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "description": "A unique identifier for the base product (e.g., 'lenovo-thinkpad-t14-g2').",
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "series": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "base_image_url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": ["product_id", "brand", "model"]
+    },
+    "variants": {
+      "description": "An array of specific product variations.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "description": "The unique stock keeping unit for this specific variant.",
+            "type": "string"
+          },
+          "attributes": {
+            "description": "A map of key-value pairs for variant-specific attributes.",
+            "type": "object",
+            "properties": {
+              "ram": { "type": "string" },
+              "storage": { "type": "string" },
+              "color": { "type": "string" },
+              "processor": { "type": "string" }
+            }
+          },
+          "upc": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "required": ["sku", "attributes"]
+      }
+    }
+  },
+  "required": ["base_product", "variants"]
+}

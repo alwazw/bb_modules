@@ -1,0 +1,152 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# PEP 582; __pypackages__
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype
+.pytype/
+
+# VSCode
+.vscode/
+
+# Secrets, logs, and data files to ignore
+secrets.txt
+logs/
+*.json.bak
+accounting/transactions.json
+
+# Re-include specific json files that should be tracked
+!catalog/product_schema.json
+!catalog/products.json
+!customer_service/messages.json
+!customer_service/orders_shipped_and_validated.json
+!logs/best_buy/orders_pending_shipping.json
+!logs/best_buy/orders_shipped_and_validated.json
+!logs/best_buy/pending_acceptance.json
+!logs/canada_post/cp_shipping_history_log.json
+!logs/canada_post/cp_shipping_labels_data.json
+!logs/customer_service/cp_shipping_history_log.json
+!logs/customer_service/orders_shipped_and_validated.json
+!offers/offers.json
+!Orders/pending_acceptance/orders_pending_acceptance/pending_acceptance.json
+!Orders/shipped_orders/update_tracking_info/orders_shipped_and_validated.json
+!shipping/customer_service/cp_shipping_history_log.json
+!shipping/customer_service_logs/customer_service_shipping_log.json
+!shipping/shipping/canada_post/cp_shipping_history_log.json
