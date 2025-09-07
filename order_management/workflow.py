@@ -1,0 +1,209 @@
+import os
+import sys
+import json
+import time
+import requests
+import psycopg2
+from datetime import datetime
+
+# Add project root to Python path to allow importing from 'database'
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, PROJECT_ROOT)
+
+from database.db_utils import get_db_connection
+from common.utils import get_best_buy_api_key
+
+# --- Configuration ---
+BEST_BUY_API_URL_BASE = 'https://marketplace.bestbuy.ca/api/orders'
+MAX_ACCEPTANCE_ATTEMPTS = 3
+VALIDATION_PAUSE_SECONDS = 60 # 1 minute
+
+# --- Database Functions ---
+
+def get_orders_to_accept_from_db(conn):
+    """Fetches orders with 'pending_acceptance' status from the database."""
+    orders = []
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute("SELECT * FROM orders WHERE status = 'pending_acceptance';")
+            orders = [dict(row) for row in cur.fetchall()]
+    except Exception as e:
+        print(f"ERROR: Could not fetch orders from database. Reason: {e}")
+    return orders
+
+def log_acceptance_attempt_to_db(conn, order_id, attempt_number, status, api_response):
+    """Logs an acceptance attempt to the database."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO order_acceptance_attempts (order_id, attempt_number, status, api_response)
+                VALUES (%s, %s, %s, %s);
+                """,
+                (order_id, attempt_number, status, json.dumps(api_response))
+            )
+        conn.commit()
+    except Exception as e:
+        print(f"ERROR: Could not log acceptance attempt for order {order_id}. Reason: {e}")
+        conn.rollback()
+
+def log_to_debug_table(conn, order_id, details, payload):
+    """Logs a message to the debug table for manual intervention."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO order_acceptance_debug_logs (order_id, details, raw_request_payload)
+                VALUES (%s, %s, %s);
+                """,
+                (order_id, details, json.dumps(payload))
+            )
+        conn.commit()
+        print(f"INFO: Logged debug information for order {order_id}.")
+    except Exception as e:
+        print(f"ERROR: Could not log to debug table for order {order_id}. Reason: {e}")
+        conn.rollback()
+
+def update_order_status_in_db(conn, order_id, new_status):
+    """Updates the status of an order in the database."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE orders SET status = %s WHERE order_id = %s;",
+                (new_status, order_id)
+            )
+        conn.commit()
+        print(f"INFO: Updated status for order {order_id} to '{new_status}'.")
+    except Exception as e:
+        print(f"ERROR: Could not update status for order {order_id}. Reason: {e}")
+        conn.rollback()
+
+# --- Core Workflow Logic ---
+
+def accept_order_via_api(api_key, order):
+    """
+    Calls the Best Buy API to accept a single order.
+    Returns the API response.
+    """
+    order_id = order['order_id']
+    url = f"{BEST_BUY_API_URL_BASE}/{order_id}/accept"
+    headers = {'Authorization': api_key, 'Content-Type': 'application/json'}
+
+    # The raw_order_data column stores the original JSON from Best Buy
+    order_data = order['raw_order_data']
+    order_lines_payload = [
+        {"accepted": True, "id": line['order_line_id']}
+        for line in order_data.get('order_lines', [])
+    ]
+    payload = {"order_lines": order_lines_payload}
+
+    print(f"INFO: Attempting to accept order {order_id}...")
+    try:
+        response = requests.put(url, headers=headers, json=payload, timeout=30)
+        response.raise_for_status()
+        print(f"SUCCESS: API call for order {order_id} was successful.")
+        return {"status_code": response.status_code, "body": response.json() if response.content else {}}, payload
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: API request to accept order {order_id} failed: {e}")
+        error_body = {}
+        if e.response is not None:
+            try:
+                error_body = e.response.json()
+            except json.JSONDecodeError:
+                error_body = {"error_text": e.response.text}
+        return {"status_code": e.response.status_code if e.response is not None else 500, "body": error_body}, payload
+
+
+def validate_order_status_via_api(api_key, order_id):
+    """
+    Checks the current status of an order via the Best Buy API.
+    Returns the status string (e.g., 'WAITING_DEBIT_PAYMENT', 'CANCELLED') or None.
+    """
+    url = f"{BEST_BUY_API_URL_BASE}/{order_id}"
+    headers = {'Authorization': api_key}
+    print(f"INFO: Validating status for order {order_id}...")
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        response.raise_for_status()
+        order_data = response.json()
+        status = order_data.get('order_state')
+        print(f"INFO: Current status for order {order_id} is '{status}'.")
+        return status
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: Could not validate status for order {order_id}. Reason: {e}")
+        return None
+
+
+def process_single_order(conn, api_key, order):
+    """
+    Processes a single order through the full acceptance and validation workflow.
+    """
+    order_id = order['order_id']
+    print(f"\n--- Processing Order: {order_id} ---")
+
+    # 1. Accept Order via API (Happens only ONCE)
+    api_response, payload = accept_order_via_api(api_key, order)
+    is_success = 200 <= api_response.get('status_code', 500) < 300
+
+    # Log the single acceptance attempt
+    log_acceptance_attempt_to_db(conn, order_id, 1, 'success' if is_success else 'failure', api_response)
+
+    if not is_success:
+        print(f"CRITICAL: API call to accept order {order_id} failed. Halting processing for this order.")
+        log_to_debug_table(conn, order_id, "Initial API call to accept order failed.", payload)
+        update_order_status_in_db(conn, order_id, 'acceptance_failed')
+        return # Stop processing this order
+
+    # 2. Validation Loop (Retry for status change)
+    for attempt in range(1, MAX_ACCEPTANCE_ATTEMPTS + 1):
+        print(f"--- Validation Attempt {attempt}/{MAX_ACCEPTANCE_ATTEMPTS} for order {order_id} ---")
+
+        # Pause before validation
+        print(f"INFO: Pausing for {VALIDATION_PAUSE_SECONDS} seconds before validation...")
+        time.sleep(VALIDATION_PAUSE_SECONDS)
+
+        # Validate status
+        current_status = validate_order_status_via_api(api_key, order_id)
+        if current_status in ('WAITING_DEBIT_PAYMENT', 'SHIPPING'): # Success states
+            print(f"SUCCESS: Order {order_id} has been successfully accepted and validated.")
+            update_order_status_in_db(conn, order_id, 'accepted')
+            return # Exit for this order
+        elif current_status == 'CANCELLED':
+            print(f"INFO: Order {order_id} was cancelled.")
+            update_order_status_in_db(conn, order_id, 'cancelled')
+            return # Exit for this order
+        else:
+            print(f"WARNING: Order {order_id} status is still '{current_status}' after validation attempt {attempt}.")
+            if attempt == MAX_ACCEPTANCE_ATTEMPTS:
+                # If it's the last attempt and it still hasn't validated
+                print(f"CRITICAL: Order {order_id} failed to validate after {MAX_ACCEPTANCE_ATTEMPTS} attempts.")
+                print("!!! NOTIFICATION: Manual intervention required !!!")
+                log_to_debug_table(conn, order_id, f"Validation failed after {MAX_ACCEPTANCE_ATTEMPTS} attempts. Final status was '{current_status}'.", payload)
+                update_order_status_in_db(conn, order_id, 'acceptance_failed')
+                return # Exit for this order
+
+
+def main():
+    """Main function to run the order acceptance workflow."""
+    print("\n--- Starting Order Acceptance Workflow ---")
+    conn = get_db_connection()
+    api_key = get_best_buy_api_key()
+
+    if not conn or not api_key:
+        print("CRITICAL: Cannot proceed without a database connection and API key.")
+        return
+
+    orders_to_process = get_orders_to_accept_from_db(conn)
+
+    if not orders_to_process:
+        print("INFO: No orders are currently pending acceptance.")
+    else:
+        print(f"INFO: Found {len(orders_to_process)} orders to process.")
+        for order in orders_to_process:
+            process_single_order(conn, api_key, order)
+
+    conn.close()
+    print("\n--- Order Acceptance Workflow Finished ---")
+
+if __name__ == '__main__':
+    main()
