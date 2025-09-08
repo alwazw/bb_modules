@@ -4,7 +4,7 @@ I want you to review, enhance and elevate my suggested improvements:
 ##################################################################################################
 ## Phase 1 ## 
 Underlying infrastructure
-Order Acceptance Process - Pre-Shipping
+Order Management Process
 ##################################################################################################
 
 ## Stack ##
@@ -21,61 +21,96 @@ data aggregation, clean up and modeling & AI db
 ### Process ###
 
 ## process flow trigger ##
-- it would be more ideal if there's are push web-hook API to rely on from bb or some web-hook s to trigger order & shipping management
+- it would be more ideal if there's are push web-hook API to rely on from bb or some web-hook s to trigger 
+order accepance for order with pendind acceptance script
++ triggering shipping module when 
 - if not the current 15 min scheduler is still OK
 
 ## orders "pending acceptance" ##
 once triggered by web-hook API, web-hook or scheduled task, order acceptance is supposed to 
---> retrieve all orders with pending acceptance status --> accept the orders --> log web-hook API calls made for acceptance with a count of 1 with date-time stamps to a orders_pending_acceptance table --> record all available data points associated with the order --> pause 1 minute --> validate that all accepted orders status updated:
+--> retrieve all orders with pending acceptance status 
+--> accept the orders with bb api 
+--> log API calls made for acceptance with incremental count with date-time stamps to a orders_pending_acceptance table
+--> pause 1 minute 
+--> validate that all accepted orders status changed from pending acceptance
+--> record all available data points associated with the accepted order 
+--> proceed based on identified order status
 
-## if status updated to "debit in progress" or "cancelled" --> log status update with date-time --> trigger creating_shipping_label process
-
-## if status remains pending acceptance 
+## if status remains pending acceptance ##
 --> loop back to accept it again 
---> re-log order acceptance + increase cumulative count of acceptance attempts with date-time to orders_pending_acceptance table 
+--> re-log order acceptance to db + increase cumulative count of acceptance attempts + date-time stamp
 --> create log entry to a oreders_pending_acceptance_debug table in case it fails again 
 --> as counter reaches 3 failed attempts a validation and audit script would troubleshoot what is being sent and received via web-hook API in an attempt to rectify 
 --> 4th failure --> ## missing feature here ## 
---> A notification center could alert to the underlying issue with the troubleshooting diagnostics and required manual intervention
+--> add db entry to an order_acceptance_failiure table
+--> add an alert to the web-interface notification center requiring manual intervention
 
-## if status becomes cancelled 
---> log cancellation update with date-time stamp 
+## if status updated to "debit in progress" 
+--> log status update with date-time 
+
+## if status becomes cancelled ##
+--> log cancellation update with date-time stamp
+--> add entry for all available data for cancelled orders 
 --> collecting this event might potential help reveal some insight or something in the analytics module...
---> create new log 
 
-## previously accepted orders status update
-once triggered by web-hook API, web-hook or scheduled 
---> retrieve list of all accepted orders and 
+## is status becomes ready for shipment ##
+--> add entry to db with all available data for accepted orders along with timestamp
+--> trigger shipping module
 
- ## create shipping 
---> order management is supposed to log all the orders that got accepted 
-
-
+***** 
+There's definetly a more efficient alternative to adding order details once and mapping order status update separately   from a design perspective 
+****
 
 ##################################################################################################
 ## Phase 2 ## 
-Order Status Updates - Part 2 
 Creating Shipping labels 
 updating order shipping information 
 Marking Orders as shipped
 ##################################################################################################
 
-## order status changes to debit in progress once accepted
---> order status updates to "awaiting shipment" once bb clears the payment
---> process should log date time stamp of this update 
+## Shipping label Creation##
+
+--> a process validates order status updated to "ready for shipment"
+--> a process validates no previous shipping label was created for this order to avoid creating duplicate shipping labels
 --> shipping label creation is triggered at this point with canada post via web-hook API
---> web-hook API call gets logged along with all the response details
---> web-hook API call also retrieves and saves pdf shipping label  
---> process re-validates shipping information from the order against the web-hook API response to ensure details are correct
---> Updating order tracking number and marking the order as shipped is triggered once the shipping details validation is complete
---> a process validates order status updated to "shipped"
+--> API call is made to create shipping label
+--> db entry records API calls is made to create shipping label 
+--> entry is added to db with API Response XML + datetime stamp
+--> API call also retrieves and saves PDF shipping label  
+
+## API Response Validation - label creation ## 
+--> process validates shipping information from API XML response 
+--> process validates PDF shipping labels was saved
+
+# if label creation failed
+--> pause 1 min
+--> make a second attempt
+--> create db entry for second api call info + timestamp with incremental count
+--> loop back to beginning of validation process
+--> add entry to failed shipping_labe_creation_failed table after the 3rd failed attempt
+--> add high importance entry to web-interface notification center requiring manual intervention after the 3rd failed attempt
+
+## if label creation validation is successful
+--> move to shipping label content validation
+
+## shipping label content validation ##
+--> validate label shipping info from XML API response  vs. order shipping information to ensure label was created correctly
+--> Validates the PDF label by reading the text in the PDF label for similar validation as xml validation process (maybe via OCR - but i also know it's in text form because i can just select text on it)
+--> trigger order tracking number and shipment status update
+
+## order shipping details and status update ##
+--> Updating order tracking number
+--> marking the order as shipped
+--> pause 1 min
+--> validate order status updated to shipped
+--> trigger "Work Order" Module
+
 
 ##################################################################################################
 ## Phase 3 ##
 Understanding of Product Offering Structure 
 Inventory Database schema and architecture
-Inventory Management Module
-##################################################################################################
+Inventory Management Module  ##################################################################################################
 
 ## Understanding product design ##
 - laptop models are usually offered in different variant combinations that mostly include different:
@@ -121,6 +156,6 @@ while this is the main understanding of a variant structure a low stock inventor
 Understanding fulfillment process flow
 Design of integrated multiple build in failsafes and validations to completely eradicate fulfilment operational risk
 Sequence and triggers at different steps of the process flow
- ##################################################################################################
+##################################################################################################
 
- To be revealed once phase 2 & 3 are setup.
+** Next After completing and validating 1 --> 3 Process ***
