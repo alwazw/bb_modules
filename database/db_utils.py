@@ -1,4 +1,5 @@
 import os
+import json
 import psycopg2
 from psycopg2 import extras
 
@@ -85,6 +86,39 @@ def initialize_database():
         # Ensure the database connection is always closed, whether success or failure.
         if conn:
             conn.close()
+
+def log_api_call(conn, service, endpoint, related_id, request_payload, response_body, status_code, is_success):
+    """
+    Logs the details of a third-party API call to the generic 'api_calls' table.
+
+    Args:
+        conn: An active psycopg2 database connection object.
+        service (str): The name of the service being called (e.g., 'BestBuy', 'CanadaPost').
+        endpoint (str): The specific endpoint or action being performed.
+        related_id (str): An ID to associate the call with (e.g., order_id).
+        request_payload (dict or str): The payload sent. Will be stored as JSONB.
+        response_body (str): The raw response body (can be JSON or XML text).
+        status_code (int): The HTTP status code of the response.
+        is_success (bool): Whether the call was considered successful.
+    """
+    try:
+        with conn.cursor() as cur:
+            # Convert dict payloads to json strings, leave others as is.
+            if isinstance(request_payload, dict):
+                request_payload = json.dumps(request_payload)
+
+            cur.execute(
+                """
+                INSERT INTO api_calls (service, endpoint, related_id, request_payload, response_body, status_code, is_success)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
+                """,
+                (service, endpoint, related_id, request_payload, response_body, status_code, is_success)
+            )
+        conn.commit()
+    except Exception as e:
+        print(f"ERROR: Could not log API call. Reason: {e}")
+        conn.rollback()
+
 
 # This block allows the script to be run directly from the command line.
 if __name__ == '__main__':
