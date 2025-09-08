@@ -1,98 +1,59 @@
 # Best Buy Marketplace - Python Automation Suite
 
-This project provides a robust, database-driven automation suite for managing orders from the Best Buy Marketplace. It handles the end-to-end process from order acceptance to shipping and tracking, with a focus on reliability, logging, and scalability.
+This project provides a robust, database-driven automation suite for managing orders from the Best Buy Marketplace. It handles the end-to-end process from order acceptance to shipping and tracking, with a focus on reliability, logging, and scalability. It also includes a web-based interface to guide the physical fulfillment process.
 
 ## Architecture Overview
 
-The application has been refactored from a script-based, JSON file-driven system to a modern, database-centric architecture.
+The application is built on a modern, database-centric architecture.
 
--   **Database Backend:** At its core, the application uses a **PostgreSQL** database to store all order data, logs, and workflow states. This provides data integrity, scalability, and a single source of truth.
--   **Containerization:** The database and its environment are managed via **Docker and Docker Compose**, ensuring a consistent and easy-to-set-up development environment.
--   **Modular Workflows:** The logic for each major process (e.g., Order Acceptance) is encapsulated in its own workflow module, providing a clean separation of concerns.
--   **Configuration:** The system is configured through environment variables, allowing for flexible deployment across different environments (dev, staging, prod) without code changes.
+-   **Database Backend:** A **PostgreSQL** database serves as the single source of truth for all data, managed via **Docker**.
+-   **Modular Workflows:** The backend logic is broken into distinct, orchestrated workflows for order acceptance, shipping, and tracking.
+-   **Web Interface:** A **Flask**-based web application provides a user interface for the fulfillment process, helping to guide technicians and prevent errors.
 
-## Project Modules
-
-The project is broken down into several key modules:
-
--   **`order_management`**: Handles the initial ingestion and acceptance of new orders from Best Buy. This module is responsible for the crucial first step of acknowledging an order and preparing it for the next phase.
--   **`shipping`**: Manages the creation of shipping labels via the Canada Post API for orders that are ready for fulfillment.
--   **`tracking`**: Updates Best Buy with the new tracking information and marks the order as shipped.
--   **`database`**: Contains all database-related utilities, including the master `schema.sql` file, connection helpers, and migration scripts.
--   **Other Modules**: `accounting`, `customer_service`, `catalog`, etc., are other components of the larger system.
-
-For more detailed documentation on each module and the overall project vision, please refer to the files in the `/docs` directory.
+For more detailed documentation on each module, the database schema, and the overall project vision, please refer to the files in the `/docs` directory.
 
 ## 🚀 Getting Started
 
-Follow these steps to set up and run the application locally.
+Getting the application running locally is a simple, three-step process thanks to the new setup scripts.
 
-### 1. Prerequisites
+### Step 1: One-Time Project Setup
 
--   [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/)
--   Python 3.8+
--   A `secrets.txt` file in the project root (this is not tracked by git). See `common/utils.py` for details on what keys are needed (e.g., `BEST_BUY_API_KEY`).
-
-### 2. Environment Setup
-
-1.  **Clone the Repository:**
-    `git clone <repository_url>`
-
-2.  **Start the Database:**
-    Navigate to the project root and run Docker Compose. This will start the PostgreSQL database in a container.
-    ```bash
-    docker-compose up -d
-    ```
-
-3.  **Set Up Python Environment:**
-    It is highly recommended to use a virtual environment.
-    ```bash
-    # Create a virtual environment
-    python3 -m venv venv
-
-    # Activate it
-    source venv/bin/activate  # On macOS/Linux
-    # .\venv\Scripts\activate  # On Windows
-    ```
-
-4.  **Install Dependencies:**
-    The required Python libraries are `requests`, `psycopg2-binary`, and `PyPDF2` (for shipping label validation).
-    ```bash
-    pip install requests psycopg2-binary PyPDF2
-    ```
-
-5.  **Initialize the Database Schema:**
-    Run the database utility script to create all the necessary tables. You will be prompted to confirm this action.
-    ```bash
-    python3 database/db_utils.py
-    ```
-    *Note: This is a destructive operation that will drop and recreate tables if they already exist.*
-
-6.  **(Optional) Migrate Old Data:**
-    If you have old data in the legacy JSON files (`logs/best_buy/pending_acceptance.json`, etc.), you can migrate it to the new database by running:
-    ```bash
-    python3 database/migrate_json_to_db.py
-    ```
-
-### 3. Running the Application
-
-Each major workflow has its own main entry point script.
+First, run the master setup script. This will start the database, create a Python virtual environment, install all dependencies, and initialize the database schema.
 
 ```bash
-# Run the Order Acceptance workflow
-python3 main_acceptance.py
+# Make the script executable (you only need to do this once)
+chmod +x setup.sh
 
-# Run the Shipping Label Creation workflow (once refactored)
-# python3 main_shipping.py
-
-# Run the Tracking Update workflow (once refactored)
-# python3 main_tracking.py
+# Run the setup
+./setup.sh
 ```
 
-### 4. Running Tests
+### Step 2: Running the Backend Workflows
 
-To run the entire test suite:
+To process any pending orders, create shipping labels, and update tracking information, run the core workflows script.
+
 ```bash
-python3 -m unittest discover tests
+# Make the script executable (you only need to do this once)
+chmod +x run_core_workflows.sh
+
+# Run the workflows
+./run_core_workflows.sh
 ```
-*Note: Some older, out-of-scope tests may currently be disabled in the repository to allow for a clean test run of the core modules. These are named with a leading underscore (e.g., `_test_accounting.py`).*
+This script can be run manually as needed, or integrated into a scheduler like `cron` to run periodically (e.g., every 15 minutes).
+
+### Step 3: Running the Web Interface
+
+To launch the web-based fulfillment service, run the web interface script.
+
+```bash
+# Make the script executable (you only need to do this once)
+chmod +x run_web_interface.sh
+
+# Run the web server
+./run_web_interface.sh
+```
+Once started, you can access the web interface from a browser on your local network, typically at `http://<your_machine_ip>:5001`.
+
+---
+
+*Note: You will need to create a `secrets.txt` file in the project root containing the necessary API keys for the Best Buy and Canada Post APIs.*
