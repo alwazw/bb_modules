@@ -69,16 +69,46 @@ class TestDatabaseUtils(unittest.TestCase):
         """
         mock_get_conn.return_value = None
 
-        # We need to mock 'open' here as well, even if we don't expect it to be used
         with patch('builtins.open', mock_open(read_data="")):
             initialize_database()
 
-        # We just assert that the function doesn't crash and returns gracefully.
-        # No other mocks should be called.
         mock_get_conn.assert_called_once()
-        # (No commit, no close, no execute)
+
+    @patch('database.db_utils.psycopg2.connect')
+    def test_add_order_status_history(self, mock_connect):
+        """Tests that a new status history record is inserted correctly."""
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
+
+        from database.db_utils import add_order_status_history
+        add_order_status_history(mock_conn, 'ORDER123', 'shipped', 'Notes here')
+
+        mock_cursor.execute.assert_called_once_with(
+            unittest.mock.ANY,
+            ('ORDER123', 'shipped', 'Notes here')
+        )
+        mock_conn.commit.assert_called_once()
+
+    @patch('database.db_utils.psycopg2.connect')
+    def test_log_process_failure(self, mock_connect):
+        """Tests that a new process failure is logged correctly."""
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
+
+        from database.db_utils import log_process_failure
+        payload = {'data': 'test'}
+        log_process_failure(mock_conn, 'ORDER123', 'TestProcess', 'It failed', payload)
+
+        mock_cursor.execute.assert_called_once_with(
+            unittest.mock.ANY,
+            ('ORDER123', 'TestProcess', 'It failed', unittest.mock.ANY)
+        )
+        mock_conn.commit.assert_called_once()
 
 if __name__ == '__main__':
-    # We need to temporarily disable the input() call in db_utils for the test run
     with patch('builtins.input', return_value='yes'):
         unittest.main()

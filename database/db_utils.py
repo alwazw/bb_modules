@@ -87,6 +87,62 @@ def initialize_database():
         if conn:
             conn.close()
 
+def add_order_status_history(conn, order_id, new_status, notes=None):
+    """
+    Inserts a new record into the 'order_status_history' table, effectively
+    updating the state of an order.
+
+    Args:
+        conn: An active psycopg2 database connection object.
+        order_id (str): The ID of the order being updated.
+        new_status (str): The new status of the order.
+        notes (str, optional): Any relevant context for this status change.
+    """
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO order_status_history (order_id, status, notes)
+                VALUES (%s, %s, %s);
+                """,
+                (order_id, new_status, notes)
+            )
+        conn.commit()
+        print(f"INFO: Order {order_id} status updated to '{new_status}'.")
+    except Exception as e:
+        print(f"ERROR: Could not update order status for {order_id}. Reason: {e}")
+        conn.rollback()
+
+def log_process_failure(conn, related_id, process_name, details, payload=None):
+    """
+    Logs a critical, unrecoverable error to the 'process_failures' table
+    for manual intervention.
+
+    Args:
+        conn: An active psycopg2 database connection object.
+        related_id (str): The ID of the item being processed (e.g., order_id).
+        process_name (str): The name of the workflow where the failure occurred.
+        details (str): A human-readable description of the failure.
+        payload (dict, optional): The data object that was being processed.
+    """
+    try:
+        with conn.cursor() as cur:
+            if isinstance(payload, dict):
+                payload = json.dumps(payload)
+
+            cur.execute(
+                """
+                INSERT INTO process_failures (related_id, process_name, details, payload)
+                VALUES (%s, %s, %s, %s);
+                """,
+                (related_id, process_name, details, payload)
+            )
+        conn.commit()
+        print(f"CRITICAL: Logged process failure for '{related_id}' in process '{process_name}'.")
+    except Exception as e:
+        print(f"ERROR: Could not log process failure. Reason: {e}")
+        conn.rollback()
+
 def log_api_call(conn, service, endpoint, related_id, request_payload, response_body, status_code, is_success):
     """
     Logs the details of a third-party API call to the generic 'api_calls' table.
