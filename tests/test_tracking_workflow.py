@@ -8,7 +8,6 @@ from unittest.mock import patch, MagicMock
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
 
-# The module to be tested
 from tracking import workflow
 
 # --- Test Data ---
@@ -18,126 +17,96 @@ MOCK_SHIPMENT = {
     'tracking_pin': 'TRACK12345'
 }
 
-class TestTrackingWorkflow(unittest.TestCase):
+class TestTrackingWorkflowV2(unittest.TestCase):
 
     def setUp(self):
         """Set up mock objects for each test."""
         self.mock_conn = MagicMock()
-        self.mock_cursor = MagicMock()
-        self.mock_conn.cursor.return_value.__enter__.return_value = self.mock_cursor
 
-        self.patchers = [
-            patch('tracking.workflow.get_db_connection', return_value=self.mock_conn),
-            patch('tracking.workflow.get_best_buy_api_key', return_value='fake-bb-key'),
-            patch('requests.put')
-        ]
+        self.patchers = {
+            'get_db_connection': patch('tracking.workflow.get_db_connection', return_value=self.mock_conn),
+            'get_best_buy_api_key': patch('tracking.workflow.get_best_buy_api_key', return_value='fake-bb-key'),
+            'requests.put': patch('requests.put'),
+            'log_api_call': patch('tracking.workflow.log_api_call'),
+            'add_order_status_history': patch('tracking.workflow.add_order_status_history'),
+            'log_process_failure': patch('tracking.workflow.log_process_failure'),
+            'get_shipments_to_update': patch('tracking.workflow.get_shipments_to_update_on_bb')
+        }
+        self.mocks = {name: patcher.start() for name, patcher in self.patchers.items()}
+        self.addCleanup(self.stop_all_patchers)
 
-        for p in self.patchers:
-            p.start()
-            self.addCleanup(p.stop)
+    def stop_all_patchers(self):
+        for patcher in self.patchers.values():
+            patcher.stop()
 
     def test_happy_path_tracking_update(self):
         """Tests the ideal scenario: tracking is updated and order is marked shipped."""
         # --- Arrange ---
-        # DB returns one shipment to process
-        self.mock_cursor.fetchall.return_value = [MOCK_SHIPMENT]
-
+        self.mocks['get_shipments_to_update'].return_value = [MOCK_SHIPMENT]
         # Mock both Best Buy API calls to succeed
-        workflow.requests.put.return_value = MagicMock(status_code=204)
+        self.mocks['requests.put'].return_value = MagicMock(status_code=204, text="")
 
         # --- Act ---
         workflow.main()
 
         # --- Assert ---
-        # 1. Check that we fetched shipments to update
-        self.mock_cursor.execute.assert_any_call(unittest.mock.ANY) # Simplified check
+        # 1. Check that both API calls were made.
+        self.assertEqual(self.mocks['requests.put'].call_count, 2)
 
-        # 2. Check that both API calls were made
-        self.assertEqual(workflow.requests.put.call_count, 2)
-
-        # 3. Check that both API calls were logged successfully
-        self.mock_cursor.execute.assert_any_call(
-            unittest.mock.ANY,
-            ('BestBuy', 'UpdateTracking', MOCK_SHIPMENT['order_id'], unittest.mock.ANY, unittest.mock.ANY, 204, True)
+        # 2. Check that the final status was updated to 'shipped'.
+        self.mocks['add_order_status_history'].assert_called_with(
+            self.mock_conn, MOCK_SHIPMENT['order_id'], 'shipped', notes="Successfully marked as shipped on Best Buy."
         )
-        self.mock_cursor.execute.assert_any_call(
-            unittest.mock.ANY,
-            ('BestBuy', 'MarkAsShipped', MOCK_SHIPMENT['order_id'], unittest.mock.ANY, unittest.mock.ANY, 204, True)
-        )
-
-        # 4. Check that the final statuses were updated in the DB
-        self.mock_cursor.execute.assert_any_call(
-            "UPDATE shipments SET status = 'tracking_updated' WHERE shipment_id = %s;", (MOCK_SHIPMENT['shipment_id'],)
-        )
-        self.mock_cursor.execute.assert_any_call(
-            "UPDATE orders SET status = 'shipped' WHERE order_id = %s;", (MOCK_SHIPMENT['order_id'],)
-        )
+        # 3. Ensure no failure was logged.
+        self.mocks['log_process_failure'].assert_not_called()
 
     def test_tracking_update_fails(self):
-        """Tests that the workflow stops if the first API call (update tracking) fails."""
+        """Tests that a failure in the first API call (update tracking) is handled."""
         # --- Arrange ---
-        self.mock_cursor.fetchall.return_value = [MOCK_SHIPMENT]
-
-        # Mock the first API call to fail. We use side_effect on the mock object itself.
-        mock_response = MagicMock()
-        mock_response.status_code = 400
-        mock_response.text = "Bad tracking."
-        workflow.requests.put.side_effect = requests.exceptions.RequestException(response=mock_response)
+        self.mocks['get_shipments_to_update'].return_value = [MOCK_SHIPMENT]
+        # Mock the first API call to fail
+        self.mocks['requests.put'].side_effect = requests.exceptions.RequestException(
+            response=MagicMock(status_code=400, text="Bad tracking.")
+        )
 
         # --- Act ---
         workflow.main()
 
         # --- Assert ---
-        # 1. Check that only ONE API call was made (the first one)
-        workflow.requests.put.assert_called_once()
+        # 1. Check that only ONE API call was made.
+        self.mocks['requests.put'].assert_called_once()
 
-        # 2. Check that the failed API call was logged
-        self.mock_cursor.execute.assert_any_call(
-            unittest.mock.ANY,
-            ('BestBuy', 'UpdateTracking', MOCK_SHIPMENT['order_id'], unittest.mock.ANY, unittest.mock.ANY, unittest.mock.ANY, False)
+        # 2. Check that a process failure was logged.
+        self.mocks['log_process_failure'].assert_called_once()
+
+        # 3. Check that the final status was updated to 'tracking_failed'.
+        self.mocks['add_order_status_history'].assert_called_with(
+            self.mock_conn, MOCK_SHIPMENT['order_id'], 'tracking_failed', notes=unittest.mock.ANY
         )
-
-        # 3. Check that the database statuses were NOT updated
-        for call_args in self.mock_cursor.execute.call_args_list:
-            sql = call_args[0][0]
-            self.assertNotIn("UPDATE shipments", sql)
-            self.assertNotIn("UPDATE orders", sql)
 
     def test_mark_as_shipped_fails(self):
-        """Tests that a failure in the second API call is handled correctly."""
+        """Tests that a failure in the second API call (mark as shipped) is handled."""
         # --- Arrange ---
-        self.mock_cursor.fetchall.return_value = [MOCK_SHIPMENT]
-
+        self.mocks['get_shipments_to_update'].return_value = [MOCK_SHIPMENT]
         # Mock the first call to succeed and the second to fail
-        mock_success_response = MagicMock(status_code=204, text="")
-        mock_fail_response = MagicMock(status_code=500, text="Server error.")
-        workflow.requests.put.side_effect = [
-            mock_success_response,
-            requests.exceptions.RequestException(response=mock_fail_response)
-        ]
+        mock_success = MagicMock(status_code=204, text="")
+        mock_fail = requests.exceptions.RequestException(response=MagicMock(status_code=500, text="Server error."))
+        self.mocks['requests.put'].side_effect = [mock_success, mock_fail]
 
         # --- Act ---
         workflow.main()
 
         # --- Assert ---
-        # 1. Check that BOTH API calls were made
-        self.assertEqual(workflow.requests.put.call_count, 2)
+        # 1. Check that BOTH API calls were made.
+        self.assertEqual(self.mocks['requests.put'].call_count, 2)
 
-        # 2. Check that both calls were logged (one success, one failure)
-        self.mock_cursor.execute.assert_any_call(
-            unittest.mock.ANY,
-            ('BestBuy', 'UpdateTracking', MOCK_SHIPMENT['order_id'], unittest.mock.ANY, unittest.mock.ANY, 204, True)
-        )
-        self.mock_cursor.execute.assert_any_call(
-            unittest.mock.ANY,
-            ('BestBuy', 'MarkAsShipped', MOCK_SHIPMENT['order_id'], unittest.mock.ANY, unittest.mock.ANY, unittest.mock.ANY, False)
-        )
+        # 2. Check that a process failure was logged.
+        self.mocks['log_process_failure'].assert_called_once()
 
-        # 3. Check that the database statuses were NOT updated
-        for call_args in self.mock_cursor.execute.call_args_list:
-            sql = call_args[0][0]
-            self.assertNotIn("UPDATE shipments", sql)
-            self.assertNotIn("UPDATE orders", sql)
+        # 3. Check that the final status was updated to 'tracking_failed'.
+        self.mocks['add_order_status_history'].assert_called_with(
+            self.mock_conn, MOCK_SHIPMENT['order_id'], 'tracking_failed', notes=unittest.mock.ANY
+        )
 
 if __name__ == '__main__':
     unittest.main()

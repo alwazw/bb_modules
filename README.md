@@ -56,9 +56,9 @@ Follow these steps to set up and run the application locally.
     ```
 
 4.  **Install Dependencies:**
-    The required Python libraries are `requests` (for API calls) and `psycopg2-binary` (for PostgreSQL connection).
+    The required Python libraries are `requests`, `psycopg2-binary`, and `PyPDF2` (for shipping label validation).
     ```bash
-    pip install requests psycopg2-binary
+    pip install requests psycopg2-binary PyPDF2
     ```
 
 5.  **Initialize the Database Schema:**
