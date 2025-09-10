@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 from . import logic
 import os
 import sys
@@ -6,7 +6,18 @@ import sys
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
+
+@app.route('/')
+def index():
+    return redirect(url_for('show_conversations'))
+
+@app.route('/conversations')
+def show_conversations():
+    """
+    Renders the main conversations web interface.
+    """
+    return render_template('conversations.html')
 
 @app.route('/api/conversations', methods=['GET'])
 def get_conversations():
