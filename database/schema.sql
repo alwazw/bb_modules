@@ -9,7 +9,47 @@ DROP TABLE IF EXISTS api_calls;
 DROP TABLE IF EXISTS shipments;
 DROP TABLE IF EXISTS order_status_history;
 DROP TABLE IF EXISTS order_lines;
+DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS conversations;
 DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS customers;
+
+-- =====================================================================================
+-- Customer and Conversation Schema
+-- =====================================================================================
+
+-- Stores customer information.
+CREATE TABLE customers (
+    id SERIAL PRIMARY KEY,
+    mirakl_customer_id VARCHAR(255) UNIQUE NOT NULL,
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
+    email VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Stores conversations with customers.
+CREATE TABLE conversations (
+    id SERIAL PRIMARY KEY,
+    mirakl_thread_id VARCHAR(255) UNIQUE NOT NULL,
+    customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+    order_id VARCHAR(255) REFERENCES orders(order_id) ON DELETE SET NULL,
+    last_message_at TIMESTAMP WITH TIME ZONE,
+    subject TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Stores individual messages within a conversation.
+CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    conversation_id INTEGER NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+    sender_type VARCHAR(50) NOT NULL, -- 'customer' or 'technician'
+    sender_id VARCHAR(255), -- Can be customer_id or technician_id
+    body TEXT NOT NULL,
+    sent_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 
 -- =====================================================================================
 -- Core Order Processing Schema
@@ -142,6 +182,11 @@ CREATE INDEX idx_shipments_order_id ON shipments(order_id);
 CREATE INDEX idx_api_calls_related_id ON api_calls(related_id);
 CREATE INDEX idx_process_failures_related_id ON process_failures(related_id);
 CREATE INDEX idx_shop_sku_map_variant_id ON shop_sku_map(variant_id);
+CREATE INDEX idx_customers_mirakl_customer_id ON customers(mirakl_customer_id);
+CREATE INDEX idx_conversations_customer_id ON conversations(customer_id);
+CREATE INDEX idx_conversations_order_id ON conversations(order_id);
+CREATE INDEX idx_messages_conversation_id ON messages(conversation_id);
+CREATE INDEX idx_conversations_mirakl_thread_id ON conversations(mirakl_thread_id);
 
 -- A trigger to automatically update the 'updated_at' timestamp on the orders table.
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
@@ -154,5 +199,15 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON orders
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp_customers
+BEFORE UPDATE ON customers
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp_conversations
+BEFORE UPDATE ON conversations
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
