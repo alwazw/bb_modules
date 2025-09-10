@@ -1,13 +1,14 @@
 import unittest
-import json
+import csv
 from accounting.analyze_transactions import analyze_and_remodel_transactions
 
 class TestAnalyzeTransactions(unittest.TestCase):
 
     def test_analyze_and_remodel_transactions(self):
-        # Load the sample transactions
-        with open("accounting/sample_transactions.json", "r") as f:
-            transactions = json.load(f)
+        # Load the sample transactions from the new CSV file
+        with open("tests/sample_transactions.csv", "r") as f:
+            reader = csv.DictReader(f)
+            transactions = list(reader)
 
         analyzed_data = analyze_and_remodel_transactions(transactions)
 
@@ -15,15 +16,15 @@ class TestAnalyzeTransactions(unittest.TestCase):
         self.assertEqual(len(analyzed_data), 1)
 
         order_analysis = analyzed_data[0]
-        self.assertEqual(order_analysis["order_id"], "261305911-A")
+        self.assertEqual(order_analysis["order_id"], "260962600-A")
 
         # Check the analysis results
         analysis = order_analysis["analysis"]
-        self.assertAlmostEqual(analysis["selling_price"], 324.99)
-        self.assertAlmostEqual(analysis["taxes"], 42.25)
-        self.assertAlmostEqual(analysis["commission"], 26.0)
-        self.assertAlmostEqual(analysis["commission_tax"], 3.38)
-        self.assertAlmostEqual(analysis["net_revenue"], 337.86)
+        self.assertAlmostEqual(analysis["selling_price"], 749.99)
+        self.assertAlmostEqual(analysis["taxes"], 112.31) # 74.81 + 37.50
+        self.assertAlmostEqual(analysis["commission"], 60.0)
+        self.assertAlmostEqual(analysis["commission_tax"], 7.80)
+        self.assertAlmostEqual(analysis["net_revenue"], 794.50) # (749.99 + 112.31) - (60.0 + 7.80)
 
     def test_analyze_and_remodel_empty_transactions(self):
         analyzed_data = analyze_and_remodel_transactions([])

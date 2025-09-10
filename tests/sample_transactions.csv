@@ -1,0 +1,6 @@
+Creation date,Billing cycle date,Order ID,Order ref.,Document ID,Quantity,Description,Type,Amount,Payment status,Balance
+"Aug 11, 2025, 8:17 p.m.","Aug 27, 2025","260962600-A","Shop: - Customer: QC","No. 000000492245","1","Commission tax (ON_HST 13.00%)","Commission tax","-$7.80","Paid","$43637.59"
+"Aug 11, 2025, 8:17 p.m.","Aug 27, 2025","260962600-A","Shop: - Customer: QC","No. 000000492245","1","Commission","Commission","-$60.00","Paid","$43629.79"
+"Aug 11, 2025, 8:17 p.m.","Aug 27, 2025","260962600-A","Shop: - Customer: QC","No. 000000492245","1","Product tax (QST)","Order amount tax","$74.81","Paid","$43569.79"
+"Aug 11, 2025, 8:17 p.m.","Aug 27, 2025","260962600-A","Shop: - Customer: QC","No. 000000492245","1","Product tax (GST)","Order amount tax","$37.50","Paid","$43644.60"
+"Aug 11, 2025, 8:17 p.m.","Aug 27, 2025","260962600-A","Shop: - Customer: QC","No. 000000492245","1","Order amount for Brand New Acer 17.3"", FHD 1920*1080 Large Screen, SUPER FAST NVMe SSD 512 GB, Ultra Speed Intel Quad-Core CPU (3.4 GHz turbo), Number-pad, Win 11, WiFi 6E, Bluetooth, HD Webcam (Acer-17-N100-512)","Order amount","$749.99","Paid","$43682.10"

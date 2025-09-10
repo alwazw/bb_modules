@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch, mock_open
 import json
+import requests
 from accounting.fetch_transactions import get_transactions, save_transactions_to_json
 
 class TestAccounting(unittest.TestCase):
@@ -29,6 +30,7 @@ class TestAccounting(unittest.TestCase):
         # Mock an API error
         mock_get.return_value.status_code = 500
         mock_get.return_value.text = "Internal Server Error"
+        mock_get.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError
 
         with self.assertRaises(requests.exceptions.HTTPError):
             get_transactions("fake_api_key")

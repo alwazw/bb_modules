@@ -25,6 +25,12 @@ MOCK_ORDER = {
     }
 }
 
+MOCK_SHIPMENT = {
+    'shipment_id': 1,
+    'order_id': 'BBY-SHIP-123',
+    'tracking_pin': '123123123'
+}
+
 MOCK_CP_SUCCESS_RESPONSE = """
 <shipment-info xmlns="http://www.canadapost.ca/ws/shipment-v8">
   <shipment-id>123456789</shipment-id>
@@ -46,19 +52,27 @@ class TestShippingWorkflowV2(unittest.TestCase):
     def setUp(self):
         """Set up mock objects for each test."""
         self.mock_conn = MagicMock()
-        self.mock_creds = ('user', 'pass', 'cust_num', 'paid_by', 'contract')
+        self.mock_cp_creds = {
+            'api_user': 'user',
+            'api_password': 'pass',
+            'customer_number': 'cust_num',
+            'paid_by_customer': 'paid_by',
+            'contract_id': 'contract'
+        }
 
         self.patchers = {
             'get_db_connection': patch('shipping.workflow.get_db_connection', return_value=self.mock_conn),
-            'get_canada_post_credentials': patch('shipping.workflow.get_canada_post_credentials', return_value=self.mock_creds),
+            'get_canada_post_credentials': patch('shipping.workflow.get_canada_post_credentials', return_value=self.mock_cp_creds),
+            'get_best_buy_api_key': patch('shipping.workflow.get_best_buy_api_key', return_value='fake_bb_key'),
             'requests.post': patch('requests.post'),
+            'requests.put': patch('requests.put'),
             'download_label_pdf': patch('shipping.workflow.download_label_pdf', return_value=True),
             'os.path.exists': patch('os.path.exists', return_value=True),
             'validate_xml_content': patch('shipping.workflow.validate_xml_content', return_value=True),
             'validate_pdf_content': patch('shipping.workflow.validate_pdf_content', return_value=True),
             'add_order_status_history': patch('shipping.workflow.add_order_status_history'),
             'log_process_failure': patch('shipping.workflow.log_process_failure'),
-            'get_shippable_orders': patch('shipping.workflow.get_shippable_orders_from_db')
+            'create_shipment_record': patch('shipping.workflow.create_shipment_record', return_value=1)
         }
         self.mocks = {name: patcher.start() for name, patcher in self.patchers.items()}
         self.addCleanup(self.stop_all_patchers)
@@ -69,76 +83,96 @@ class TestShippingWorkflowV2(unittest.TestCase):
 
     def test_happy_path_label_creation_and_validation(self):
         """Tests the ideal scenario: a label is created, downloaded, and validated successfully."""
-        # --- Arrange ---
-        self.mocks['get_shippable_orders'].return_value = [MOCK_ORDER]
-        # Mock successful API call
         self.mocks['requests.post'].return_value = MagicMock(status_code=200, text=MOCK_CP_SUCCESS_RESPONSE)
-
-        # --- Act ---
-        workflow.main()
-
-        # --- Assert ---
-        # 1. Check that the content validation functions were called.
+        workflow.process_single_order_shipping(self.mock_conn, self.mock_cp_creds, MOCK_ORDER)
         self.mocks['validate_xml_content'].assert_called_once()
         self.mocks['validate_pdf_content'].assert_called_once()
-
-        # 2. Check that the final status was updated to 'label_created'.
         self.mocks['add_order_status_history'].assert_called_with(
             self.mock_conn, MOCK_ORDER['order_id'], 'label_created', notes='Tracking PIN: 123123123'
         )
-        # 3. Ensure no failure was logged.
         self.mocks['log_process_failure'].assert_not_called()
 
     def test_api_fails_with_retries_then_logs_failure(self):
         """Tests that a persistent API failure is retried and then logged as a critical failure."""
-        # --- Arrange ---
-        self.mocks['get_shippable_orders'].return_value = [MOCK_ORDER]
-        # Mock the API to always fail
         self.mocks['requests.post'].side_effect = requests.exceptions.RequestException(
             response=MagicMock(status_code=500, text="Server Error")
         )
-
-        # --- Act ---
-        workflow.main()
-
-        # --- Assert ---
-        # 1. Check that the API was called the maximum number of times.
+        workflow.process_single_order_shipping(self.mock_conn, self.mock_cp_creds, MOCK_ORDER)
         self.assertEqual(self.mocks['requests.post'].call_count, workflow.MAX_LABEL_CREATION_ATTEMPTS)
-
-        # 2. Check that a process failure was logged.
         self.mocks['log_process_failure'].assert_called_once()
-
-        # 3. Check that the final status was updated to 'shipping_failed'.
         self.mocks['add_order_status_history'].assert_called_with(
             self.mock_conn, MOCK_ORDER['order_id'], 'shipping_failed', notes=unittest.mock.ANY
         )
 
     def test_content_validation_fails(self):
         """Tests that a failure in the content validation stops the process and logs an error."""
-        # --- Arrange ---
-        self.mocks['get_shippable_orders'].return_value = [MOCK_ORDER]
         self.mocks['requests.post'].return_value = MagicMock(status_code=200, text=MOCK_CP_SUCCESS_RESPONSE)
-        # Mock the XML validation to return False
         self.mocks['validate_xml_content'].return_value = False
-
-        # --- Act ---
-        workflow.main()
-
-        # --- Assert ---
-        # 1. Check that the validation was attempted.
+        workflow.process_single_order_shipping(self.mock_conn, self.mock_cp_creds, MOCK_ORDER)
         self.mocks['validate_xml_content'].assert_called_once()
-
-        # 2. Check that a process failure was logged.
         self.mocks['log_process_failure'].assert_called_once()
-
-        # 3. Check that the final status was updated to 'shipping_failed'.
         self.mocks['add_order_status_history'].assert_called_with(
             self.mock_conn, MOCK_ORDER['order_id'], 'shipping_failed', notes=unittest.mock.ANY
         )
-
-        # 4. Check that the successful 'label_created' status was NOT set.
         for call_args in self.mocks['add_order_status_history'].call_args_list:
             self.assertNotEqual(call_args[0][1], 'label_created')
+
+class TestTrackingUpdateWorkflow(unittest.TestCase):
+
+    def setUp(self):
+        """Set up mock objects for each test."""
+        self.mock_conn = MagicMock()
+        self.patchers = {
+            'get_db_connection': patch('shipping.workflow.get_db_connection', return_value=self.mock_conn),
+            'get_best_buy_api_key': patch('shipping.workflow.get_best_buy_api_key', return_value='fake_bb_key'),
+            'requests.put': patch('requests.put'),
+            'add_order_status_history': patch('shipping.workflow.add_order_status_history'),
+            'log_process_failure': patch('shipping.workflow.log_process_failure'),
+            'get_shipments_to_update_on_bb': patch('shipping.workflow.get_shipments_to_update_on_bb')
+        }
+        self.mocks = {name: patcher.start() for name, patcher in self.patchers.items()}
+        self.addCleanup(self.stop_all_patchers)
+
+    def stop_all_patchers(self):
+        for patcher in self.patchers.values():
+            patcher.stop()
+
+    def test_happy_path_tracking_update(self):
+        """Tests the ideal scenario: tracking is updated successfully."""
+        self.mocks['get_shipments_to_update_on_bb'].return_value = [MOCK_SHIPMENT]
+        self.mocks['requests.put'].return_value = MagicMock(status_code=204)
+        workflow.update_tracking_workflow(self.mock_conn, 'fake_bb_key')
+        self.assertEqual(self.mocks['requests.put'].call_count, 2)
+        self.mocks['add_order_status_history'].assert_called_with(
+            self.mock_conn, MOCK_SHIPMENT['order_id'], 'shipped', notes='Successfully marked as shipped on Best Buy.'
+        )
+        self.mocks['log_process_failure'].assert_not_called()
+
+    def test_update_bb_tracking_number_fails(self):
+        """Tests the case where updating the tracking number on Best Buy fails."""
+        self.mocks['get_shipments_to_update_on_bb'].return_value = [MOCK_SHIPMENT]
+        self.mocks['requests.put'].side_effect = [
+            requests.exceptions.RequestException(response=MagicMock(status_code=500, text="Server Error")),
+            MagicMock(status_code=204)
+        ]
+        workflow.update_tracking_workflow(self.mock_conn, 'fake_bb_key')
+        self.mocks['log_process_failure'].assert_called_once()
+        self.mocks['add_order_status_history'].assert_called_with(
+            self.mock_conn, MOCK_SHIPMENT['order_id'], 'tracking_failed', notes=unittest.mock.ANY
+        )
+
+    def test_mark_as_shipped_fails(self):
+        """Tests the case where marking the order as shipped on Best Buy fails."""
+        self.mocks['get_shipments_to_update_on_bb'].return_value = [MOCK_SHIPMENT]
+        self.mocks['requests.put'].side_effect = [
+            MagicMock(status_code=204),
+            requests.exceptions.RequestException(response=MagicMock(status_code=500, text="Server Error"))
+        ]
+        workflow.update_tracking_workflow(self.mock_conn, 'fake_bb_key')
+        self.mocks['log_process_failure'].assert_called_once()
+        self.mocks['add_order_status_history'].assert_called_with(
+            self.mock_conn, MOCK_SHIPMENT['order_id'], 'tracking_failed', notes=unittest.mock.ANY
+        )
 
 if __name__ == '__main__':
     unittest.main()

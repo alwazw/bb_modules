@@ -1,5 +1,14 @@
 version: '3.8'
 services:
+  web:
+    build: ./web
+    ports:
+      - "5001:5001"
+      - "5002:5002"
+    depends_on:
+      - postgres-db
+    environment:
+      POSTGRES_HOST: postgres-db
   postgres-db:
     image: postgres:13
     container_name: order_management_db

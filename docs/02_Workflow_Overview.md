@@ -1,37 +1,43 @@
 # Workflow Overview
 
-This document provides a high-level overview of the entire automated order processing workflow.
+This document provides a high-level overview of the entire automated order processing and customer service workflow.
 
-## Master Scheduler (`main_scheduler.py`)
+## Master Scheduler (`run_core_workflows.sh`)
 
-The heart of the application is the master scheduler. It is designed to be run as a continuous process. Every 15 minutes, it executes the main workflow cycle.
+The heart of the application is the master scheduler. It is designed to be run periodically (e.g., via `cron`). It executes the main workflow cycle.
 
-The cycle consists of three main phases:
+The cycle consists of two main backend processes:
 
-### Phase 1: Order Acceptance
+### 1. Order Fulfillment Workflow (`shipping/workflow.py`)
 
-1.  **Retrieve Pending Orders:** The scheduler first calls the Best Buy API to check for any orders in the `WAITING_ACCEPTANCE` state.
-2.  **Accept Orders:** For each new order found, the script makes an API call to accept the order lines.
-3.  **Log Accepted Orders:** The IDs of successfully accepted orders are logged.
-4.  **Validate:** The script re-checks the Best Buy API to ensure that there are no more orders pending acceptance, confirming the success of the phase.
+This workflow handles the entire process of shipping an order, from label creation to final status updates.
 
-Once an order is accepted, it typically moves to a `WAITING_DEBIT_PAYMENT` state on the Best Buy side.
+-   **Phase 1: Shipping Label Creation**
+    1.  **Retrieve Shippable Orders:** The system queries its internal database for orders that have been accepted and are ready for shipment.
+    2.  **Duplicate Check:** The system checks if a shipment has already been created for an order to prevent duplicate labels.
+    3.  **Create CP Shipment:** The script calls the Canada Post API to create a real, billable shipment.
+    4.  **Validate and Download:** The script validates the response from Canada Post, downloads the PDF shipping label, and saves it.
+    5.  **Update Database:** The shipment details, including the tracking PIN, are saved to the database.
 
-### Phase 2: Shipping Label Creation
+-   **Phase 2: Tracking and Status Update**
+    1.  **Update Tracking on Best Buy:** The workflow takes the tracking number and calls the Best Buy API to add it to the order.
+    2.  **Mark as Shipped:** A second API call is made to mark the order as shipped, which updates the status for the end customer.
+    3.  **Update Database:** The final `shipped` status is recorded in the local database.
 
-1.  **Retrieve Shippable Orders:** The scheduler calls the Best Buy API to get a list of all orders currently in the `SHIPPING` state. This state indicates that payment has been cleared and the order is ready to be shipped.
-2.  **Duplicate Check:** For each shippable order, the system checks its internal logs (`logs/canada_post/cp_shipping_history_log.json`) to see if a shipping label has already been created. If it has, the order is skipped to prevent creating duplicate shipments.
-3.  **Transform Data:** For new shippable orders, the order data is transformed into the required XML format for the Canada Post "Create Shipment" API.
-4.  **Create CP Shipment:** The script calls the Canada Post API with the XML payload. This is a **live production call** that uses the `transmit-shipment` flag, meaning it creates a real, billable shipment.
-5.  **Validate Shipment:** After creating the shipment, the script makes a second call to the Canada Post "Get Tracking Summary" API to validate that the new tracking PIN is active and recognized.
-6.  **Download PDF Label:** A 4x6 PDF shipping label is downloaded and saved with a unique timestamped filename (e.g., `{order_id}_{timestamp}.pdf`).
-7.  **Log Shipment Data:** The full details of the Canada Post shipment are saved to history logs.
+### 2. Customer Service Message Sync (`customer_service/message_aggregation/fetch_messages.py`)
 
-### Phase 3: Tracking and Status Update
+This workflow runs independently to keep customer communications up to date.
 
-1.  **Update Tracking on Best Buy:** The scheduler takes the valid tracking number from the previous phase and calls the Best Buy API to add it to the order.
-2.  **Mark as Shipped:** Immediately after adding the tracking number, a second API call is made to mark the order as shipped. This is the action that updates the order status for the end customer.
-3.  **Log Order Data:** After the order is successfully marked as shipped, the script makes a final API call to get all available details for the now-shipped order and saves this data to history logs.
-4.  **Final Validation:** The script validates that the final order status on Best Buy is `SHIPPED`.
+1.  **Fetch New Messages:** The script connects to the Mirakl API and fetches any new messages since the last time it was run. It keeps track of the last sync time in a local file.
+2.  **Process and Store:** For each new message, the script:
+    -   Checks if the message belongs to an existing conversation.
+    -   If not, it creates a new conversation and a new customer record if necessary.
+    -   Saves the new message to the database.
+3.  **Update Timestamps:** The `last_message_at` timestamp for the conversation is updated to reflect the new message.
 
-This cycle repeats every 15 minutes, creating a fully automated, end-to-end fulfillment process.
+## Web Interfaces
+
+The application also includes two web interfaces for manual tasks and viewing data.
+
+-   **Fulfillment Service (`web/fulfillment_service_app.py`):** A web-based interface to guide the physical fulfillment process (e.g., scanning components).
+-   **Customer Service (`web/customer_service_app.py`):** A Slack-like web interface for viewing customer conversations and sending messages. This interface is powered by the data synced by the customer service message sync workflow.

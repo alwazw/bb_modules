@@ -9,7 +9,7 @@ from datetime import datetime, timedelta, timezone
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from customer_service.message_aggregation import fetch_messages
-from customer_service.src.app import app
+from web.customer_service_app import app
 
 class TestMessageSync(unittest.TestCase):
 

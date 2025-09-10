@@ -6,41 +6,28 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-echo "--- 1. Starting Docker Services ---"
-# Check if docker-compose is available
-if ! command -v docker-compose &> /dev/null
-then
-    echo "docker-compose could not be found. Please install it to continue."
+echo "--- 1. Checking for Docker ---"
+if ! command -v docker &> /dev/null || ! command -v docker-compose &> /dev/null; then
+    echo "Docker and/or docker-compose could not be found. Please install them to continue."
     exit 1
 fi
-# Start the postgres database container in detached mode.
-docker-compose up -d
+echo "SUCCESS: Docker and docker-compose are installed."
+echo
+
+echo "--- 2. Building Docker Images ---"
+docker-compose build
+echo "SUCCESS: Docker images built successfully."
+echo
+
+echo "--- 3. Starting Database Service ---"
+docker-compose up -d postgres-db
 echo "SUCCESS: PostgreSQL container started."
 echo
 
-echo "--- 2. Setting up Python Environment ---"
-# Check for a virtual environment, create if it doesn't exist.
-if [ ! -d "venv" ]; then
-    echo "No virtual environment found. Creating one now..."
-    python3 -m venv venv
-    echo "SUCCESS: Virtual environment 'venv' created."
-fi
-# Activate the virtual environment.
-source venv/bin/activate
-echo "SUCCESS: Virtual environment activated."
-echo
-
-echo "--- 3. Installing Python Dependencies ---"
-# Install dependencies for the core workflows and the web interface.
-pip install -r requirements.txt
-pip install -r fulfillment_service/requirements.txt
-echo "SUCCESS: All Python dependencies installed."
-echo
-
 echo "--- 4. Initializing Database Schema ---"
-# Run the db_utils script to create the tables.
-# The 'yes' command automatically answers the confirmation prompt.
-yes | python3 database/db_utils.py
+echo "Waiting for PostgreSQL to be ready..."
+sleep 10 # Simple wait, a more robust solution would be to poll the DB.
+docker-compose run --rm web python database/db_utils.py --init
 echo "SUCCESS: Database schema initialized."
 echo
 

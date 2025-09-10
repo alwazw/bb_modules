@@ -4,10 +4,12 @@ This guide provides step-by-step instructions for setting up the environment and
 
 ## 1. Prerequisites
 
-- Python 3.6+
-- `pip` for installing packages
+- Docker
+- Docker Compose
 
-## 2. Installation
+## 2. Installation & Setup
+
+The entire application stack is managed by Docker Compose, simplifying the setup process significantly.
 
 1.  **Clone the Repository:**
     ```bash
@@ -15,23 +17,11 @@ This guide provides step-by-step instructions for setting up the environment and
     cd <repository_directory>
     ```
 
-2.  **Create and Activate a Virtual Environment:**
-    It is highly recommended to use a virtual environment to manage dependencies.
-    -   **On macOS/Linux:**
-        ```bash
-        python3 -m venv venv
-        source venv/bin/activate
-        ```
-    -   **On Windows:**
-        ```bash
-        python -m venv venv
-        .\venv\Scripts\activate
-        ```
-
-3.  **Install Dependencies:**
-    The only external dependency is the `requests` library.
+2.  **Run the Setup Script:**
+    The `setup.sh` script automates the entire setup process, including building Docker images and initializing the database.
     ```bash
-    pip install requests
+    chmod +x setup.sh
+    ./setup.sh
     ```
 
 ## 3. Configuration
@@ -56,30 +46,24 @@ All sensitive information, such as API keys and customer numbers, is stored in t
     CANADA_POST_CONTRACT_ID=your_10_digit_contract_id_here
     ```
 
-    **Note:** All Canada Post numbers should be padded with leading zeros to be 10 digits if necessary.
-
 ## 4. Running the Application
 
-The application is designed to run continuously via a master scheduler.
+The application is divided into two main parts: the backend workflows and the web interfaces.
 
--   **To start the master scheduler:**
+-   **To run the web interfaces:**
+    The `run_web_interface.sh` script will start the web applications using Docker Compose.
     ```bash
-    python3 main_scheduler.py
+    chmod +x run_web_interface.sh
+    ./run_web_interface.sh
     ```
+    You can then access the interfaces at:
+    -   **Fulfillment Service:** `http://localhost:5001`
+    -   **Customer Service:** `http://localhost:5002/conversations`
 
-This will start the main loop, which runs every 15 minutes to check for new orders and process them through the entire workflow.
-
--   **To run individual phases manually:**
-    You can also run the main orchestrator for each phase individually for testing or manual processing.
-    -   **Accept Orders:**
-        ```bash
-        python3 main_acceptance.py
-        ```
-    -   **Process Shippable Orders:**
-        ```bash
-        python3 main_shipping.py
-        ```
-    -   **Update Tracking:**
-        ```bash
-        python3 main_tracking.py
-        ```
+-   **To run the backend workflows:**
+    The `run_core_workflows.sh` script will run the backend workflows inside a Docker container.
+    ```bash
+    chmod +x run_core_workflows.sh
+    ./run_core_workflows.sh
+    ```
+    This script can be run manually or scheduled to run periodically using a tool like `cron`.

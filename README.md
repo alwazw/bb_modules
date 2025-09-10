@@ -1,24 +1,24 @@
 # Best Buy Marketplace - Python Automation Suite
 
-This project provides a robust, database-driven automation suite for managing orders from the Best Buy Marketplace. It handles the end-to-end process from order acceptance to shipping and tracking, with a focus on reliability, logging, and scalability. It also includes a web-based interface to guide the physical fulfillment process.
+This project provides a robust, database-driven automation suite for managing orders from the Best Buy Marketplace. It handles the end-to-end process from order acceptance to shipping and tracking, with a focus on reliability, logging, and scalability. It also includes web-based interfaces for fulfillment and customer service.
 
 ## Architecture Overview
 
-The application is built on a modern, database-centric architecture.
+The application is built on a modern, Docker-based architecture.
 
--   **Database Backend:** A **PostgreSQL** database serves as the single source of truth for all data, managed via **Docker**.
--   **Modular Workflows:** The backend logic is broken into distinct, orchestrated workflows for order acceptance, shipping, and tracking.
--   **Web Interface:** A **Flask**-based web application provides a user interface for the fulfillment process, helping to guide technicians and prevent errors.
+-   **Database Backend:** A **PostgreSQL** database serves as the single source of truth for all data.
+-   **Application Services:** The backend logic is broken into distinct, orchestrated workflows. The web interfaces are served by Flask applications.
+-   **Containerization:** The entire application stack (database and web applications) is managed via **Docker and Docker Compose**, ensuring a consistent and reproducible environment.
 
 For more detailed documentation on each module, the database schema, and the overall project vision, please refer to the files in the `/docs` directory.
 
 ## 🚀 Getting Started
 
-Getting the application running locally is a simple, three-step process thanks to the new setup scripts.
+Getting the application running locally is a simple, two-step process thanks to the new Docker-based setup.
 
 ### Step 1: One-Time Project Setup
 
-First, run the master setup script. This will start the database, create a Python virtual environment, install all dependencies, and initialize the database schema.
+First, run the master setup script. This will build the Docker images and initialize the database schema.
 
 ```bash
 # Make the script executable (you only need to do this once)
@@ -28,31 +28,23 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-### Step 2: Running the Backend Workflows
+### Step 2: Running the Application
 
-To process any pending orders, create shipping labels, and update tracking information, run the core workflows script.
+To run the entire application stack (backend workflows and web interfaces), use the `docker-compose` command or the provided helper script.
 
 ```bash
-# Make the script executable (you only need to do this once)
-chmod +x run_core_workflows.sh
+# To run the web interfaces (and the database)
+chmod +x run_web_interface.sh
+./run_web_interface.sh
 
-# Run the workflows
+# To run the backend workflows (order acceptance, shipping, etc.)
+chmod +x run_core_workflows.sh
 ./run_core_workflows.sh
 ```
-This script can be run manually as needed, or integrated into a scheduler like `cron` to run periodically (e.g., every 15 minutes).
 
-### Step 3: Running the Web Interface
-
-To launch the web-based fulfillment service, run the web interface script.
-
-```bash
-# Make the script executable (you only need to do this once)
-chmod +x run_web_interface.sh
-
-# Run the web server
-./run_web_interface.sh
-```
-Once started, you can access the web interface from a browser on your local network, typically at `http://<your_machine_ip>:5001`.
+Once started, you can access the web interfaces from a browser:
+-   **Fulfillment Service:** `http://localhost:5001`
+-   **Customer Service:** `http://localhost:5002/conversations`
 
 ---
 
