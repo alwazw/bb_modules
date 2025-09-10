@@ -1,18 +1,16 @@
-# Phase 2 (v2): Re-Architected Shipping & Tracking with Advanced Failsafes
+# Phase 2: Re-Architected Shipping & Tracking Workflow
 
-This document details the re-architected Shipping and Tracking workflows. This version introduces significant enhancements in resilience and validation, creating a much more robust fulfillment process.
+This document details the re-architected and unified Shipping and Tracking workflow. This version introduces significant enhancements in resilience and validation, creating a much more robust fulfillment process.
 
 ## 1. Strategic Goal
 
-The goal was to enhance the existing shipping workflow with two key features requested by the user:
-1.  **Resilience:** The system should be able to handle transient errors from the Canada Post API without failing completely.
-2.  **Validation:** The system must verify that the shipping labels it creates are correct before the process can continue, preventing costly fulfillment errors.
+The goal was to merge the previously separate shipping and tracking workflows into a single, cohesive process. This simplifies the logic, improves maintainability, and provides a clearer picture of the end-to-end fulfillment process. The new workflow also incorporates advanced resilience and validation features.
 
-## 2. The New Enhanced Workflow
+## 2. The New Unified Workflow (`shipping/workflow.py`)
 
-The workflows in `shipping/workflow.py` and `tracking/workflow.py` have been significantly upgraded.
+The logic for creating shipping labels and updating tracking information on the Best Buy marketplace has been merged into a single, powerful workflow in `shipping/workflow.py`.
 
-### 2.1. Shipping Label Creation (`shipping/workflow.py`)
+### 2.1. End-to-End Process
 
 1.  **Fetch Shippable Orders:** The workflow queries the database for orders whose most recent status in `order_status_history` is `'accepted'`.
 
@@ -30,16 +28,12 @@ The workflows in `shipping/workflow.py` and `tracking/workflow.py` have been sig
     -   **PDF Validation:** After successfully downloading the PDF label, the system uses the `PyPDF2` library to extract the text from the PDF and performs a sanity check to ensure the tracking number is present in the label's text.
     -   If either of these content validation checks fails, it is treated as a critical error. The process stops immediately for that order, a failure is logged, and the status is set to `'shipping_failed'`.
 
-5.  **Success:** Only if the API call succeeds AND the label is downloaded AND both content validations pass does the workflow update the order's status to `'label_created'`.
+5.  **Tracking Update on Best Buy:**
+    -   After a shipping label has been successfully created and validated, the workflow immediately proceeds to update the tracking information on the Best Buy marketplace.
+    -   It calls the Best Buy `/tracking` and `/ship` endpoints sequentially.
+    -   If either of these API calls fails, the process for that order stops, a critical failure is logged to `process_failures`, and the order status is updated to `'tracking_failed'`.
 
-### 2.2. Tracking Update (`tracking/workflow.py`)
-
-The tracking update workflow has been updated to use the new `order_status_history` and `process_failures` tables, making its logging and state management consistent with the rest of the application.
-
-1.  **Fetch Shipments to Update:** It queries the database for orders whose latest status is `'label_created'`.
-2.  **API Calls:** It calls the Best Buy `/tracking` and `/ship` endpoints sequentially.
-3.  **Failure Handling:** If either API call fails, the process for that order stops, a critical failure is logged to `process_failures`, and the order status is updated to `'tracking_failed'`.
-4.  **Success:** If both calls succeed, the final status is updated to `'shipped'` in the `order_status_history` table.
+6.  **Success:** Only if the label creation, validation, and tracking update all succeed does the workflow update the order's status to the final `'shipped'` state.
 
 ## 3. Database Schema Changes
 

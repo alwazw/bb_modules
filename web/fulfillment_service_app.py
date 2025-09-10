@@ -1,13 +1,18 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for
-from . import logic
 import os
+import sys
+
+# Add the project root to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from fulfillment_service.src import logic
 
 app = Flask(__name__, template_folder='templates')
 
 # In-memory storage for fulfillment sessions.
 fulfillment_sessions = {}
 
-@app.route('/')
+@app.route('/fulfillment')
 def index():
     # For demonstration, redirect to a default order.
     # In a real app, you might have a dashboard of orders.
@@ -28,7 +33,7 @@ def fulfillment_page(order_id):
         }
 
     session_data = fulfillment_sessions[order_id]
-    return render_template('fulfillment.html',
+    return render_template('fulfillment_service/fulfillment.html',
                            order_id=order_id,
                            order_data=session_data['order'],
                            required_components=session_data['required_components'],

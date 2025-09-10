@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Conversations</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Conversations</h2>
+            </div>
+            <ul id="conversation-list" class="conversation-list">
+                <!-- Conversation items will be dynamically inserted here -->
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="message-view-header">
+                <h2 id="conversation-subject">Select a conversation</h2>
+            </div>
+            <div id="message-list" class="message-list">
+                <!-- Messages will be dynamically inserted here -->
+            </div>
+            <div class="message-input">
+                <input type="text" id="message-body" placeholder="Type your message...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

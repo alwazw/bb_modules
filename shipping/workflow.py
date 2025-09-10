@@ -15,10 +15,11 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
 
 from database.db_utils import get_db_connection, log_api_call, add_order_status_history, log_process_failure
-from common.utils import get_canada_post_credentials
+from common.utils import get_canada_post_credentials, get_best_buy_api_key
 
 # --- Configuration ---
 CP_API_URL_BASE = 'https://soa-gw.canadapost.ca/rs'
+BEST_BUY_API_URL_BASE = 'https://marketplace.bestbuy.ca/api/orders'
 PDF_OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'shipping', 'shipping_labels')
 MAX_LABEL_CREATION_ATTEMPTS = 3
 RETRY_PAUSE_SECONDS = 60
@@ -91,6 +92,31 @@ def update_shipment_with_label_info(conn, shipment_id, tracking_pin, label_url, 
         print(f"ERROR: Could not update shipment {shipment_id}. Reason: {e}")
         conn.rollback()
 
+def get_shipments_to_update_on_bb(conn):
+    """
+    Fetches shipments for orders whose most recent status is 'label_created'.
+    """
+    shipments = []
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute("""
+                WITH LatestStatus AS (
+                    SELECT
+                        order_id,
+                        status,
+                        ROW_NUMBER() OVER(PARTITION BY order_id ORDER BY timestamp DESC) as rn
+                    FROM order_status_history
+                )
+                SELECT s.shipment_id, s.order_id, s.tracking_pin
+                FROM shipments s
+                JOIN LatestStatus ls ON s.order_id = ls.order_id
+                WHERE ls.rn = 1 AND ls.status = 'label_created';
+            """)
+            shipments = [dict(row) for row in cur.fetchall()]
+    except Exception as e:
+        print(f"ERROR: Could not fetch shipments for tracking update. Reason: {e}")
+    return shipments
+
 # =====================================================================================
 # --- Content Validation & Failsafe Functions ---
 # =====================================================================================
@@ -99,27 +125,16 @@ def validate_xml_content(order_data, cp_xml_response):
     """
     Compares the shipping address from the original order with the address in the
     Canada Post 'Create Shipment' response XML to ensure they match.
-
-    Args:
-        order_data (dict): The raw order data from our database.
-        cp_xml_response (str): The XML response text from Canada Post.
-
-    Returns:
-        bool: True if key address fields match, False otherwise.
     """
     try:
-        # Normalize original data
         shipping_address = order_data['customer']['shipping_address']
         original_postal_code = shipping_address['zip_code'].replace(" ", "").upper()
         original_name = f"{shipping_address['firstname']} {shipping_address['lastname']}".upper()
-
-        # Parse XML and get destination data
         root = ET.fromstring(cp_xml_response)
         ns = {'cp': 'http://www.canadapost.ca/ws/shipment-v8'}
         dest = root.find(".//cp:destination", ns)
         xml_name = dest.find("cp:name", ns).text.upper()
         xml_postal_code = dest.find(".//cp:postal-zip-code", ns).text.replace(" ", "").upper()
-
         if original_postal_code == xml_postal_code and original_name in xml_name:
             print("INFO: XML content validation successful.")
             return True
@@ -136,13 +151,6 @@ def validate_pdf_content(pdf_path, tracking_pin):
     """
     Performs a basic sanity check on the downloaded PDF label by extracting its
     text and searching for the tracking pin.
-
-    Args:
-        pdf_path (str): The local path to the downloaded PDF file.
-        tracking_pin (str): The tracking pin to search for.
-
-    Returns:
-        bool: True if the tracking pin is found in the PDF text, False otherwise.
     """
     try:
         from PyPDF2 import PdfReader
@@ -150,7 +158,6 @@ def validate_pdf_content(pdf_path, tracking_pin):
         pdf_text = ""
         for page in reader.pages:
             pdf_text += page.extract_text()
-
         if tracking_pin in pdf_text:
             print("INFO: PDF content validation successful (tracking pin found).")
             return True
@@ -161,16 +168,14 @@ def validate_pdf_content(pdf_path, tracking_pin):
         print(f"ERROR: Could not perform PDF content validation. Reason: {e}")
         return False
 
-
 # =====================================================================================
-# --- Core Workflow & API Interaction ---
+# --- API Interaction Functions ---
 # =====================================================================================
 
 def download_label_pdf(label_url, api_user, api_password, output_path):
     """
     Downloads the shipping label PDF from the provided Canada Post URL.
     """
-    # ... (This function remains unchanged)
     if not label_url:
         return False
     auth_string = f"{api_user}:{api_password}"
@@ -188,7 +193,6 @@ def download_label_pdf(label_url, api_user, api_password, output_path):
         print(f"ERROR: Failed to download label: {e}")
         return False
 
-# ... (create_xml_payload and sender constants remain unchanged)
 SENDER_NAME = "VISIONVATION INC."
 SENDER_COMPANY = "VISIONVATION INC."
 SENDER_CONTACT_PHONE = "647-444-0848"
@@ -247,35 +251,64 @@ def create_xml_payload(order, contract_id, paid_by_customer):
     dom = minidom.parseString(xml_str)
     return dom.toprettyxml(indent="  ")
 
-def process_single_order_shipping(conn, api_user, api_password, customer_number, contract_id, paid_by_customer, order):
+def update_bb_tracking_number(api_key, order_id, tracking_pin):
     """
-    Orchestrates the entire shipping label creation process for a single order,
-    including API calls, logging, validation, and retries.
+    Calls the Best Buy API to update the tracking number for a given order.
+    """
+    url = f"{BEST_BUY_API_URL_BASE}/{order_id}/tracking"
+    headers = {'Authorization': api_key, 'Content-Type': 'application/json'}
+    payload = {"carrier_code": "CPCL", "tracking_number": tracking_pin}
+    print(f"INFO: Updating tracking for order {order_id} with PIN {tracking_pin}...")
+    try:
+        response = requests.put(url, headers=headers, json=payload, timeout=30)
+        response.raise_for_status()
+        return True, response.text, response.status_code, payload
+    except requests.exceptions.RequestException as e:
+        response_text = e.response.text if e.response is not None else str(e)
+        status_code = e.response.status_code if e.response is not None else 500
+        print(f"ERROR: Failed to update tracking for order {order_id}: {response_text}")
+        return False, response_text, status_code, payload
+
+def mark_bb_order_as_shipped(api_key, order_id):
+    """
+    Calls the Best Buy API to mark an order as shipped.
+    """
+    url = f"{BEST_BUY_API_URL_BASE}/{order_id}/ship"
+    headers = {'Authorization': api_key}
+    print(f"INFO: Marking order {order_id} as shipped...")
+    try:
+        response = requests.put(url, headers=headers, timeout=30)
+        response.raise_for_status()
+        return True, response.text, response.status_code
+    except requests.exceptions.RequestException as e:
+        response_text = e.response.text if e.response is not None else str(e)
+        status_code = e.response.status_code if e.response is not None else 500
+        print(f"ERROR: Failed to mark order {order_id} as shipped: {response_text}")
+        return False, response_text, status_code
+
+# =====================================================================================
+# --- Main Workflow ---
+# =====================================================================================
+
+def process_single_order_shipping(conn, cp_creds, order):
+    """
+    Orchestrates the entire shipping label creation process for a single order.
     """
     order_id = order['order_id']
     print(f"\n--- Processing Shipping for Order: {order_id} ---")
-
-    # Create the shipment record. This implicitly prevents duplicate processing
-    # because the get_shippable_orders_from_db query excludes orders that already
-    # have a shipment record.
     shipment_id = create_shipment_record(conn, order_id)
     if not shipment_id:
         details = "Failed to create initial shipment record in the database."
         log_process_failure(conn, order_id, 'ShippingLabelCreation', details, order)
         add_order_status_history(conn, order_id, 'shipping_failed', notes=details)
         return
-
-    xml_payload = create_xml_payload(order, contract_id, paid_by_customer)
-
+    xml_payload = create_xml_payload(order, cp_creds['contract_id'], cp_creds['paid_by_customer'])
     for attempt in range(1, MAX_LABEL_CREATION_ATTEMPTS + 1):
         print(f"--- Label Creation Attempt {attempt}/{MAX_LABEL_CREATION_ATTEMPTS} for order {order_id} ---")
-
-        # Call CP API
-        auth_string = f"{api_user}:{api_password}"
+        auth_string = f"{cp_creds['api_user']}:{cp_creds['api_password']}"
         auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
-        cp_api_url = f'{CP_API_URL_BASE}/{customer_number}/{customer_number}/shipment'
+        cp_api_url = f'{CP_API_URL_BASE}/{cp_creds["customer_number"]}/{cp_creds["customer_number"]}/shipment'
         headers = {'Authorization': f'Basic {auth_b64}', 'Content-Type': 'application/vnd.cpc.shipment-v8+xml', 'Accept': 'application/vnd.cpc.shipment-v8+xml'}
-
         try:
             response = requests.post(cp_api_url, headers=headers, data=xml_payload, timeout=30)
             response.raise_for_status()
@@ -286,43 +319,31 @@ def process_single_order_shipping(conn, api_user, api_password, customer_number,
             response_text = e.response.text if e.response is not None else str(e)
             status_code = e.response.status_code if e.response is not None else 500
             is_success = False
-
         log_api_call(conn, 'CanadaPost', 'CreateShipment', order_id, xml_payload, response_text, status_code, is_success)
-
         if is_success:
             try:
                 root = ET.fromstring(response_text)
                 ns = {'cp': 'http://www.canadapost.ca/ws/shipment-v8'}
                 label_url = root.find(".//cp:link[@rel='label']", ns).get('href')
                 tracking_pin = root.find(".//cp:tracking-pin", ns).text
-
                 os.makedirs(PDF_OUTPUT_DIR, exist_ok=True)
                 timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
                 pdf_path = os.path.join(PDF_OUTPUT_DIR, f"{order_id}_{timestamp}.pdf")
-
-                if download_label_pdf(label_url, api_user, api_password, pdf_path) and os.path.exists(pdf_path):
-                    # --- V2 Enhancement: Content Validation Failsafes ---
+                if download_label_pdf(label_url, cp_creds['api_user'], cp_creds['api_password'], pdf_path) and os.path.exists(pdf_path):
                     is_xml_valid = validate_xml_content(order['raw_order_data'], response_text)
                     is_pdf_valid = validate_pdf_content(pdf_path, tracking_pin)
-
                     if is_xml_valid and is_pdf_valid:
-                        # Only if all validations pass, we finalize the process.
                         update_shipment_with_label_info(conn, shipment_id, tracking_pin, label_url, pdf_path)
                         add_order_status_history(conn, order_id, 'label_created', notes=f"Tracking PIN: {tracking_pin}")
                         print(f"SUCCESS: Label created and validated for order {order_id}.")
-                        return # Success, exit the loop and function
+                        return
                     else:
-                        # If content validation fails, this is a critical error.
                         details = "Shipping label created but content validation failed. Manual review required."
                         log_process_failure(conn, order_id, 'ShippingLabelValidation', details, order)
                         add_order_status_history(conn, order_id, 'shipping_failed', notes=details)
-                        return # Stop processing this order
-
+                        return
             except (ET.ParseError, AttributeError) as e:
                 print(f"ERROR: Failed to parse successful API response. Error: {e}")
-                # Fall through to retry logic
-
-        # If we're here, something failed.
         print(f"WARNING: Label creation attempt {attempt} failed for order {order_id}.")
         if attempt < MAX_LABEL_CREATION_ATTEMPTS:
             time.sleep(RETRY_PAUSE_SECONDS)
@@ -332,28 +353,64 @@ def process_single_order_shipping(conn, api_user, api_password, customer_number,
             add_order_status_history(conn, order_id, 'shipping_failed', notes=details)
             return
 
+def update_tracking_workflow(conn, bb_api_key):
+    """
+    Main function to run the tracking update workflow.
+    """
+    print("\n--- Starting Tracking Update Workflow ---")
+    shipments_to_update = get_shipments_to_update_on_bb(conn)
+    if not shipments_to_update:
+        print("INFO: No shipments found that require a tracking update.")
+    else:
+        print(f"INFO: Found {len(shipments_to_update)} shipments to update on Best Buy.")
+        for shipment in shipments_to_update:
+            order_id = shipment['order_id']
+            tracking_pin = shipment['tracking_pin']
+            print(f"\n--- Processing Tracking for Order: {order_id} ---")
+            is_success, resp_text, status_code, payload = update_bb_tracking_number(bb_api_key, order_id, tracking_pin)
+            log_api_call(conn, 'BestBuy', 'UpdateTracking', order_id, payload, resp_text, status_code, is_success)
+            if not is_success:
+                details = f"Failed to update tracking number on Best Buy. API returned status {status_code}."
+                log_process_failure(conn, order_id, 'TrackingUpdate', details, payload)
+                add_order_status_history(conn, order_id, 'tracking_failed', notes=details)
+                continue
+            is_success, resp_text, status_code = mark_bb_order_as_shipped(bb_api_key, order_id)
+            log_api_call(conn, 'BestBuy', 'MarkAsShipped', order_id, None, resp_text, status_code, is_success)
+            if not is_success:
+                details = f"Succeeded in updating tracking PIN, but failed to mark order as shipped. API returned status {status_code}."
+                log_process_failure(conn, order_id, 'TrackingUpdate', details)
+                add_order_status_history(conn, order_id, 'tracking_failed', notes=details)
+                continue
+            add_order_status_history(conn, order_id, 'shipped', notes="Successfully marked as shipped on Best Buy.")
+            print(f"SUCCESS: Order {order_id} has been fully processed and marked as shipped.")
+
 def main():
     """
-    Main function to run the shipping label creation workflow.
+    Main function to run the shipping and tracking workflows.
     """
-    print("\n--- Starting Shipping Label Creation Workflow v2 ---")
+    print("\n--- Starting Shipping & Tracking Workflow ---")
     conn = get_db_connection()
-    api_user, api_password, customer_number, paid_by_customer, contract_id = get_canada_post_credentials()
+    cp_creds = get_canada_post_credentials()
+    bb_api_key = get_best_buy_api_key()
 
-    if not all([conn, api_user, api_password, customer_number, paid_by_customer, contract_id]):
+    if not conn or not cp_creds or not bb_api_key:
+        print("CRITICAL: Cannot proceed without DB connection and API keys.")
         return
 
+    # Phase 1: Create Shipping Labels
     orders_to_ship = get_shippable_orders_from_db(conn)
-
     if not orders_to_ship:
         print("INFO: No orders are currently pending shipment.")
     else:
-        print(f"INFO: Found {len(orders_to_ship)} orders to process.")
+        print(f"INFO: Found {len(orders_to_ship)} orders to process for label creation.")
         for order in orders_to_ship:
-            process_single_order_shipping(conn, api_user, api_password, customer_number, contract_id, paid_by_customer, order)
+            process_single_order_shipping(conn, cp_creds, order)
+
+    # Phase 2: Update Tracking on Best Buy
+    update_tracking_workflow(conn, bb_api_key)
 
     conn.close()
-    print("\n--- Shipping Label Creation Workflow Finished ---")
+    print("\n--- Shipping & Tracking Workflow Finished ---")
 
 if __name__ == '__main__':
     main()
