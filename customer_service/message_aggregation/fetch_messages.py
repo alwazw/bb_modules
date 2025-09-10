@@ -1,9 +1,17 @@
 import json
 import os
 import requests
-from datetime import datetime, timedelta
+import sys
+from datetime import datetime, timedelta, timezone
+from psycopg2 import extras
+
+# Add the project root to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from database.db_utils import get_db_connection
 
 API_BASE_URL = "https://marketplace.bestbuy.ca/api"
+TIMESTAMP_FILE = "customer_service/message_aggregation/last_sync_timestamp.txt"
 
 def load_api_key(secret_file="secrets.txt"):
     """Loads the Best Buy API key from the secrets file."""
@@ -17,107 +25,141 @@ def load_api_key(secret_file="secrets.txt"):
         return None
     return None
 
-def get_new_messages(api_key):
-    """
-    Fetches new message threads from the Mirakl API.
-    """
-    print("Connecting to Mirakl API to check for new messages...")
+def load_last_sync_timestamp():
+    """Loads the last sync timestamp from a file."""
+    try:
+        with open(TIMESTAMP_FILE, "r") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
 
+def save_last_sync_timestamp(timestamp):
+    """Saves the last sync timestamp to a file."""
+    os.makedirs(os.path.dirname(TIMESTAMP_FILE), exist_ok=True)
+    with open(TIMESTAMP_FILE, "w") as f:
+        f.write(timestamp)
+
+def get_new_messages(api_key, updated_since):
+    """Fetches new message threads from the Mirakl API since the last sync."""
+    print(f"Connecting to Mirakl API to check for new messages since {updated_since}...")
     headers = {"Authorization": api_key}
-
-    # For testing, we'll fetch threads updated in the last 24 hours.
-    # A more robust implementation would store the timestamp of the last run.
-    updated_since = (datetime.utcnow() - timedelta(days=1)).isoformat() + "Z"
-
-    params = {
-        "with_messages": "true",
-        "updated_since": updated_since,
-    }
-
+    params = {"with_messages": "true", "updated_since": updated_since}
     all_threads = []
     next_page_token = None
-
     while True:
         if next_page_token:
             params["page_token"] = next_page_token
-
         response = requests.get(f"{API_BASE_URL}/inbox/threads", headers=headers, params=params)
-
         if response.status_code != 200:
             print(f"Error fetching messages: {response.status_code} - {response.text}")
             response.raise_for_status()
-
         data = response.json()
         all_threads.extend(data.get("data", []))
-
         next_page_token = data.get("next_page_token")
         if not next_page_token:
             break
-
     print(f"Found {len(all_threads)} updated threads.")
     return all_threads
 
-def transform_threads_to_messages(threads):
-    """
-    Transforms the raw thread data from the API into a simplified message format.
-    """
-    transformed_messages = []
-    for thread in threads:
-        if thread.get("messages"):
-            # We'll just take the last message for simplicity
-            last_message = thread["messages"][-1]
-            transformed_messages.append({
-                "message_id": last_message["id"],
-                "thread_id": thread["id"],
-                "order_id": thread["entities"][0]["id"] if thread.get("entities") else "N/A",
-                "customer_id": last_message["from"].get("id", "N/A"),
-                "subject": thread["topic"]["value"],
-                "message": last_message["body"],
-                "timestamp": last_message["date_created"],
-                "status": "UNREAD" # This is a simplification, the API doesn't provide a simple unread status
-            })
-    return transformed_messages
+def get_or_create_customer(cur, mirakl_customer_id, firstname, lastname, email):
+    """Gets or creates a customer and returns the customer ID."""
+    cur.execute("SELECT id FROM customers WHERE mirakl_customer_id = %s", (mirakl_customer_id,))
+    result = cur.fetchone()
+    if result:
+        return result[0]
+    else:
+        cur.execute(
+            "INSERT INTO customers (mirakl_customer_id, firstname, lastname, email) VALUES (%s, %s, %s, %s) RETURNING id",
+            (mirakl_customer_id, firstname, lastname, email),
+        )
+        return cur.fetchone()[0]
 
-def save_messages_to_json(messages, file_path="customer_service/messages.json"):
-    """
-    Saves a list of messages to a JSON file.
-    """
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+def get_or_create_conversation(cur, mirakl_thread_id, customer_id, order_id, subject):
+    """Gets or creates a conversation and returns the conversation ID."""
+    cur.execute("SELECT id FROM conversations WHERE mirakl_thread_id = %s", (mirakl_thread_id,))
+    result = cur.fetchone()
+    if result:
+        return result[0]
+    else:
+        cur.execute(
+            "INSERT INTO conversations (mirakl_thread_id, customer_id, order_id, subject, last_message_at) VALUES (%s, %s, %s, %s, %s) RETURNING id",
+            (mirakl_thread_id, customer_id, order_id, subject, datetime.now(timezone.utc)),
+        )
+        return cur.fetchone()[0]
 
-    try:
-        with open(file_path, "r") as f:
-            existing_messages = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        existing_messages = []
+def insert_message(cur, conversation_id, sender_type, sender_id, body, sent_at):
+    """Inserts a message into the database."""
+    cur.execute(
+        "INSERT INTO messages (conversation_id, sender_type, sender_id, body, sent_at) VALUES (%s, %s, %s, %s, %s)",
+        (conversation_id, sender_type, sender_id, body, sent_at),
+    )
 
-    existing_ids = {msg["message_id"] for msg in existing_messages}
-    new_messages = [msg for msg in messages if msg["message_id"] not in existing_ids]
+def update_conversation_timestamp(cur, conversation_id, sent_at):
+    """Updates the last_message_at timestamp for a conversation."""
+    cur.execute("UPDATE conversations SET last_message_at = %s WHERE id = %s", (sent_at, conversation_id))
 
-    if not new_messages:
-        print("No new messages to save.")
-        return
+def process_and_store_threads(conn, threads):
+    """Processes threads from the Mirakl API and stores them in the database."""
+    with conn.cursor() as cur:
+        for thread in threads:
+            for message in thread.get("messages", []):
+                # Check if message already exists
+                cur.execute("SELECT id FROM messages WHERE id = %s", (message["id"],))
+                if cur.fetchone():
+                    continue
 
-    updated_messages = existing_messages + new_messages
+                from_details = message.get("from", {})
+                customer_id = from_details.get("id")
+                if not customer_id:
+                    continue
 
-    with open(file_path, "w") as f:
-        json.dump(updated_messages, f, indent=4)
+                customer_pk = get_or_create_customer(
+                    cur, customer_id, from_details.get("firstname"), from_details.get("lastname"), from_details.get("email")
+                )
 
-    print(f"Successfully saved {len(new_messages)} new messages to {file_path}.")
+                order_id = thread["entities"][0]["id"] if thread.get("entities") else None
+                conversation_pk = get_or_create_conversation(
+                    cur, thread["id"], customer_pk, order_id, thread["topic"]["value"]
+                )
+
+                insert_message(
+                    cur,
+                    conversation_pk,
+                    message.get("from", {}).get("type", "customer").lower(),
+                    customer_id,
+                    message["body"],
+                    message["date_created"],
+                )
+                update_conversation_timestamp(cur, conversation_pk, message["date_created"])
+        conn.commit()
+    print(f"Successfully processed and stored {len(threads)} threads.")
 
 def fetch_and_save_messages():
-    """
-    Main orchestration function for the message aggregation phase.
-    """
+    """Main orchestration function for the message aggregation phase."""
     api_key = load_api_key()
     if not api_key:
         print("Could not load API key. Aborting.")
         return
 
-    threads = get_new_messages(api_key)
+    conn = get_db_connection()
+    if conn is None:
+        print("Could not connect to the database. Aborting.")
+        return
 
-    if threads:
-        messages = transform_threads_to_messages(threads)
-        save_messages_to_json(messages)
+    try:
+        last_sync_timestamp = load_last_sync_timestamp()
+        current_sync_timestamp = datetime.now(timezone.utc).isoformat()
+        threads = get_new_messages(api_key, last_sync_timestamp)
+        if threads:
+            process_and_store_threads(conn, threads)
+        save_last_sync_timestamp(current_sync_timestamp)
+        print("Message sync completed successfully.")
+    except Exception as e:
+        print(f"An error occurred during message sync: {e}")
+        conn.rollback()
+    finally:
+        if conn:
+            conn.close()
 
 if __name__ == "__main__":
     fetch_and_save_messages()
