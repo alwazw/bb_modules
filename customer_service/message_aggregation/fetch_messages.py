@@ -94,9 +94,16 @@ def insert_message(cur, conversation_id, sender_type, sender_id, body, sent_at):
         (conversation_id, sender_type, sender_id, body, sent_at),
     )
 
-def update_conversation_timestamp(cur, conversation_id, sent_at):
-    """Updates the last_message_at timestamp for a conversation."""
-    cur.execute("UPDATE conversations SET last_message_at = %s WHERE id = %s", (sent_at, conversation_id))
+def update_conversation_on_new_message(cur, conversation_id, sent_at, sender_type):
+    """
+    Updates the conversation's timestamp and sets its status based on the sender.
+    A message from a 'customer' makes it 'unread', from a 'technician' makes it 'read'.
+    """
+    new_status = 'unread' if sender_type == 'customer' else 'read'
+    cur.execute(
+        "UPDATE conversations SET last_message_at = %s, status = %s WHERE id = %s",
+        (sent_at, new_status, conversation_id)
+    )
 
 def process_and_store_threads(conn, threads):
     """Processes threads from the Mirakl API and stores them in the database."""
@@ -122,15 +129,16 @@ def process_and_store_threads(conn, threads):
                     cur, thread["id"], customer_pk, order_id, thread["topic"]["value"]
                 )
 
+                sender_type = message.get("from", {}).get("type", "customer").lower()
                 insert_message(
                     cur,
                     conversation_pk,
-                    message.get("from", {}).get("type", "customer").lower(),
+                    sender_type,
                     customer_id,
                     message["body"],
                     message["date_created"],
                 )
-                update_conversation_timestamp(cur, conversation_pk, message["date_created"])
+                update_conversation_on_new_message(cur, conversation_pk, message["date_created"], sender_type)
         conn.commit()
     print(f"Successfully processed and stored {len(threads)} threads.")
 

@@ -37,6 +37,7 @@ CREATE TABLE conversations (
     order_id VARCHAR(255) REFERENCES orders(order_id) ON DELETE SET NULL,
     last_message_at TIMESTAMP WITH TIME ZONE,
     subject TEXT,
+    status VARCHAR(50) DEFAULT 'unread', -- e.g., 'unread', 'read', 'archived'
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -48,7 +49,8 @@ CREATE TABLE messages (
     sender_type VARCHAR(50) NOT NULL, -- 'customer' or 'technician'
     sender_id VARCHAR(255), -- Can be customer_id or technician_id
     body TEXT NOT NULL,
-    sent_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    sent_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    message_type VARCHAR(50) DEFAULT 'manual' NOT NULL -- 'manual' or 'auto_reply'
 );
 
 -- =====================================================================================
@@ -185,6 +187,7 @@ CREATE INDEX idx_shop_sku_map_variant_id ON shop_sku_map(variant_id);
 CREATE INDEX idx_customers_mirakl_customer_id ON customers(mirakl_customer_id);
 CREATE INDEX idx_conversations_customer_id ON conversations(customer_id);
 CREATE INDEX idx_conversations_order_id ON conversations(order_id);
+CREATE INDEX idx_conversations_status ON conversations(status);
 CREATE INDEX idx_messages_conversation_id ON messages(conversation_id);
 CREATE INDEX idx_conversations_mirakl_thread_id ON conversations(mirakl_thread_id);
 
