@@ -1,5 +1,6 @@
 import sys
 import os
+import requests
 from psycopg2 import extras
 from datetime import datetime
 
@@ -7,6 +8,45 @@ from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from database.db_utils import get_db_connection
+
+API_BASE_URL = "https://marketplace.bestbuy.ca/api"
+
+def load_api_key(secret_file="secrets.txt"):
+    """Loads the Best Buy API key from the secrets file."""
+    try:
+        with open(secret_file, "r") as f:
+            for line in f:
+                if line.startswith("BEST_BUY_API_KEY="):
+                    return line.strip().split("=")[1]
+    except FileNotFoundError:
+        print(f"Error: {secret_file} not found.")
+        return None
+    return None
+
+def send_message_to_mirakl(thread_id, message_body):
+    """
+    Sends a reply message to a specific conversation thread via the Mirakl API.
+    """
+    api_key = load_api_key()
+    if not api_key:
+        return False, "Could not load API key."
+
+    headers = {
+        "Authorization": api_key,
+        "Content-Type": "application/json"
+    }
+    payload = { "body": message_body }
+
+    url = f"{API_BASE_URL}/inbox/threads/{thread_id}/messages"
+
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+        print(f"Successfully sent message to thread {thread_id} via Mirakl API.")
+        return True, response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending message to Mirakl API for thread {thread_id}: {e}")
+        return False, str(e)
 
 def _format_conversation_list(records):
     """Formats a list of conversation records for the API response."""
@@ -96,7 +136,8 @@ def get_conversation_by_id(conversation_id):
 
 def add_message_to_conversation(conversation_id, message_data):
     """
-    Adds a new message to a conversation from a technician.
+    Adds a new message to a conversation from a technician, sends it to the Mirakl API,
+    and marks the conversation as 'read'.
     """
     conn = get_db_connection()
     if not conn:
@@ -107,28 +148,32 @@ def add_message_to_conversation(conversation_id, message_data):
             sent_at = datetime.utcnow()
             sender_id = message_data.get("sender_id", "tech_01") # Placeholder for technician ID
 
+            # Insert the new manual message
             cur.execute(
                 """
-                INSERT INTO messages (conversation_id, sender_type, sender_id, body, sent_at)
-                VALUES (%s, 'technician', %s, %s, %s)
+                INSERT INTO messages (conversation_id, sender_type, sender_id, body, sent_at, message_type)
+                VALUES (%s, 'technician', %s, %s, %s, 'manual')
                 RETURNING *;
                 """,
                 (conversation_id, sender_id, message_data["body"], sent_at)
             )
             new_message = cur.fetchone()
 
-            # Update the conversation's last_message_at timestamp
+            # Update conversation timestamps and status
             cur.execute(
-                "UPDATE conversations SET last_message_at = %s WHERE id = %s",
+                "UPDATE conversations SET last_message_at = %s, status = 'read' WHERE id = %s RETURNING mirakl_thread_id",
                 (sent_at, conversation_id)
             )
+            mirakl_thread_id = cur.fetchone()['mirakl_thread_id']
 
             conn.commit()
 
-            # TODO: Add logic here to send the message to the Mirakl API.
-            # This will require a separate function and API credentials.
-            # For now, we'll just log that it needs to be done.
-            print(f"INFO: Message {new_message['id']} saved to DB. Needs to be sent to Mirakl API.")
+            # After saving to DB, send to Mirakl API
+            success, result = send_message_to_mirakl(mirakl_thread_id, message_data["body"])
+            if not success:
+                # If the API call fails, we might want to log this more formally.
+                # For now, we just print the error.
+                print(f"WARNING: Message {new_message['id']} saved to DB, but failed to send to Mirakl: {result}")
 
             return _format_message_list([new_message])[0], None
     except Exception as e:
