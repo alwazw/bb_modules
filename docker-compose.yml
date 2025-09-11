@@ -5,6 +5,9 @@ services:
     ports:
       - "5001:5001"
       - "5002:5002"
+    volumes:
+      - ./persistent_storage/pdf_shipping_labels:/app/shipping/canada_post/cp_shipping/cp_pdf_shipping_labels
+      - ./persistent_storage/logs:/app/logs
     depends_on:
       - postgres-db
     environment:
