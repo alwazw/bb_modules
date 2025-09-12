@@ -34,7 +34,7 @@ This service is built with Flask and is designed to be run as a standalone micro
     ```
 
 3.  **Ensure Data Files Are Present:**
-    This service relies on `products.json` and `orders_pending_shipping.json` from the main project. Ensure these files exist in the `catalog/` and `logs/best_buy/` directories at the project root.
+    This service relies on `products.json` and `orders_pending_shipping.json` from the main project. Ensure these files exist in the `catalogue/` and `logs/best_buy/` directories at the project root.
 
 4.  **Run the Service:**
     For development, you can run the Flask app directly:
@@ -115,4 +115,4 @@ The service exposes the following RESTful API endpoints:
 
 ## Shipping Integration
 
-This service is integrated with the `shipping` module to generate shipping labels. When the `/api/fulfillment/finalize` endpoint is called, the service calls the `create_shipment_and_get_label` function from the `shipping.canada_post.cp_shipping.cp_pdf_labels` module. This function creates the shipping label with Canada Post and returns the tracking number and a URL to the PDF label. The fulfillment service then downloads the PDF label and saves it to the `logs/canada_post/cp_pdf_shipping_labels` directory.
+This service is integrated with the `shipping` module to generate shipping labels. When the `/api/fulfillment/finalize` endpoint is called, the service calls the `create_shipment_and_get_label` function from the `shipping.canada_post.cp_shipping.cp_pdf_labels` module. This function creates the shipping label with Canada Post and returns the tracking number and a URL to the PDF label. The fulfillment service then downloads the PDF label and saves it to the `logs/canada_post_logs/cp_pdf_shipping_labels` directory.

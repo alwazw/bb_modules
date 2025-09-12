@@ -1,6 +1,6 @@
 # Offer Management Module
 
-This module handles the creation of sales offers for your products and provides a template for automating the process of publishing them to the Best Buy marketplace. An "offer" connects a specific product variant (identified by its SKU) from your catalog to a price and a stock quantity.
+This module handles the creation of sales offers for your products and provides a template for automating the process of publishing them to the Best Buy marketplace. An "offer" connects a specific product variant (identified by its SKU) from your catalogue to a price and a stock quantity.
 
 ## File Structure
 
@@ -14,7 +14,7 @@ This script allows you to manage the `offers.json` file.
 
 ### 1. Create or Update an Offer
 
-To create a new offer or update an existing one, use the `create` command. You must provide a SKU that already exists in your `catalog/products.json` file. If you provide a SKU that is already in `offers.json`, its price and stock will be updated.
+To create a new offer or update an existing one, use the `create` command. You must provide a SKU that already exists in your `catalogue/products.json` file. If you provide a SKU that is already in `offers.json`, its price and stock will be updated.
 
 **Example:**
 ```bash

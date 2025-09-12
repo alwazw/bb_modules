@@ -133,15 +133,15 @@ logs/
 accounting/transactions.json
 
 # Re-include specific json files that should be tracked
-!catalog/product_schema.json
-!catalog/products.json
+!catalogue/product_schema.json
+!catalogue/products.json
 !customer_service/messages.json
 !customer_service/orders_shipped_and_validated.json
 !logs/best_buy/orders_pending_shipping.json
 !logs/best_buy/orders_shipped_and_validated.json
 !logs/best_buy/pending_acceptance.json
-!logs/canada_post/cp_shipping_history_log.json
-!logs/canada_post/cp_shipping_labels_data.json
+!logs/canada_post_logs/cp_shipping_history_log.json
+!logs/canada_post_logs/cp_shipping_labels_data.json
 !logs/customer_service/cp_shipping_history_log.json
 !logs/customer_service/orders_shipped_and_validated.json
 !offers/offers.json

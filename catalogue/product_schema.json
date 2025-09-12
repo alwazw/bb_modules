@@ -1,5 +1,5 @@
 {
-  "description": "Schema for a product catalog, including base product information and an array of variants.",
+  "description": "Schema for a product catalogue, including base product information and an array of variants.",
   "type": "object",
   "properties": {
     "base_product": {
