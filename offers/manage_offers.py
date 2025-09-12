@@ -4,7 +4,7 @@ import os
 
 # Define paths to the data files
 OFFERS_FILE = os.path.join(os.path.dirname(__file__), 'offers.json')
-PRODUCTS_FILE = os.path.join(os.path.dirname(__file__), '..', 'catalog', 'products.json')
+PRODUCTS_FILE = os.path.join(os.path.dirname(__file__), '..', 'catalogue', 'products.json')
 
 def read_json_file(filepath):
     """Reads a JSON file and returns its content."""
@@ -19,8 +19,8 @@ def write_json_file(filepath, data):
     with open(filepath, 'w') as f:
         json.dump(data, f, indent=2)
 
-def find_sku_in_catalog(sku):
-    """Checks if a SKU exists in the product catalog."""
+def find_sku_in_catalogue(sku):
+    """Checks if a SKU exists in the product catalogue."""
     products_data = read_json_file(PRODUCTS_FILE)
     for product in products_data:
         for variant in product.get('variants', []):
@@ -34,8 +34,8 @@ def create_offer(args):
     price = args.price
     stock = args.stock
 
-    if not find_sku_in_catalog(sku):
-        print(f"Error: SKU '{sku}' not found in the product catalog. Please add the product first.")
+    if not find_sku_in_catalogue(sku):
+        print(f"Error: SKU '{sku}' not found in the product catalogue. Please add the product first.")
         return
 
     offers = read_json_file(OFFERS_FILE)

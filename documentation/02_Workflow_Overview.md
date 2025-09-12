@@ -39,5 +39,5 @@ This workflow runs independently to keep customer communications up to date.
 
 The application also includes two web interfaces for manual tasks and viewing data.
 
--   **Fulfillment Service (`web/fulfillment_service_app.py`):** A web-based interface to guide the physical fulfillment process (e.g., scanning components).
--   **Customer Service (`web/customer_service_app.py`):** A Slack-like web interface for viewing customer conversations and sending messages. This interface is powered by the data synced by the customer service message sync workflow.
+-   **Fulfillment Service (`web_interface/fulfillment_service_app.py`):** A web-based interface to guide the physical fulfillment process (e.g., scanning components).
+-   **Customer Service (`web_interface/customer_service_app.py`):** A Slack-like web interface for viewing customer conversations and sending messages. This interface is powered by the data synced by the customer service message sync workflow.
