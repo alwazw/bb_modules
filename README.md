@@ -24,7 +24,11 @@ The project is divided into several key modules:
 -   **Fulfillment Service:** Provides a web interface for fulfillment tasks.
 -   **Customer Service:** Includes a web interface for managing customer conversations and a new auto-reply bot to handle initial customer messages.
 -   **Accounting:** Fetches and analyzes transaction data from the marketplace.
+<<<<<<< HEAD
 -   **Offers & Catalog:** Manages product offers and catalog information.
+=======
+-   **Offers & Catalogue:** Manages product offers and catalogue information.
+>>>>>>> pr-9
 
 ## 🚀 Getting Started
 
@@ -48,7 +52,11 @@ chmod +x setup.sh
 
 ### Step 2: Running the Application
 
+<<<<<<< HEAD
 To run the entire application stack, use the `docker-compose` command or the provided helper script.
+=======
+To run the entire application stack, use the `docker compose` command or the provided helper script.
+>>>>>>> pr-9
 
 ```bash
 # To run the web interfaces (and the database)

@@ -6,7 +6,7 @@ import os
 PRODUCTS_FILE = os.path.join(os.path.dirname(__file__), 'products.json')
 
 def read_products():
-    """Reads the product catalog from the JSON file."""
+    """Reads the product catalogue from the JSON file."""
     try:
         with open(PRODUCTS_FILE, 'r') as f:
             content = f.read()
@@ -20,15 +20,15 @@ def read_products():
         return []
 
 def write_products(products):
-    """Writes the product catalog back to the JSON file."""
+    """Writes the product catalogue back to the JSON file."""
     with open(PRODUCTS_FILE, 'w') as f:
         json.dump(products, f, indent=2)
 
 def view_products(args):
-    """Displays all products in the catalog."""
+    """Displays all products in the catalogue."""
     products = read_products()
     if not products:
-        print("The product catalog is empty.")
+        print("The product catalogue is empty.")
         return
     print(json.dumps(products, indent=2))
 
@@ -89,7 +89,7 @@ def add_product(args):
     write_products(products)
 
 def update_product(args):
-    """Updates an existing product in the catalog."""
+    """Updates an existing product in the catalogue."""
     # This implementation can be complex. For now, we'll focus on updating a variant's attributes.
     products = read_products()
     sku_to_update = args.sku
@@ -111,15 +111,15 @@ def update_product(args):
         write_products(products)
         print(f"Successfully updated attributes for SKU '{sku_to_update}'.")
     else:
-        print(f"Error: SKU '{sku_to_update}' not found in the catalog.")
+        print(f"Error: SKU '{sku_to_update}' not found in the catalogue.")
 
 def main():
     """Main function to parse arguments and call the appropriate function."""
-    parser = argparse.ArgumentParser(description="Manage the product catalog.")
+    parser = argparse.ArgumentParser(description="Manage the product catalogue.")
     subparsers = parser.add_subparsers(dest='command', required=True, help='Available commands')
 
     # 'view' command
-    parser_view = subparsers.add_parser('view', help='View all products in the catalog.')
+    parser_view = subparsers.add_parser('view', help='View all products in the catalogue.')
     parser_view.set_defaults(func=view_products)
 
     # 'add' command

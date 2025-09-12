@@ -37,7 +37,7 @@ A set of RESTful API endpoints are provided to interact with the customer servic
 
 ## 5. Web Interface
 
-A web-based interface (`web/customer_service_app.py`) provides a user-friendly way to interact with the customer service module.
+A web-based interface (`web_interface/customer_service_app.py`) provides a user-friendly way to interact with the customer service module.
 
 -   **Two-Column Layout:** The interface has a two-column layout, with a list of conversations in a sidebar on the left and the message view on the right.
 -   **Dynamic Updates:** The interface uses JavaScript to dynamically fetch and display conversations and messages from the API.

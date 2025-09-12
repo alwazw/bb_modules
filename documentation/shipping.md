@@ -12,11 +12,11 @@ This script is used to create shipping labels and download them as PDF files.
 
 **How it works:**
 
-1.  The script reads XML files from the `logs/canada_post/create_label_xml_files` directory.
+1.  The script reads XML files from the `logs/canada_post_logs/create_label_xml_files` directory.
 2.  For each XML file, it sends a request to the Canada Post "Create Shipment" API.
 3.  If the request is successful, it parses the XML response to get the label URL, details URL, and tracking pin.
-4.  It logs the shipping data to `logs/canada_post/cp_shipping_labels_data.json` and the full shipment details to `logs/canada_post/cp_shipping_history_log.json` and `logs/customer_service/cp_shipping_history_log.json`.
-5.  It downloads the PDF label from the label URL and saves it to the `logs/canada_post/cp_pdf_shipping_labels` directory.
+4.  It logs the shipping data to `logs/canada_post_logs/cp_shipping_labels_data.json` and the full shipment details to `logs/canada_post_logs/cp_shipping_history_log.json` and `logs/customer_service/cp_shipping_history_log.json`.
+5.  It downloads the PDF label from the label URL and saves it to the `logs/canada_post_logs/cp_pdf_shipping_labels` directory.
 
 **How to run:**
 
@@ -28,7 +28,7 @@ python3 shipping/canada_post/cp_shipping/cp_pdf_labels.py
 
 **Troubleshooting:**
 
-*   **PDFs not being saved:** Check the logs in the `logs/canada_post` directory for any errors. Make sure that the `label_url` is being returned from the Canada Post API and that the `download_label` function is not failing.
+*   **PDFs not being saved:** Check the logs in the `logs/canada_post_logs` directory for any errors. Make sure that the `label_url` is being returned from the Canada Post API and that the `download_label` function is not failing.
 *   **XML log not complete:** Check the `cp_shipping_labels_data.json` file to see the API responses from Canada Post. If there are errors, the `details_url` might not be returned, and the shipment details will not be logged.
 
 ### `validate_cp_shipment.py`
