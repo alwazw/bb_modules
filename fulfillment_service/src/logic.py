@@ -3,10 +3,13 @@ import json
 from datetime import datetime
 
 # --- Path Configuration ---
+# Corrected paths to align with the actual project structure.
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-ORDERS_FILE = os.path.join(PROJECT_ROOT, 'Orders', 'pending_acceptance', 'orders_pending_acceptance', 'pending_acceptance.json')
+# This file is created by the order acceptance workflow.
+ORDERS_FILE = os.path.join(PROJECT_ROOT, 'order_management', 'awaiting_shipment', 'processed_orders.json')
 PRODUCTS_FILE = os.path.join(PROJECT_ROOT, 'catalogue', 'products.json')
-PDF_OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'logs', 'canada_post', 'cp_pdf_shipping_labels')
+# This path inside the container is mapped to the persistent_storage/pdf_shipping_labels directory on the host.
+PDF_OUTPUT_DIR = "/app/persistent_storage/pdf_shipping_labels"
 
 
 # --- Import from other project modules ---
@@ -24,12 +27,15 @@ def load_json_file(file_path):
     """Loads a JSON file and returns its content."""
     if not os.path.exists(file_path):
         print(f"WARNING: Data file not found: {file_path}")
+        # Return an empty list for orders if the file doesn't exist yet.
+        if 'orders' in file_path:
+            return []
         return None
     try:
         with open(file_path, 'r') as f:
             return json.load(f)
-    except json.JSONDecodeError:
-        print(f"ERROR: Could not decode JSON from {file_path}")
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"ERROR: Could not read or decode JSON from {file_path}. Error: {e}")
         return None
 
 # --- Core Business Logic ---
@@ -41,7 +47,7 @@ def get_work_order_details(order_id):
     orders = load_json_file(ORDERS_FILE)
     products = load_json_file(PRODUCTS_FILE)
 
-    if not orders or not products:
+    if orders is None or products is None:
         return None, "Could not load necessary data files."
 
     order = find_order_by_id(orders, order_id)
