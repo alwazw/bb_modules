@@ -1,18 +1,20 @@
 -- Drop tables in reverse order of creation to respect foreign key constraints.
-DROP TABLE IF EXISTS shop_sku_map;
-DROP TABLE IF EXISTS variant_components;
-DROP TABLE IF EXISTS product_variants;
-DROP TABLE IF EXISTS base_products;
-DROP TABLE IF EXISTS components;
-DROP TABLE IF EXISTS process_failures;
-DROP TABLE IF EXISTS api_calls;
-DROP TABLE IF EXISTS shipments;
-DROP TABLE IF EXISTS order_status_history;
-DROP TABLE IF EXISTS order_lines;
-DROP TABLE IF EXISTS messages;
-DROP TABLE IF EXISTS conversations;
-DROP TABLE IF EXISTS orders;
-DROP TABLE IF EXISTS customers;
+-- Using CASCADE to ensure that dependent objects are also dropped, making the
+-- script idempotent and safe to run on an existing database.
+DROP TABLE IF EXISTS shop_sku_map CASCADE;
+DROP TABLE IF EXISTS variant_components CASCADE;
+DROP TABLE IF EXISTS product_variants CASCADE;
+DROP TABLE IF EXISTS base_products CASCADE;
+DROP TABLE IF EXISTS components CASCADE;
+DROP TABLE IF EXISTS process_failures CASCADE;
+DROP TABLE IF EXISTS api_calls CASCADE;
+DROP TABLE IF EXISTS shipments CASCADE;
+DROP TABLE IF EXISTS order_status_history CASCADE;
+DROP TABLE IF EXISTS order_lines CASCADE;
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS conversations CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS customers CASCADE;
 
 -- =====================================================================================
 -- Customer and Conversation Schema
@@ -25,6 +27,21 @@ CREATE TABLE customers (
     firstname VARCHAR(255),
     lastname VARCHAR(255),
     email VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================================================================
+-- Core Order Processing Schema
+-- =====================================================================================
+
+-- Main table for storing order information. This table contains data that is
+-- unlikely to change, like the customer info and the items ordered.
+CREATE TABLE orders (
+    order_id VARCHAR(255) PRIMARY KEY,
+    -- The raw JSON data for the order. Storing this allows us to re-process an
+    -- order or audit the original data without needing to call the API again.
+    raw_order_data JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -51,21 +68,6 @@ CREATE TABLE messages (
     body TEXT NOT NULL,
     sent_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     message_type VARCHAR(50) DEFAULT 'manual' NOT NULL -- 'manual' or 'auto_reply'
-);
-
--- =====================================================================================
--- Core Order Processing Schema
--- =====================================================================================
-
--- Main table for storing order information. This table contains data that is
--- unlikely to change, like the customer info and the items ordered.
-CREATE TABLE orders (
-    order_id VARCHAR(255) PRIMARY KEY,
-    -- The raw JSON data for the order. Storing this allows us to re-process an
-    -- order or audit the original data without needing to call the API again.
-    raw_order_data JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table for storing individual order lines.
