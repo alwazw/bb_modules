@@ -1,7 +1,8 @@
-version: '3.8'
 services:
   web:
-    build: ./web_interface
+    build:
+      context: .
+      dockerfile: web_interface/Dockerfile
     ports:
       - "5001:5001"
       - "5002:5002"
