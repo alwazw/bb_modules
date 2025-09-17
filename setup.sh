@@ -33,7 +33,7 @@ echo
 echo "--- 5. Initializing Database Schema ---"
 echo "Waiting for PostgreSQL to be ready..."
 sleep 10 # Simple wait, a more robust solution would be to poll the DB.
-sudo docker compose run --rm web python database/db_utils.py --init
+sudo docker compose run --rm web_interface python database/db_utils.py --init
 echo "SUCCESS: Database schema initialized."
 echo
 

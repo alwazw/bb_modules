@@ -1,5 +1,5 @@
 services:
-  web:
+  web_interface:
     build:
       context: .
       dockerfile: web_interface/Dockerfile
@@ -19,6 +19,7 @@ services:
   postgres-db:
     image: postgres:13
     container_name: order_management_db
+    mem_limit: 512m
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -32,6 +33,7 @@ services:
   redis:
     image: redis:alpine
     container_name: redis_cache
+    mem_limit: 256m
     ports:
       - "6379:6379"
     restart: unless-stopped
@@ -39,6 +41,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin_container
+    mem_limit: 512m
     environment:
       PGADMIN_DEFAULT_EMAIL: user@example.com
       PGADMIN_DEFAULT_PASSWORD: password
