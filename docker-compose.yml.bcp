@@ -11,11 +11,8 @@ services:
       - ./persistent_storage/logs:/app/logs
     depends_on:
       - postgres-db
-      - redis
     environment:
       POSTGRES_HOST: postgres-db
-      REDIS_HOST: redis
-
   postgres-db:
     image: postgres:13
     container_name: order_management_db
@@ -29,29 +26,5 @@ services:
       - "5432:5432"
     restart: unless-stopped
 
-  redis:
-    image: redis:alpine
-    container_name: redis_cache
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin_container
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user@example.com
-      PGADMIN_DEFAULT_PASSWORD: password
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    ports:
-      - "5050:5050"
-    depends_on:
-      - postgres-db
-    restart: unless-stopped
-
 volumes:
   postgres_data:
-  pgadmin_data:
-
-
