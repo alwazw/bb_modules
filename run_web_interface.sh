@@ -6,4 +6,4 @@
 set -e
 
 echo "--- Starting Web Interfaces using Docker Compose ---"
-sudo docker compose up -d --build web_interface
+sudo docker compose up -d --build

@@ -9,6 +9,7 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
 
 from shipping import workflow
+from tracking import workflow as tracking_workflow
 
 # --- Test Data ---
 MOCK_ORDER = {
@@ -123,12 +124,13 @@ class TestTrackingUpdateWorkflow(unittest.TestCase):
         """Set up mock objects for each test."""
         self.mock_conn = MagicMock()
         self.patchers = {
-            'get_db_connection': patch('shipping.workflow.get_db_connection', return_value=self.mock_conn),
-            'get_best_buy_api_key': patch('shipping.workflow.get_best_buy_api_key', return_value='fake_bb_key'),
-            'requests.put': patch('requests.put'),
-            'add_order_status_history': patch('shipping.workflow.add_order_status_history'),
-            'log_process_failure': patch('shipping.workflow.log_process_failure'),
-            'get_shipments_to_update_on_bb': patch('shipping.workflow.get_shipments_to_update_on_bb')
+            'get_db_connection': patch('tracking.workflow.get_db_connection', return_value=self.mock_conn),
+            'get_best_buy_api_key': patch('tracking.workflow.get_best_buy_api_key', return_value='fake_bb_key'),
+            'update_bb_tracking_number': patch('tracking.workflow.update_bb_tracking_number'),
+            'mark_bb_order_as_shipped': patch('tracking.workflow.mark_bb_order_as_shipped'),
+            'add_order_status_history': patch('tracking.workflow.add_order_status_history'),
+            'log_process_failure': patch('tracking.workflow.log_process_failure'),
+            'get_shipments_to_update_on_bb': patch('tracking.workflow.get_shipments_to_update_on_bb')
         }
         self.mocks = {name: patcher.start() for name, patcher in self.patchers.items()}
         self.addCleanup(self.stop_all_patchers)
@@ -140,9 +142,11 @@ class TestTrackingUpdateWorkflow(unittest.TestCase):
     def test_happy_path_tracking_update(self):
         """Tests the ideal scenario: tracking is updated successfully."""
         self.mocks['get_shipments_to_update_on_bb'].return_value = [MOCK_SHIPMENT]
-        self.mocks['requests.put'].return_value = MagicMock(status_code=204)
-        workflow.update_tracking_workflow(self.mock_conn, 'fake_bb_key')
-        self.assertEqual(self.mocks['requests.put'].call_count, 2)
+        self.mocks['update_bb_tracking_number'].return_value = (True, "Success", 204, {})
+        self.mocks['mark_bb_order_as_shipped'].return_value = (True, "Success", 204)
+        tracking_workflow.main()
+        self.mocks['update_bb_tracking_number'].assert_called_once()
+        self.mocks['mark_bb_order_as_shipped'].assert_called_once()
         self.mocks['add_order_status_history'].assert_called_with(
             self.mock_conn, MOCK_SHIPMENT['order_id'], 'shipped', notes='Successfully marked as shipped on Best Buy.'
         )
@@ -151,11 +155,8 @@ class TestTrackingUpdateWorkflow(unittest.TestCase):
     def test_update_bb_tracking_number_fails(self):
         """Tests the case where updating the tracking number on Best Buy fails."""
         self.mocks['get_shipments_to_update_on_bb'].return_value = [MOCK_SHIPMENT]
-        self.mocks['requests.put'].side_effect = [
-            requests.exceptions.RequestException(response=MagicMock(status_code=500, text="Server Error")),
-            MagicMock(status_code=204)
-        ]
-        workflow.update_tracking_workflow(self.mock_conn, 'fake_bb_key')
+        self.mocks['update_bb_tracking_number'].return_value = (False, "Server Error", 500, {})
+        tracking_workflow.main()
         self.mocks['log_process_failure'].assert_called_once()
         self.mocks['add_order_status_history'].assert_called_with(
             self.mock_conn, MOCK_SHIPMENT['order_id'], 'tracking_failed', notes=unittest.mock.ANY
@@ -164,11 +165,9 @@ class TestTrackingUpdateWorkflow(unittest.TestCase):
     def test_mark_as_shipped_fails(self):
         """Tests the case where marking the order as shipped on Best Buy fails."""
         self.mocks['get_shipments_to_update_on_bb'].return_value = [MOCK_SHIPMENT]
-        self.mocks['requests.put'].side_effect = [
-            MagicMock(status_code=204),
-            requests.exceptions.RequestException(response=MagicMock(status_code=500, text="Server Error"))
-        ]
-        workflow.update_tracking_workflow(self.mock_conn, 'fake_bb_key')
+        self.mocks['update_bb_tracking_number'].return_value = (True, "Success", 204, {})
+        self.mocks['mark_bb_order_as_shipped'].return_value = (False, "Server Error", 500)
+        tracking_workflow.main()
         self.mocks['log_process_failure'].assert_called_once()
         self.mocks['add_order_status_history'].assert_called_with(
             self.mock_conn, MOCK_SHIPMENT['order_id'], 'tracking_failed', notes=unittest.mock.ANY
