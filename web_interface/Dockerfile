@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the web application's code into the container
 COPY . .
+COPY secrets.txt .
 
 # Copy the supervisord configuration file
 COPY web_interface/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
