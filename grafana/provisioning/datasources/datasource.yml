@@ -1,0 +1,13 @@
+apiVersion: 1
+
+datasources:
+  - name: PostgreSQL
+    type: postgres
+    url: postgres-db:5432
+    user: user
+    password: password
+    database: order_management
+    jsonData:
+      sslmode: 'disable'
+      postgresVersion: 1300
+      timescaledb: false

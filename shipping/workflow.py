@@ -46,7 +46,8 @@ def get_shippable_orders_from_db(conn):
                 SELECT o.*
                 FROM orders o
                 JOIN LatestStatus ls ON o.order_id = ls.order_id
-                WHERE ls.rn = 1 AND ls.status = 'accepted';
+                LEFT JOIN shipments s ON o.order_id = s.order_id
+                WHERE ls.rn = 1 AND ls.status = 'accepted' AND s.shipment_id IS NULL;
             """)
             orders = [dict(row) for row in cur.fetchall()]
     except Exception as e:
