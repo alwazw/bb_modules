@@ -175,3 +175,55 @@ class TestTrackingUpdateWorkflow(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class TestGetShippableOrders(unittest.TestCase):
+
+    def setUp(self):
+        self.conn = workflow.get_db_connection()
+        # Clean up any existing test data
+        with self.conn.cursor() as cur:
+            cur.execute("DELETE FROM shipments WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM order_status_history WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM order_lines WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM orders WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM customers WHERE mirakl_customer_id = 'test-customer-123'")
+        self.conn.commit()
+
+    def tearDown(self):
+        # Clean up the test data
+        with self.conn.cursor() as cur:
+            cur.execute("DELETE FROM shipments WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM order_status_history WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM order_lines WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM orders WHERE order_id = 'test-order-123'")
+            cur.execute("DELETE FROM customers WHERE mirakl_customer_id = 'test-customer-123'")
+        self.conn.commit()
+        self.conn.close()
+
+    def test_get_shippable_orders_excludes_orders_with_shipments(self):
+        """
+        Tests that get_shippable_orders_from_db excludes orders that already have a shipment record.
+        """
+        # 1. Create a customer, order, and order line
+        with self.conn.cursor() as cur:
+            cur.execute("INSERT INTO customers (mirakl_customer_id, firstname, lastname) VALUES (%s, %s, %s) RETURNING id", ('test-customer-123', 'Test', 'User'))
+            customer_id = cur.fetchone()[0]
+            cur.execute("INSERT INTO orders (order_id, raw_order_data) VALUES (%s, %s)", ('test-order-123', '{}'))
+            cur.execute("INSERT INTO order_lines (order_line_id, order_id, sku, quantity) VALUES (%s, %s, %s, %s)", ('test-order-line-123', 'test-order-123', 'test-sku-123', 1))
+            # 2. Set the order status to 'accepted'
+            cur.execute("INSERT INTO order_status_history (order_id, status) VALUES (%s, %s)", ('test-order-123', 'accepted'))
+        self.conn.commit()
+
+        # 3. Call get_shippable_orders_from_db and assert that the order is returned
+        shippable_orders = workflow.get_shippable_orders_from_db(self.conn)
+        self.assertEqual(len(shippable_orders), 1)
+        self.assertEqual(shippable_orders[0]['order_id'], 'test-order-123')
+
+        # 4. Create a shipment for the order
+        with self.conn.cursor() as cur:
+            cur.execute("INSERT INTO shipments (order_id) VALUES (%s)", ('test-order-123',))
+        self.conn.commit()
+
+        # 5. Call get_shippable_orders_from_db again and assert that the order is NOT returned
+        shippable_orders = workflow.get_shippable_orders_from_db(self.conn)
+        self.assertEqual(len(shippable_orders), 0)
