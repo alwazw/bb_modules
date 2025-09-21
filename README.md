@@ -10,6 +10,7 @@ The application is built on a modern, Docker-based architecture to ensure consis
 -   **Application Services:** The backend logic is broken into distinct modules, each responsible for a specific part of the business process. These modules are designed to be run as scheduled workflows.
 -   **Web Interfaces:** The project includes two web-based GUIs built with **Flask** for managing fulfillment and customer service tasks.
 -   **Containerization:** The entire application stack (database, web applications, and backend services) is managed via **Docker and Docker Compose**, allowing for a one-command setup.
+-   **Monitoring:** The stack includes **Grafana** for monitoring and visualization, which can be connected to the PostgreSQL database.
 
 For detailed documentation on each module, the database schema, and the overall project vision, please refer to the files in the `/documentation` directory.
 
@@ -24,11 +25,7 @@ The project is divided into several key modules:
 -   **Fulfillment Service:** Provides a web interface for fulfillment tasks.
 -   **Customer Service:** Includes a web interface for managing customer conversations and a new auto-reply bot to handle initial customer messages.
 -   **Accounting:** Fetches and analyzes transaction data from the marketplace.
-<<<<<<< HEAD
 -   **Offers & Catalog:** Manages product offers and catalog information.
-=======
--   **Offers & Catalogue:** Manages product offers and catalogue information.
->>>>>>> pr-9
 
 ## 🚀 Getting Started
 
@@ -52,11 +49,7 @@ chmod +x setup.sh
 
 ### Step 2: Running the Application
 
-<<<<<<< HEAD
 To run the entire application stack, use the `docker-compose` command or the provided helper script.
-=======
-To run the entire application stack, use the `docker compose` command or the provided helper script.
->>>>>>> pr-9
 
 ```bash
 # To run the web interfaces (and the database)
@@ -66,8 +59,11 @@ chmod +x run_web_interface.sh
 ```
 
 Once started, you can access the web interfaces from your browser:
--   **Fulfillment Service:** `http://localhost:5001`
+-   **Fulfillment Service:** `http://localhost:5001/fulfillment`
 -   **Customer Service:** `http://localhost:5002/conversations`
+-   **PgAdmin (Database GUI):** `http://localhost:5050`
+-   **Grafana (Monitoring):** `http://localhost:3000`
+
 
 To run the backend workflows (order acceptance, shipping, etc.), use the `run_core_workflows.sh` script. This is typically done on a schedule (e.g., via a cron job).
 
@@ -80,3 +76,7 @@ chmod +x run_core_workflows.sh
 
 -   **API Keys:** You must create a `secrets.txt` file in the project root containing the necessary API keys for the Best Buy and Canada Post APIs.
 -   **Persistent Storage:** The application uses a `persistent_storage` directory at the project root to store generated files like PDF shipping labels and logs. This directory is created automatically by the `setup.sh` script and is mounted into the Docker containers to ensure data persists even if the containers are removed. The database data is also persisted using a named Docker volume (`postgres_data`).
+
+## Project Roadmap
+
+For a detailed project roadmap, including plans for future features and architectural improvements, please see the [Customer Service Module Evolution Roadmap](./documentation/08_Phase_6_Customer_Service_Roadmap.md).
