@@ -102,6 +102,65 @@ def log_api_call(conn, service, endpoint, related_id, request_payload, response_
         print(f"ERROR: Could not log API call. Reason: {e}")
         conn.rollback()
 
+def get_shipment_details_from_db(conn, shipment_id):
+    """
+    Fetches shipment details from the database by shipment_id.
+    """
+    details = None
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute("SELECT * FROM shipments WHERE shipment_id = %s;", (shipment_id,))
+            details = dict(cur.fetchone()) if cur.rowcount > 0 else None
+    except Exception as e:
+        print(f"ERROR: Could not fetch shipment details for shipment_id {shipment_id}. Reason: {e}")
+    return details
+
+def update_shipment_status_in_db(conn, shipment_id, status, notes=""):
+    """
+    Updates the status and notes of a shipment in the database.
+    """
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE shipments
+                SET status = %s, notes = %s
+                WHERE shipment_id = %s;
+                """,
+                (status, notes, shipment_id)
+            )
+        conn.commit()
+        print(f"INFO: Updated shipment {shipment_id} status to '{status}'.")
+    except Exception as e:
+        print(f"ERROR: Could not update status for shipment {shipment_id}. Reason: {e}")
+        conn.rollback()
+
+def get_shipments_details_by_order_id(conn, order_id):
+    """
+    Fetches all shipment details for a given order_id.
+    """
+    details = []
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute("SELECT * FROM shipments WHERE order_id = %s;", (order_id,))
+            details = [dict(row) for row in cur.fetchall()]
+    except Exception as e:
+        print(f"ERROR: Could not fetch shipments for order_id {order_id}. Reason: {e}")
+    return details
+
+def get_shipment_details_by_tracking_pin(conn, tracking_pin):
+    """
+    Fetches shipment details from the database by tracking_pin.
+    """
+    details = None
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute("SELECT * FROM shipments WHERE tracking_pin = %s;", (tracking_pin,))
+            details = dict(cur.fetchone()) if cur.rowcount > 0 else None
+    except Exception as e:
+        print(f"ERROR: Could not fetch shipment for tracking_pin {tracking_pin}. Reason: {e}")
+    return details
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Database utility script.")
     parser.add_argument('--init', action='store_true', help='Initialize the database schema without prompting for confirmation.')
