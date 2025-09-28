@@ -33,7 +33,7 @@ def get_tracking_details(conn, cp_creds, tracking_pin):
         return []
 
     url = f"{CP_API_TRACKING_URL_BASE}{tracking_pin}/detail"
-    auth_string = f"{cp_creds['api_user']}:{cp_creds['api_password']}"
+    auth_string = f"{cp_creds[0]}:{cp_creds[1]}"
     auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
 
     headers = {
@@ -46,7 +46,6 @@ def get_tracking_details(conn, cp_creds, tracking_pin):
         response = requests.get(url, headers=headers, timeout=30)
         is_success = 200 <= response.status_code < 300
 
-        # Log the API call regardless of success
         log_api_call(
             conn, 'CanadaPost', 'GetTrackingDetails', tracking_pin,
             request_payload={'url': url},

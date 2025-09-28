@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import csv
 from datetime import datetime
 
 # --- Project Path Setup ---
@@ -14,6 +15,7 @@ from shipping.canada_post.cp_cancel_shipment import process_single_shipment_canc
 
 # --- Configuration ---
 LOG_DIR = os.path.join(PROJECT_ROOT, 'shipping', 'cancellation_logs')
+CANDIDATE_LIST_DIR = os.path.join(PROJECT_ROOT, 'shipping', 'cancellation_candidates')
 DAYS_TO_CHECK = 30
 # Canada Post event code for "Shipping label created"
 LABEL_CREATED_CODE = "135"
@@ -86,7 +88,8 @@ def main():
 
     logger.info(f"Found {len(orders)} orders with shipments in the last {DAYS_TO_CHECK} days.")
 
-    cancellable_shipments = 0
+    cancellation_candidates = []
+
     for order in orders:
         order_id = order['order_id']
         tracking_pin = order['tracking_pin']
@@ -110,22 +113,47 @@ def main():
         should_cancel, reason = is_shipment_cancellable(tracking_events)
 
         if should_cancel:
-            cancellable_shipments += 1
-            logger.info(f"Shipment {shipment_id} for order {order_id} is cancellable. Reason: {reason}. Proceeding with cancellation.")
+            logger.info(f"Shipment {shipment_id} for order {order_id} is cancellable. Reason: {reason}. Adding to list and proceeding with cancellation.")
+
+            # Add to our list for saving later
+            cancellation_candidates.append({
+                'order_id': order_id,
+                'shipment_id': shipment_id,
+                'tracking_pin': tracking_pin,
+                'cancellation_reason': reason
+            })
 
             # 4. Cancel the shipment
-            # The process_single_shipment_cancellation function requires the full shipment details dictionary
-            shipment_details = dict(order) # Convert the order DictRow to a dict
+            shipment_details = dict(order)
             process_single_shipment_cancellation(conn, cp_creds, shipment_details)
         else:
             logger.info(f"Shipment {shipment_id} for order {order_id} is not cancellable. Reason: {reason}.")
 
-    # 5. Final validation and summary
+    # 5. Save the list of candidates to a CSV file
+    if cancellation_candidates:
+        os.makedirs(CANDIDATE_LIST_DIR, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+        candidates_filename = f"cancellation_candidates_{timestamp}.csv"
+        candidates_filepath = os.path.join(CANDIDATE_LIST_DIR, candidates_filename)
+
+        logger.info(f"Saving list of {len(cancellation_candidates)} cancellable shipments to {candidates_filepath}")
+
+        try:
+            with open(candidates_filepath, 'w', newline='') as csvfile:
+                fieldnames = ['order_id', 'shipment_id', 'tracking_pin', 'cancellation_reason']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(cancellation_candidates)
+            logger.info(f"Successfully saved cancellation candidates list to {candidates_filepath}")
+        except IOError as e:
+            logger.error(f"Failed to save cancellation candidates list. Reason: {e}")
+
+    # 6. Final validation and summary
     logger.info("--- Workflow Summary ---")
     logger.info(f"Total orders checked: {len(orders)}")
-    logger.info(f"Total shipments identified for cancellation: {cancellable_shipments}")
+    logger.info(f"Total shipments identified for cancellation: {len(cancellation_candidates)}")
 
-    # Simple validation: re-fetch and check statuses (a more robust validation could be added)
+    # Simple validation: re-fetch and check statuses
     logger.info("--- Final Validation Step ---")
     final_orders = get_orders_by_date_range(conn, days=DAYS_TO_CHECK)
     cancelled_count = 0
