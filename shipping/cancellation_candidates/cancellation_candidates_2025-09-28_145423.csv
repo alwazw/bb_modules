@@ -1,0 +1,3 @@
+order_id,shipment_id,tracking_pin,cancellation_reason
+ORDER-CANCELLABLE-LABEL,1,TEST-PIN-LABEL-ONLY,"Label created, not yet shipped"
+ORDER-CANCELLABLE-DELAY,2,TEST-PIN-DELAYED,Delayed in transit: Item has been delayed by a transportation issue.
