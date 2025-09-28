@@ -161,6 +161,25 @@ def get_shipment_details_by_tracking_pin(conn, tracking_pin):
         print(f"ERROR: Could not fetch shipment for tracking_pin {tracking_pin}. Reason: {e}")
     return details
 
+def get_orders_by_date_range(conn, days=30):
+    """
+    Fetches all orders from the database within a given date range that have a shipment record.
+    """
+    orders = []
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            # This query joins orders with shipments and filters by the order date.
+            cur.execute("""
+                SELECT o.*, s.shipment_id, s.tracking_pin, s.status as shipment_status, s.cp_api_label_url
+                FROM orders o
+                JOIN shipments s ON o.order_id = s.order_id
+                WHERE o.created_at >= NOW() - INTERVAL '%s days';
+            """, (days,))
+            orders = [dict(row) for row in cur.fetchall()]
+    except Exception as e:
+        print(f"ERROR: Could not fetch orders from the last {days} days. Reason: {e}")
+    return orders
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Database utility script.")
     parser.add_argument('--init', action='store_true', help='Initialize the database schema without prompting for confirmation.')
