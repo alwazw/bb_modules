@@ -1,0 +1,49 @@
+here are the links i found regarding capar API: 
+https://canship.canpar.com/canshipws/services/CanshipBusinessService?wsdl 
+https://canship.canpar.com/canshipws/services/CanparRatingService?wsdl 
+https://canship.canpar.com/canshipws/services/CanparAddonsService?wsdl what else do you need from me
+
+Let’s clean up Canpar directory a bit with something along those lines.
+Do not just copy it. analyze, correct, add, remove, enhance as appropriate...
+
+bb_modules 
+|- bb_canpar_main_scheduler.py
+	|-canpar 
+	|-… 
+		|- canpar_output_files
+			|- canpar_shipping_labels_pdf 
+				|- 111222333-A 
+			|- canpar_logs 
+				|- canpar_shipments_data_log.xml 
+				|- canpar_api_sent_queries_log.json
+				|- canpar_failed_shipping_creation_log.json
+		|- canpar_scripts 
+			|- canpar_bb_orders_labels_automation_api.py 
+			|- canpar_db_script.py ## i used json in this example that also needs to be complemented with proper backend integration with database
+
+
+requirements:
+1- proper integration with all project modules. ex. do not reduplicate order workflow management when it already exist and also backed by a db
+2- execute the entire automation that would use canpar instead of cp
+
+
+steps:
+1- scheduler will identify new orders (per previous bb order management module):
+1-a accept pending acceptance
+1-b import data of orders awaiting shipment 
+
+2- automate canpar shipping label creattion
+2-a save/append log of all API calls
+2-b save pfd labels in thermal a6 format
+2-c save/append all xml replies
+
+3- update bb orders
+3-a update tracking number + capar shipper code is CPAR
+3-b mark order as shipped
+
+4- validate
+4-a confirm order status updated to shipped
+4-b confirm correct associated tracking number was used 
+
+
+
