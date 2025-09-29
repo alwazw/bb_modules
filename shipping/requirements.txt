@@ -2,3 +2,6 @@ psycopg2-binary
 requests
 pandas
 openpyxl
+zeep
+lxml
+PyPDF2

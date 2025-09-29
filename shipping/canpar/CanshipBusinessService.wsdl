@@ -1,0 +1,4903 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ax29="http://ws.dto.canshipws.canpar.com/xsd" xmlns:ns="http://ws.business.canshipws.canpar.com" xmlns:ax211="http://dto.canshipws.canpar.com/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://ws.business.canshipws.canpar.com">
+<wsdl:documentation>CanshipBusinessService</wsdl:documentation>
+<wsdl:types>
+<xs:schema xmlns:ax210="http://ws.dto.canshipws.canpar.com/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.business.canshipws.canpar.com">
+<xs:import namespace="http://ws.dto.canshipws.canpar.com/xsd"/>
+<xs:element name="getManifest">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetManifestRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getManifestResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetManifestRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLabels">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetLabelsRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLabelsResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetLabelsRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getVersionResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetVersionRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryAddressId">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByDeliveryAddressIdRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryAddressIdResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByDeliveryAddressIdRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryProvince">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByDeliveryProvinceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryProvinceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByDeliveryProvinceRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryPostalCode">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByDeliveryPostalCodeRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryPostalCodeResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByDeliveryPostalCodeRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByAlternativeReference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByAlternativeReferenceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByAlternativeReferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByAlternativeReferenceRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deletePreference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeletePreferenceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deletePreferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeletePreferenceRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveAddressBook">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveAddressBookRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveAddressBookResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveAddressBookRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="savePreference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SavePreferenceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="savePreferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SavePreferenceRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="processShipment">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ProcessShipmentRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="processShipmentResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ProcessShipmentRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getBoxes">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetBoxesRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getBoxesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetBoxesRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="unvoidShipment">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:UnvoidShipmentRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="unvoidShipmentResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:UnvoidShipmentRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="endOfDay">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:EndOfDayRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="endOfDayResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:EndOfDayRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="voidShipment">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:VoidShipmentRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="voidShipmentResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:VoidShipmentRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveBox">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveBoxRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveBoxResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveBoxRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getPreferences">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetPreferencesRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getPreferencesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetPreferencesRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteBox">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteBoxRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteBoxResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteBoxRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteCostCentre">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteCostCentreRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteCostCentreResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteCostCentreRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveUserRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveUserRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="autorating">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:AutoratingRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="autoratingResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:AutoratingRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetUserRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetUserRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteUserRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteUserRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveCommodity">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveCommodityRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveCommodityResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveCommodityRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getCostCentres">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetCostCentresRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getCostCentresResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetCostCentresRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveSTO">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveSTORq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveSTOResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveSTORs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteCommodity">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteCommodityRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteCommodityResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteCommodityRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getCommodities">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetCommoditiesRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getCommoditiesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetCommoditiesRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getProforma">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetProformaRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getProformaResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetProformaRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="holdShipment">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:HoldShipmentRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="holdShipmentResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:HoldShipmentRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="changePassword">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ChangePasswordRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="changePasswordResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ChangePasswordRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveProforma">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveProformaRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveProformaResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveProformaRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getFuels">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetFuelsRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getFuelsResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetFuelsRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteProforma">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteProformaRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteProformaResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteProformaRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveFuel">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveFuelRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveFuelResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveFuelRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importBoxes">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ImportBoxesRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importBoxesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ImportBoxesRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteSTO">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteSTORq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteSTOResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteSTORs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getSTOs">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetSTOsRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getSTOsResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetSTOsRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveCostCentre">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveCostCentreRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveCostCentreResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveCostCentreRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportBoxes">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ExportBoxesRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportBoxesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ExportBoxesRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getUsers">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetUsersRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getUsersResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetUsersRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByName">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByNameRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByNameResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByNameRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLastManifestNumber">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetLastManifestNumberRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLastManifestNumberResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetLastManifestNumberRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getGlobalPreference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetGlobalPreferenceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getGlobalPreferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetGlobalPreferenceRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveGlobalPreference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveGlobalPreferenceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveGlobalPreferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveGlobalPreferenceRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getShipmentsBeforeDay">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetShipmentsBeforeDayRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getShipmentsBeforeDayResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetShipmentsBeforeDayRs"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getShipmentsAfterDay">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetShipmentsAfterDayRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getShipmentsAfterDayResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetShipmentsAfterDayRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteAddressBook">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteAddressBookRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteAddressBookResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteAddressBookRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteGlobalPreference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:DeleteGlobalPreferenceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="deleteGlobalPreferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:DeleteGlobalPreferenceRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLabelsAdvancedV2">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetLabelsAdvancedV2Rq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLabelsAdvancedV2Response">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetLabelsAdvancedV2Rs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByCity">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByCityRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByCityResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByCityRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByProvince">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByProvinceRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByProvinceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByProvinceRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByPostalCode">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByPostalCodeRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByPostalCodeResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByPostalCodeRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByAddressId">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByAddressIdRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByAddressIdResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByAddressIdRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryAddress">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByDeliveryAddressRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryAddressResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByDeliveryAddressRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryCity">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByDeliveryCityRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryCityResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByDeliveryCityRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importCostCentres">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ImportCostCentresRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importCostCentresResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ImportCostCentresRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByReference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByReferenceRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByReferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByReferenceRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByOrderId">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByOrderIdRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByOrderIdResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByOrderIdRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByCostCentre">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByCostCentreRq"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByCostCentreResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByCostCentreRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByManifestNum">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByManifestNumRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByManifestNumResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByManifestNumRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getConsolidatedProforma">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetConsolidatedProformaRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getConsolidatedProformaResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetConsolidatedProformaRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByBarcode">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByBarcodeRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByBarcodeResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByBarcodeRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="savePreferenceAllShippers">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SavePreferenceAllShippersRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="savePreferenceAllShippersResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SavePreferenceAllShippersRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getAddressBookLimit">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetAddressBookLimitRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getAddressBookLimitResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetAddressBookLimitRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportAddressBook">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ExportAddressBookRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportAddressBookResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ExportAddressBookRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressByPhone">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressByPhoneRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressByPhoneResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressByPhoneRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByPhone">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByPhoneRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByPhoneResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByPhoneRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveGlobalPreferenceAllUsers">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SaveGlobalPreferenceAllUsersRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveGlobalPreferenceAllUsersResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SaveGlobalPreferenceAllUsersRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryName">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByDeliveryNameRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByDeliveryNameResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByDeliveryNameRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportCommodities">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ExportCommoditiesRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportCommoditiesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ExportCommoditiesRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="savePreferenceAllUsers">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SavePreferenceAllUsersRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="savePreferenceAllUsersResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SavePreferenceAllUsersRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importCommodities">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ImportCommoditiesRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importCommoditiesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ImportCommoditiesRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByCostCentre">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByCostCentreRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByCostCentreResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByCostCentreRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByShippingDate">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchShipmentsByShippingDateRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchShipmentsByShippingDateResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchShipmentsByShippingDateRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportCostCentres">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ExportCostCentresRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="exportCostCentresResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ExportCostCentresRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importAddressBook">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:ImportAddressBookRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="importAddressBookResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:ImportAddressBookRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByReference">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:SearchAddressBookByReferenceRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="searchAddressBookByReferenceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:SearchAddressBookByReferenceRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLabelsAdvanced">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="request" nillable="true" type="ax210:GetLabelsAdvancedRq"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getLabelsAdvancedResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax210:GetLabelsAdvancedRs"/>
+</sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>
+<xs:schema xmlns:ax212="http://dto.canshipws.canpar.com/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.dto.canshipws.canpar.com/xsd">
+<xs:import namespace="http://dto.canshipws.canpar.com/xsd"/>
+<xs:complexType name="GetManifestRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetManifestRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="manifest" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetLabelsRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="thermal" type="xs:boolean"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetLabelsRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="labels" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetVersionRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="version" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryAddressIdRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="address_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryAddressIdRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryProvinceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="province" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryProvinceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryPostalCodeRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="postal_code" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryPostalCodeRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByAlternativeReferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="alternative_reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByAlternativeReferenceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeletePreferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="preference_shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="preference_user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeletePreferenceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveAddressBookRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="address_book" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveAddressBookRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="address_book" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SavePreferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="preference" nillable="true" type="ax211:Preference"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SavePreferenceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="preference" nillable="true" type="ax211:Preference"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProcessShipmentRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProcessShipmentRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="processShipmentResult" nillable="true" type="ax211:ProcessShipmentResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetBoxesRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetBoxesRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="box" nillable="true" type="ax211:Box"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="UnvoidShipmentRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="UnvoidShipmentRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="EndOfDayRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="payment_info" nillable="true" type="ax211:PaymentInfo"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="EndOfDayRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="VoidShipmentRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="VoidShipmentRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveBoxRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="box" nillable="true" type="ax211:Box"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveBoxRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="box" nillable="true" type="ax211:Box"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetPreferencesRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="preference_user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetPreferencesRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="preferences" nillable="true" type="ax211:Preference"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteBoxRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteBoxRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteCostCentreRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="division" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteCostCentreRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveUserRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user" nillable="true" type="ax211:CanshipUser"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveUserRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user" nillable="true" type="ax211:CanshipUser"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AutoratingRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="sto_name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AutoratingRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetUserRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetUserRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user" nillable="true" type="ax211:CanshipUser"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteUserRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteUserRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveCommodityRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="commodity" nillable="true" type="ax211:Commodity"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveCommodityRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="commodity" nillable="true" type="ax211:Commodity"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetCostCentresRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GetCostCentresRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="cost_centre" nillable="true" type="ax211:CostCentre"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveSTORq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="sto" nillable="true" type="ax211:STO"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SaveSTORs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="sto" nillable="true" type="ax211:STO"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteCommodityRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteCommodityRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetCommoditiesRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetCommoditiesRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="commodity" nillable="true" type="ax211:Commodity"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetProformaRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetProformaRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="proforma" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="HoldShipmentRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="HoldShipmentRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ChangePasswordRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="new_password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ChangePasswordRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveProformaRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="proforma" nillable="true" type="ax211:Proforma"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveProformaRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="proforma" nillable="true" type="ax211:Proforma"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetFuelsRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="effective_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetFuelsRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="fuel" nillable="true" type="ax211:Fuel"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteProformaRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteProformaRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveFuelRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="fuel" nillable="true" type="ax211:Fuel"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveFuelRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs,string"/>
+<xs:element minOccurs="0" name="fuel" nillable="true" type="ax211:Fuel"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ImportBoxesRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="delete_all_before" type="xs:boolean"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ImportBoxesRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="result" type="xs:int"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteSTORq">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteSTORs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetSTOsRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetSTOsRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="sto" nillable="true" type="ax211:STO"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveCostCentreRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="cost_centre" nillable="true" type="ax211:CostCentre"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveCostCentreRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="cost_centre" nillable="true" type="ax211:CostCentre"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportBoxesRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportBoxesRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetUsersRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetUsersRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="user" nillable="true" type="ax211:CanshipUser"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByNameRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByNameRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetLastManifestNumberRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetLastManifestNumberRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetGlobalPreferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="global_preference_user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetGlobalPreferenceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="global_preference" nillable="true" type="ax211:GlobalPreference"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveGlobalPreferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="global_preference" nillable="true" type="ax211:GlobalPreference"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveGlobalPreferenceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="global_preference" nillable="true" type="ax211:GlobalPreference"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetShipmentsBeforeDayRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="before" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetShipmentsBeforeDayRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetShipmentsAfterDayRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="after" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetShipmentsAfterDayRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteAddressBookRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteAddressBookRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteGlobalPreferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="global_preference_user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="DeleteGlobalPreferenceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetLabelsAdvancedV2Rq">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="parameters" nillable="true" type="ax211:FunctionParameter"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetLabelsAdvancedV2Rs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="labels" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByCityRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="city" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByCityRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByProvinceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="province" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByProvinceRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByPostalCodeRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="postal_code" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByPostalCodeRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByAddressIdRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="address_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByAddressIdRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryAddressRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="address_line" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryAddressRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryCityRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="city" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryCityRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ImportCostCentresRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="delete_all_before" type="xs:boolean"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ImportCostCentresRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="result" type="xs:int"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByReferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByReferenceRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByOrderIdRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="order_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByOrderIdRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByCostCentreRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="division" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByCostCentreRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByManifestNumRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByManifestNumRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetConsolidatedProformaRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetConsolidatedProformaRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="proforma" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByBarcodeRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="barcode" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByBarcodeRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SavePreferenceAllShippersRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="preference" nillable="true" type="ax211:Preference"/>
+<xs:element minOccurs="0" name="preference_user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SavePreferenceAllShippersRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="preference" nillable="true" type="ax211:Preference"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetAddressBookLimitRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetAddressBookLimitRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="addressBookLimit" nillable="true" type="ax211:AddressBookLimit"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportAddressBookRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportAddressBookRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressByPhoneRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressByPhoneRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" nillable="true" type="ax211:Address"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByPhoneRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByPhoneRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveGlobalPreferenceAllUsersRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="global_preference" nillable="true" type="ax211:GlobalPreference"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SaveGlobalPreferenceAllUsersRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="global_preference" nillable="true" type="ax211:GlobalPreference"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryNameRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByDeliveryNameRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportCommoditiesRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportCommoditiesRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SavePreferenceAllUsersRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="preference" nillable="true" type="ax211:Preference"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SavePreferenceAllUsersRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="preference" nillable="true" type="ax211:Preference"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ImportCommoditiesRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="delete_all_before" type="xs:boolean"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="validate" type="xs:boolean"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ImportCommoditiesRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="result" type="xs:int"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByCostCentreRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="cost_centre" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByCostCentreRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByShippingDateRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="from_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="to_shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchShipmentsByShippingDateRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportCostCentresRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ExportCostCentresRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ImportAddressBookRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="delete_all_before" type="xs:boolean"/>
+<xs:element minOccurs="0" name="file" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="validate" type="xs:boolean"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="ImportAddressBookRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="result" type="xs:int"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByReferenceRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="page_num" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="reference" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="SearchAddressBookByReferenceRs">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="address" nillable="true" type="ax211:AddressBook"/>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetLabelsAdvancedRq">
+<xs:sequence>
+<xs:element minOccurs="0" name="horizontal" type="xs:boolean"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="thermal" type="xs:boolean"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GetLabelsAdvancedRs">
+<xs:sequence>
+<xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="labels" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.canshipws.canpar.com/xsd">
+<xs:complexType name="Shipment">
+<xs:sequence>
+<xs:element minOccurs="0" name="airport_code" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="billed_weight" type="xs:float"/>
+<xs:element minOccurs="0" name="billed_weight_unit" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="carbon_surcharge" type="xs:float"/>
+<xs:element minOccurs="0" name="cod_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="cod_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="collect" type="xs:boolean"/>
+<xs:element minOccurs="0" name="collect_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="collect_shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="consolidation_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="cos" type="xs:boolean"/>
+<xs:element minOccurs="0" name="cos_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="delivery_address" nillable="true" type="ax211:Address"/>
+<xs:element minOccurs="0" name="description" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="dg" type="xs:boolean"/>
+<xs:element minOccurs="0" name="dg_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="dimention_unit" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="dv_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="ea_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="ea_zone" type="xs:byte"/>
+<xs:element minOccurs="0" name="estimated_delivery_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="freight_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="fuel_surcharge" type="xs:float"/>
+<xs:element minOccurs="0" name="handling" type="xs:float"/>
+<xs:element minOccurs="0" name="handling_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="instruction" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="lg_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="nsr" type="xs:boolean"/>
+<xs:element minOccurs="0" name="order_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="over_length_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="over_size_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="over_weight_charge" type="xs:float"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="packages" nillable="true" type="ax211:Package"/>
+<xs:element minOccurs="0" name="pickup_address" nillable="true" type="ax211:Address"/>
+<xs:element minOccurs="0" name="premium" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="premium_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="proforma" nillable="true" type="ax211:Proforma"/>
+<xs:element minOccurs="0" name="ra_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="reported_weight_unit" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="rural_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="sa_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="send_email_to_delivery" type="xs:boolean"/>
+<xs:element minOccurs="0" name="send_email_to_pickup" type="xs:boolean"/>
+<xs:element minOccurs="0" name="service_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipment_status" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipping_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="signature" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="sr_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="subtotal" type="xs:float"/>
+<xs:element minOccurs="0" name="subtotal_with_handling" type="xs:float"/>
+<xs:element minOccurs="0" name="tax_charge_1" type="xs:float"/>
+<xs:element minOccurs="0" name="tax_charge_2" type="xs:float"/>
+<xs:element minOccurs="0" name="tax_code_1" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="tax_code_2" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="total" type="xs:float"/>
+<xs:element minOccurs="0" name="total_with_handling" type="xs:float"/>
+<xs:element minOccurs="0" name="transit_time" type="xs:byte"/>
+<xs:element minOccurs="0" name="transit_time_guaranteed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="voided" type="xs:boolean"/>
+<xs:element minOccurs="0" name="xc_charge" type="xs:float"/>
+<xs:element minOccurs="0" name="zone" type="xs:byte"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Address">
+<xs:sequence>
+<xs:element minOccurs="0" name="address_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="address_line_1" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="address_line_2" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="address_line_3" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="attention" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="city" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="country" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="email" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="extension" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="postal_code" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="province" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="residential" type="xs:boolean"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Package">
+<xs:sequence>
+<xs:element minOccurs="0" name="alternative_reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="barcode" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="billed_weight" type="xs:float"/>
+<xs:element minOccurs="0" name="cod" nillable="true" type="ax211:COD"/>
+<xs:element minOccurs="0" name="cost_centre" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="declared_value" type="xs:float"/>
+<xs:element minOccurs="0" name="dim_weight" type="xs:float"/>
+<xs:element minOccurs="0" name="dim_weight_flag" type="xs:boolean"/>
+<xs:element minOccurs="0" name="height" type="xs:float"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="length" type="xs:float"/>
+<xs:element minOccurs="0" name="lg" type="xs:boolean"/>
+<xs:element minOccurs="0" name="min_weight_flag" type="xs:boolean"/>
+<xs:element minOccurs="0" name="over_length" type="xs:boolean"/>
+<xs:element minOccurs="0" name="over_size" type="xs:boolean"/>
+<xs:element minOccurs="0" name="over_weight" type="xs:boolean"/>
+<xs:element minOccurs="0" name="package_num" type="xs:int"/>
+<xs:element minOccurs="0" name="package_reference" type="xs:long"/>
+<xs:element minOccurs="0" name="reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="reported_weight" type="xs:float"/>
+<xs:element minOccurs="0" name="store_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="width" type="xs:float"/>
+<xs:element minOccurs="0" name="xc" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="COD">
+<xs:sequence>
+<xs:element minOccurs="0" name="amount_1" type="xs:float"/>
+<xs:element minOccurs="0" name="amount_2" type="xs:float"/>
+<xs:element minOccurs="0" name="amount_3" type="xs:float"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="post_dated_cheque_1" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="post_dated_cheque_2" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="post_dated_cheque_3" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Proforma">
+<xs:sequence>
+<xs:element minOccurs="0" name="broker_address" nillable="true" type="ax211:Address"/>
+<xs:element minOccurs="0" name="business_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="currency_of_declared_value" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="extension" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="permit_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="proforma_items" nillable="true" type="ax211:ProformaItem"/>
+<xs:element minOccurs="0" name="reason_for_export" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="status" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProformaItem">
+<xs:sequence>
+<xs:element minOccurs="0" name="commodity_info" nillable="true" type="ax211:CommodityInfo"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="quantity" type="xs:int"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CommodityInfo">
+<xs:sequence>
+<xs:element minOccurs="0" name="country_of_origin" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="description" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="hs_code" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="province_of_origin" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="value" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AddressBook">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" nillable="true" type="ax211:Address"/>
+<xs:element minOccurs="0" name="alternative_reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="cost_centre" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="default_service" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="send_email" type="xs:boolean"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Preference">
+<xs:sequence>
+<xs:element minOccurs="0" name="additional_manifest_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="adult_signature_required_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="alternative_pickup_address" nillable="true" type="ax211:Address"/>
+<xs:element minOccurs="0" name="alternative_reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="alternative_reference_label" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="barcode_source" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="broker_address" nillable="true" type="ax211:Address"/>
+<xs:element minOccurs="0" name="business_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="cod_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="collect_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="collect_shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="consolidate_proforma" type="xs:boolean"/>
+<xs:element minOccurs="0" name="cos_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="cost_centre" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="default_cod_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="default_handling" type="xs:float"/>
+<xs:element minOccurs="0" name="default_handling_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="default_nsr" type="xs:boolean"/>
+<xs:element minOccurs="0" name="default_pieces" type="xs:int"/>
+<xs:element minOccurs="0" name="default_print_return_tag" type="xs:boolean"/>
+<xs:element minOccurs="0" name="default_proforma_print" type="xs:boolean"/>
+<xs:element minOccurs="0" name="default_weight" type="xs:float"/>
+<xs:element minOccurs="0" name="dg_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="dimensions" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="ground_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="instruction" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="international_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="lock_pieces" type="xs:boolean"/>
+<xs:element minOccurs="0" name="lock_weight" type="xs:boolean"/>
+<xs:element minOccurs="0" name="manifest_email" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="manifest_num_of_copies" type="xs:byte"/>
+<xs:element minOccurs="0" name="noon_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="nsr_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="overnight_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="overnight_letter_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="overnight_pak_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="permit_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="print_charges" type="xs:boolean"/>
+<xs:element minOccurs="0" name="print_delivery_phone" type="xs:boolean"/>
+<xs:element minOccurs="0" name="print_pickup_phone" type="xs:boolean"/>
+<xs:element minOccurs="0" name="print_proforma" type="xs:boolean"/>
+<xs:element minOccurs="0" name="proforma_input" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="proforma_num_of_copies" type="xs:byte"/>
+<xs:element minOccurs="0" name="reference" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="return_tag_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="saturday_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="select_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="select_letter_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="select_pak_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="select_usa_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="select_usa_letter_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="select_usa_pak_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="send_email_to_pickup" type="xs:boolean"/>
+<xs:element minOccurs="0" name="service_selector" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="signature_required_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="ten_am_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="usa_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="use_alternative_pickup_address" type="xs:boolean"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="xc" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProcessShipmentResult">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="errors" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="messages" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Box">
+<xs:sequence>
+<xs:element minOccurs="0" name="height" type="xs:float"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="length" type="xs:float"/>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="unit" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="weight" type="xs:float"/>
+<xs:element minOccurs="0" name="weight_unit" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="width" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="PaymentInfo">
+<xs:sequence>
+<xs:element minOccurs="0" name="authorization_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CanshipUser">
+<xs:sequence>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="language" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Commodity">
+<xs:sequence>
+<xs:element minOccurs="0" name="commodity_info" nillable="true" type="ax211:CommodityInfo"/>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="CostCentre">
+<xs:sequence>
+<xs:element minOccurs="0" name="description" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="division" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="handling" type="xs:float"/>
+<xs:element minOccurs="0" name="handling_type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="STO">
+<xs:sequence>
+<xs:element minOccurs="0" name="delimited_symbol" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="detailed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="ignore_header" type="xs:boolean"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="last_imported_file" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="sto_items" nillable="true" type="ax211:STOItem"/>
+<xs:element minOccurs="0" name="type" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="version" type="xs:byte"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="STOItem">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="key_name" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="length" type="xs:int"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="Fuel">
+<xs:sequence>
+<xs:element minOccurs="0" name="end_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="manually_entered" type="xs:boolean"/>
+<xs:element minOccurs="0" name="rate" type="xs:float"/>
+<xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="start_date" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="GlobalPreference">
+<xs:sequence>
+<xs:element minOccurs="0" name="address_book_save_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="default_shipper_num" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="lock_shipper_num" type="xs:boolean"/>
+<xs:element minOccurs="0" name="preference_save_allowed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="prompt_dropoff" type="xs:boolean"/>
+<xs:element minOccurs="0" name="ship_to_address_book_address_only" type="xs:boolean"/>
+<xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="FunctionParameter">
+<xs:sequence>
+<xs:element minOccurs="0" name="key" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="value" nillable="true" type="xs:string"/>
+</sequence>
+</xs:complexType>
+<xs:complexType name="AddressBookLimit">
+<xs:sequence>
+<xs:element minOccurs="0" name="allowed" type="xs:int"/>
+<xs:element minOccurs="0" name="used" type="xs:int"/>
+</sequence>
+</xs:complexType>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="autoratingRequest">
+<wsdl:part name="parameters" element="ns:autorating"/>
+</wsdl:message>
+<wsdl:message name="autoratingResponse">
+<wsdl:part name="parameters" element="ns:autoratingResponse"/>
+</wsdl:message>
+<wsdl:message name="getAddressBookLimitRequest">
+<wsdl:part name="parameters" element="ns:getAddressBookLimit"/>
+</wsdl:message>
+<wsdl:message name="getAddressBookLimitResponse">
+<wsdl:part name="parameters" element="ns:getAddressBookLimitResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByProvinceRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByProvince"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByProvinceResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByProvinceResponse"/>
+</wsdl:message>
+<wsdl:message name="getManifestRequest">
+<wsdl:part name="parameters" element="ns:getManifest"/>
+</wsdl:message>
+<wsdl:message name="getManifestResponse">
+<wsdl:part name="parameters" element="ns:getManifestResponse"/>
+</wsdl:message>
+<wsdl:message name="exportAddressBookRequest">
+<wsdl:part name="parameters" element="ns:exportAddressBook"/>
+</wsdl:message>
+<wsdl:message name="exportAddressBookResponse">
+<wsdl:part name="parameters" element="ns:exportAddressBookResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByOrderIdRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByOrderId"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByOrderIdResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByOrderIdResponse"/>
+</wsdl:message>
+<wsdl:message name="savePreferenceRequest">
+<wsdl:part name="parameters" element="ns:savePreference"/>
+</wsdl:message>
+<wsdl:message name="savePreferenceResponse">
+<wsdl:part name="parameters" element="ns:savePreferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="importAddressBookRequest">
+<wsdl:part name="parameters" element="ns:importAddressBook"/>
+</wsdl:message>
+<wsdl:message name="importAddressBookResponse">
+<wsdl:part name="parameters" element="ns:importAddressBookResponse"/>
+</wsdl:message>
+<wsdl:message name="saveGlobalPreferenceRequest">
+<wsdl:part name="parameters" element="ns:saveGlobalPreference"/>
+</wsdl:message>
+<wsdl:message name="saveGlobalPreferenceResponse">
+<wsdl:part name="parameters" element="ns:saveGlobalPreferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteGlobalPreferenceRequest">
+<wsdl:part name="parameters" element="ns:deleteGlobalPreference"/>
+</wsdl:message>
+<wsdl:message name="deleteGlobalPreferenceResponse">
+<wsdl:part name="parameters" element="ns:deleteGlobalPreferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByReferenceRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByReference"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByReferenceResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByReferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="getLabelsRequest">
+<wsdl:part name="parameters" element="ns:getLabels"/>
+</wsdl:message>
+<wsdl:message name="getLabelsResponse">
+<wsdl:part name="parameters" element="ns:getLabelsResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByAddressIdRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByAddressId"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByAddressIdResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByAddressIdResponse"/>
+</wsdl:message>
+<wsdl:message name="getUsersRequest">
+<wsdl:part name="parameters" element="ns:getUsers"/>
+</wsdl:message>
+<wsdl:message name="getUsersResponse">
+<wsdl:part name="parameters" element="ns:getUsersResponse"/>
+</wsdl:message>
+<wsdl:message name="getLabelsAdvancedV2Request">
+<wsdl:part name="parameters" element="ns:getLabelsAdvancedV2"/>
+</wsdl:message>
+<wsdl:message name="getLabelsAdvancedV2Response">
+<wsdl:part name="parameters" element="ns:getLabelsAdvancedV2Response"/>
+</wsdl:message>
+<wsdl:message name="getProformaRequest">
+<wsdl:part name="parameters" element="ns:getProforma"/>
+</wsdl:message>
+<wsdl:message name="getProformaResponse">
+<wsdl:part name="parameters" element="ns:getProformaResponse"/>
+</wsdl:message>
+<wsdl:message name="savePreferenceAllUsersRequest">
+<wsdl:part name="parameters" element="ns:savePreferenceAllUsers"/>
+</wsdl:message>
+<wsdl:message name="savePreferenceAllUsersResponse">
+<wsdl:part name="parameters" element="ns:savePreferenceAllUsersResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteSTORequest">
+<wsdl:part name="parameters" element="ns:deleteSTO"/>
+</wsdl:message>
+<wsdl:message name="deleteSTOResponse">
+<wsdl:part name="parameters" element="ns:deleteSTOResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByCityRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByCity"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByCityResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByCityResponse"/>
+</wsdl:message>
+<wsdl:message name="getShipmentsBeforeDayRequest">
+<wsdl:part name="parameters" element="ns:getShipmentsBeforeDay"/>
+</wsdl:message>
+<wsdl:message name="getShipmentsBeforeDayResponse">
+<wsdl:part name="parameters" element="ns:getShipmentsBeforeDayResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryAddressIdRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryAddressId"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryAddressIdResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryAddressIdResponse"/>
+</wsdl:message>
+<wsdl:message name="saveAddressBookRequest">
+<wsdl:part name="parameters" element="ns:saveAddressBook"/>
+</wsdl:message>
+<wsdl:message name="saveAddressBookResponse">
+<wsdl:part name="parameters" element="ns:saveAddressBookResponse"/>
+</wsdl:message>
+<wsdl:message name="saveUserRequest">
+<wsdl:part name="parameters" element="ns:saveUser"/>
+</wsdl:message>
+<wsdl:message name="saveUserResponse">
+<wsdl:part name="parameters" element="ns:saveUserResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryNameRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryName"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryNameResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryNameResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByBarcodeRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByBarcode"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByBarcodeResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByBarcodeResponse"/>
+</wsdl:message>
+<wsdl:message name="savePreferenceAllShippersRequest">
+<wsdl:part name="parameters" element="ns:savePreferenceAllShippers"/>
+</wsdl:message>
+<wsdl:message name="savePreferenceAllShippersResponse">
+<wsdl:part name="parameters" element="ns:savePreferenceAllShippersResponse"/>
+</wsdl:message>
+<wsdl:message name="saveFuelRequest">
+<wsdl:part name="parameters" element="ns:saveFuel"/>
+</wsdl:message>
+<wsdl:message name="saveFuelResponse">
+<wsdl:part name="parameters" element="ns:saveFuelResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByCostCentreRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByCostCentre"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByCostCentreResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByCostCentreResponse"/>
+</wsdl:message>
+<wsdl:message name="importCostCentresRequest">
+<wsdl:part name="parameters" element="ns:importCostCentres"/>
+</wsdl:message>
+<wsdl:message name="importCostCentresResponse">
+<wsdl:part name="parameters" element="ns:importCostCentresResponse"/>
+</wsdl:message>
+<wsdl:message name="exportCommoditiesRequest">
+<wsdl:part name="parameters" element="ns:exportCommodities"/>
+</wsdl:message>
+<wsdl:message name="exportCommoditiesResponse">
+<wsdl:part name="parameters" element="ns:exportCommoditiesResponse"/>
+</wsdl:message>
+<wsdl:message name="exportCostCentresRequest">
+<wsdl:part name="parameters" element="ns:exportCostCentres"/>
+</wsdl:message>
+<wsdl:message name="exportCostCentresResponse">
+<wsdl:part name="parameters" element="ns:exportCostCentresResponse"/>
+</wsdl:message>
+<wsdl:message name="getLastManifestNumberRequest">
+<wsdl:part name="parameters" element="ns:getLastManifestNumber"/>
+</wsdl:message>
+<wsdl:message name="getLastManifestNumberResponse">
+<wsdl:part name="parameters" element="ns:getLastManifestNumberResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByManifestNumRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByManifestNum"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByManifestNumResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByManifestNumResponse"/>
+</wsdl:message>
+<wsdl:message name="saveBoxRequest">
+<wsdl:part name="parameters" element="ns:saveBox"/>
+</wsdl:message>
+<wsdl:message name="saveBoxResponse">
+<wsdl:part name="parameters" element="ns:saveBoxResponse"/>
+</wsdl:message>
+<wsdl:message name="deletePreferenceRequest">
+<wsdl:part name="parameters" element="ns:deletePreference"/>
+</wsdl:message>
+<wsdl:message name="deletePreferenceResponse">
+<wsdl:part name="parameters" element="ns:deletePreferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryAddressRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryAddress"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryAddressResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryAddressResponse"/>
+</wsdl:message>
+<wsdl:message name="getPreferencesRequest">
+<wsdl:part name="parameters" element="ns:getPreferences"/>
+</wsdl:message>
+<wsdl:message name="getPreferencesResponse">
+<wsdl:part name="parameters" element="ns:getPreferencesResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryPostalCodeRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryPostalCode"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryPostalCodeResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryPostalCodeResponse"/>
+</wsdl:message>
+<wsdl:message name="voidShipmentRequest">
+<wsdl:part name="parameters" element="ns:voidShipment"/>
+</wsdl:message>
+<wsdl:message name="voidShipmentResponse">
+<wsdl:part name="parameters" element="ns:voidShipmentResponse"/>
+</wsdl:message>
+<wsdl:message name="getBoxesRequest">
+<wsdl:part name="parameters" element="ns:getBoxes"/>
+</wsdl:message>
+<wsdl:message name="getBoxesResponse">
+<wsdl:part name="parameters" element="ns:getBoxesResponse"/>
+</wsdl:message>
+<wsdl:message name="getFuelsRequest">
+<wsdl:part name="parameters" element="ns:getFuels"/>
+</wsdl:message>
+<wsdl:message name="getFuelsResponse">
+<wsdl:part name="parameters" element="ns:getFuelsResponse"/>
+</wsdl:message>
+<wsdl:message name="getShipmentsAfterDayRequest">
+<wsdl:part name="parameters" element="ns:getShipmentsAfterDay"/>
+</wsdl:message>
+<wsdl:message name="getShipmentsAfterDayResponse">
+<wsdl:part name="parameters" element="ns:getShipmentsAfterDayResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteUserRequest">
+<wsdl:part name="parameters" element="ns:deleteUser"/>
+</wsdl:message>
+<wsdl:message name="deleteUserResponse">
+<wsdl:part name="parameters" element="ns:deleteUserResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteProformaRequest">
+<wsdl:part name="parameters" element="ns:deleteProforma"/>
+</wsdl:message>
+<wsdl:message name="deleteProformaResponse">
+<wsdl:part name="parameters" element="ns:deleteProformaResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteBoxRequest">
+<wsdl:part name="parameters" element="ns:deleteBox"/>
+</wsdl:message>
+<wsdl:message name="deleteBoxResponse">
+<wsdl:part name="parameters" element="ns:deleteBoxResponse"/>
+</wsdl:message>
+<wsdl:message name="saveGlobalPreferenceAllUsersRequest">
+<wsdl:part name="parameters" element="ns:saveGlobalPreferenceAllUsers"/>
+</wsdl:message>
+<wsdl:message name="saveGlobalPreferenceAllUsersResponse">
+<wsdl:part name="parameters" element="ns:saveGlobalPreferenceAllUsersResponse"/>
+</wsdl:message>
+<wsdl:message name="saveCostCentreRequest">
+<wsdl:part name="parameters" element="ns:saveCostCentre"/>
+</wsdl:message>
+<wsdl:message name="saveCostCentreResponse">
+<wsdl:part name="parameters" element="ns:saveCostCentreResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByPhoneRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByPhone"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByPhoneResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByPhoneResponse"/>
+</wsdl:message>
+<wsdl:message name="unvoidShipmentRequest">
+<wsdl:part name="parameters" element="ns:unvoidShipment"/>
+</wsdl:message>
+<wsdl:message name="unvoidShipmentResponse">
+<wsdl:part name="parameters" element="ns:unvoidShipmentResponse"/>
+</wsdl:message>
+<wsdl:message name="saveProformaRequest">
+<wsdl:part name="parameters" element="ns:saveProforma"/>
+</wsdl:message>
+<wsdl:message name="saveProformaResponse">
+<wsdl:part name="parameters" element="ns:saveProformaResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryCityRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryCity"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryCityResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryCityResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByPostalCodeRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByPostalCode"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByPostalCodeResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByPostalCodeResponse"/>
+</wsdl:message>
+<wsdl:message name="getUserRequest">
+<wsdl:part name="parameters" element="ns:getUser"/>
+</wsdl:message>
+<wsdl:message name="getUserResponse">
+<wsdl:part name="parameters" element="ns:getUserResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteCommodityRequest">
+<wsdl:part name="parameters" element="ns:deleteCommodity"/>
+</wsdl:message>
+<wsdl:message name="deleteCommodityResponse">
+<wsdl:part name="parameters" element="ns:deleteCommodityResponse"/>
+</wsdl:message>
+<wsdl:message name="getCommoditiesRequest">
+<wsdl:part name="parameters" element="ns:getCommodities"/>
+</wsdl:message>
+<wsdl:message name="getCommoditiesResponse">
+<wsdl:part name="parameters" element="ns:getCommoditiesResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByReferenceRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByReference"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByReferenceResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByReferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByAlternativeReferenceRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByAlternativeReference"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByAlternativeReferenceResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByAlternativeReferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="saveSTORequest">
+<wsdl:part name="parameters" element="ns:saveSTO"/>
+</wsdl:message>
+<wsdl:message name="saveSTOResponse">
+<wsdl:part name="parameters" element="ns:saveSTOResponse"/>
+</wsdl:message>
+<wsdl:message name="getGlobalPreferenceRequest">
+<wsdl:part name="parameters" element="ns:getGlobalPreference"/>
+</wsdl:message>
+<wsdl:message name="getGlobalPreferenceResponse">
+<wsdl:part name="parameters" element="ns:getGlobalPreferenceResponse"/>
+</wsdl:message>
+<wsdl:message name="importCommoditiesRequest">
+<wsdl:part name="parameters" element="ns:importCommodities"/>
+</wsdl:message>
+<wsdl:message name="importCommoditiesResponse">
+<wsdl:part name="parameters" element="ns:importCommoditiesResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByShippingDateRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByShippingDate"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByShippingDateResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByShippingDateResponse"/>
+</wsdl:message>
+<wsdl:message name="getConsolidatedProformaRequest">
+<wsdl:part name="parameters" element="ns:getConsolidatedProforma"/>
+</wsdl:message>
+<wsdl:message name="getConsolidatedProformaResponse">
+<wsdl:part name="parameters" element="ns:getConsolidatedProformaResponse"/>
+</wsdl:message>
+<wsdl:message name="endOfDayRequest">
+<wsdl:part name="parameters" element="ns:endOfDay"/>
+</wsdl:message>
+<wsdl:message name="endOfDayResponse">
+<wsdl:part name="parameters" element="ns:endOfDayResponse"/>
+</wsdl:message>
+<wsdl:message name="saveCommodityRequest">
+<wsdl:part name="parameters" element="ns:saveCommodity"/>
+</wsdl:message>
+<wsdl:message name="saveCommodityResponse">
+<wsdl:part name="parameters" element="ns:saveCommodityResponse"/>
+</wsdl:message>
+<wsdl:message name="getVersionRequest"/>
+<wsdl:message name="getVersionResponse">
+<wsdl:part name="parameters" element="ns:getVersionResponse"/>
+</wsdl:message>
+<wsdl:message name="importBoxesRequest">
+<wsdl:part name="parameters" element="ns:importBoxes"/>
+</wsdl:message>
+<wsdl:message name="importBoxesResponse">
+<wsdl:part name="parameters" element="ns:importBoxesResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressByPhoneRequest">
+<wsdl:part name="parameters" element="ns:searchAddressByPhone"/>
+</wsdl:message>
+<wsdl:message name="searchAddressByPhoneResponse">
+<wsdl:part name="parameters" element="ns:searchAddressByPhoneResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteAddressBookRequest">
+<wsdl:part name="parameters" element="ns:deleteAddressBook"/>
+</wsdl:message>
+<wsdl:message name="deleteAddressBookResponse">
+<wsdl:part name="parameters" element="ns:deleteAddressBookResponse"/>
+</wsdl:message>
+<wsdl:message name="processShipmentRequest">
+<wsdl:part name="parameters" element="ns:processShipment"/>
+</wsdl:message>
+<wsdl:message name="processShipmentResponse">
+<wsdl:part name="parameters" element="ns:processShipmentResponse"/>
+</wsdl:message>
+<wsdl:message name="holdShipmentRequest">
+<wsdl:part name="parameters" element="ns:holdShipment"/>
+</wsdl:message>
+<wsdl:message name="holdShipmentResponse">
+<wsdl:part name="parameters" element="ns:holdShipmentResponse"/>
+</wsdl:message>
+<wsdl:message name="exportBoxesRequest">
+<wsdl:part name="parameters" element="ns:exportBoxes"/>
+</wsdl:message>
+<wsdl:message name="exportBoxesResponse">
+<wsdl:part name="parameters" element="ns:exportBoxesResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteCostCentreRequest">
+<wsdl:part name="parameters" element="ns:deleteCostCentre"/>
+</wsdl:message>
+<wsdl:message name="deleteCostCentreResponse">
+<wsdl:part name="parameters" element="ns:deleteCostCentreResponse"/>
+</wsdl:message>
+<wsdl:message name="changePasswordRequest">
+<wsdl:part name="parameters" element="ns:changePassword"/>
+</wsdl:message>
+<wsdl:message name="changePasswordResponse">
+<wsdl:part name="parameters" element="ns:changePasswordResponse"/>
+</wsdl:message>
+<wsdl:message name="getCostCentresRequest">
+<wsdl:part name="parameters" element="ns:getCostCentres"/>
+</wsdl:message>
+<wsdl:message name="getCostCentresResponse">
+<wsdl:part name="parameters" element="ns:getCostCentresResponse"/>
+</wsdl:message>
+<wsdl:message name="getLabelsAdvancedRequest">
+<wsdl:part name="parameters" element="ns:getLabelsAdvanced"/>
+</wsdl:message>
+<wsdl:message name="getLabelsAdvancedResponse">
+<wsdl:part name="parameters" element="ns:getLabelsAdvancedResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByCostCentreRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByCostCentre"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByCostCentreResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByCostCentreResponse"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByNameRequest">
+<wsdl:part name="parameters" element="ns:searchAddressBookByName"/>
+</wsdl:message>
+<wsdl:message name="searchAddressBookByNameResponse">
+<wsdl:part name="parameters" element="ns:searchAddressBookByNameResponse"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryProvinceRequest">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryProvince"/>
+</wsdl:message>
+<wsdl:message name="searchShipmentsByDeliveryProvinceResponse">
+<wsdl:part name="parameters" element="ns:searchShipmentsByDeliveryProvinceResponse"/>
+</wsdl:message>
+<wsdl:message name="getSTOsRequest">
+<wsdl:part name="parameters" element="ns:getSTOs"/>
+</wsdl:message>
+<wsdl:message name="getSTOsResponse">
+<wsdl:part name="parameters" element="ns:getSTOsResponse"/>
+</wsdl:message>
+<wsdl:portType name="CanshipBusinessServicePortType">
+<wsdl:operation name="autorating">
+<wsdl:input message="ns:autoratingRequest" wsaw:Action="urn:autorating"/>
+<wsdl:output message="ns:autoratingResponse" wsaw:Action="urn:autoratingResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getAddressBookLimit">
+<wsdl:input message="ns:getAddressBookLimitRequest" wsaw:Action="urn:getAddressBookLimit"/>
+<wsdl:output message="ns:getAddressBookLimitResponse" wsaw:Action="urn:getAddressBookLimitResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByProvince">
+<wsdl:input message="ns:searchAddressBookByProvinceRequest" wsaw:Action="urn:searchAddressBookByProvince"/>
+<wsdl:output message="ns:searchAddressBookByProvinceResponse" wsaw:Action="urn:searchAddressBookByProvinceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getManifest">
+<wsdl:input message="ns:getManifestRequest" wsaw:Action="urn:getManifest"/>
+<wsdl:output message="ns:getManifestResponse" wsaw:Action="urn:getManifestResponse"/>
+</wsdl:operation>
+<wsdl:operation name="exportAddressBook">
+<wsdl:input message="ns:exportAddressBookRequest" wsaw:Action="urn:exportAddressBook"/>
+<wsdl:output message="ns:exportAddressBookResponse" wsaw:Action="urn:exportAddressBookResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByOrderId">
+<wsdl:input message="ns:searchShipmentsByOrderIdRequest" wsaw:Action="urn:searchShipmentsByOrderId"/>
+<wsdl:output message="ns:searchShipmentsByOrderIdResponse" wsaw:Action="urn:searchShipmentsByOrderIdResponse"/>
+</wsdl:operation>
+<wsdl:operation name="savePreference">
+<wsdl:input message="ns:savePreferenceRequest" wsaw:Action="urn:savePreference"/>
+<wsdl:output message="ns:savePreferenceResponse" wsaw:Action="urn:savePreferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="importAddressBook">
+<wsdl:input message="ns:importAddressBookRequest" wsaw:Action="urn:importAddressBook"/>
+<wsdl:output message="ns:importAddressBookResponse" wsaw:Action="urn:importAddressBookResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveGlobalPreference">
+<wsdl:input message="ns:saveGlobalPreferenceRequest" wsaw:Action="urn:saveGlobalPreference"/>
+<wsdl:output message="ns:saveGlobalPreferenceResponse" wsaw:Action="urn:saveGlobalPreferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteGlobalPreference">
+<wsdl:input message="ns:deleteGlobalPreferenceRequest" wsaw:Action="urn:deleteGlobalPreference"/>
+<wsdl:output message="ns:deleteGlobalPreferenceResponse" wsaw:Action="urn:deleteGlobalPreferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByReference">
+<wsdl:input message="ns:searchShipmentsByReferenceRequest" wsaw:Action="urn:searchShipmentsByReference"/>
+<wsdl:output message="ns:searchShipmentsByReferenceResponse" wsaw:Action="urn:searchShipmentsByReferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getLabels">
+<wsdl:input message="ns:getLabelsRequest" wsaw:Action="urn:getLabels"/>
+<wsdl:output message="ns:getLabelsResponse" wsaw:Action="urn:getLabelsResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByAddressId">
+<wsdl:input message="ns:searchAddressBookByAddressIdRequest" wsaw:Action="urn:searchAddressBookByAddressId"/>
+<wsdl:output message="ns:searchAddressBookByAddressIdResponse" wsaw:Action="urn:searchAddressBookByAddressIdResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getUsers">
+<wsdl:input message="ns:getUsersRequest" wsaw:Action="urn:getUsers"/>
+<wsdl:output message="ns:getUsersResponse" wsaw:Action="urn:getUsersResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getLabelsAdvancedV2">
+<wsdl:input message="ns:getLabelsAdvancedV2Request" wsaw:Action="urn:getLabelsAdvancedV2"/>
+<wsdl:output message="ns:getLabelsAdvancedV2Response" wsaw:Action="urn:getLabelsAdvancedV2Response"/>
+</wsdl:operation>
+<wsdl:operation name="getProforma">
+<wsdl:input message="ns:getProformaRequest" wsaw:Action="urn:getProforma"/>
+<wsdl:output message="ns:getProformaResponse" wsaw:Action="urn:getProformaResponse"/>
+</wsdl:operation>
+<wsdl:operation name="savePreferenceAllUsers">
+<wsdl:input message="ns:savePreferenceAllUsersRequest" wsaw:Action="urn:savePreferenceAllUsers"/>
+<wsdl:output message="ns:savePreferenceAllUsersResponse" wsaw:Action="urn:savePreferenceAllUsersResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteSTO">
+<wsdl:input message="ns:deleteSTORequest" wsaw:Action="urn:deleteSTO"/>
+<wsdl:output message="ns:deleteSTOResponse" wsaw:Action="urn:deleteSTOResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByCity">
+<wsdl:input message="ns:searchAddressBookByCityRequest" wsaw:Action="urn:searchAddressBookByCity"/>
+<wsdl:output message="ns:searchAddressBookByCityResponse" wsaw:Action="urn:searchAddressBookByCityResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getShipmentsBeforeDay">
+<wsdl:input message="ns:getShipmentsBeforeDayRequest" wsaw:Action="urn:getShipmentsBeforeDay"/>
+<wsdl:output message="ns:getShipmentsBeforeDayResponse" wsaw:Action="urn:getShipmentsBeforeDayResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryAddressId">
+<wsdl:input message="ns:searchShipmentsByDeliveryAddressIdRequest" wsaw:Action="urn:searchShipmentsByDeliveryAddressId"/>
+<wsdl:output message="ns:searchShipmentsByDeliveryAddressIdResponse" wsaw:Action="urn:searchShipmentsByDeliveryAddressIdResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveAddressBook">
+<wsdl:input message="ns:saveAddressBookRequest" wsaw:Action="urn:saveAddressBook"/>
+<wsdl:output message="ns:saveAddressBookResponse" wsaw:Action="urn:saveAddressBookResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveUser">
+<wsdl:input message="ns:saveUserRequest" wsaw:Action="urn:saveUser"/>
+<wsdl:output message="ns:saveUserResponse" wsaw:Action="urn:saveUserResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryName">
+<wsdl:input message="ns:searchShipmentsByDeliveryNameRequest" wsaw:Action="urn:searchShipmentsByDeliveryName"/>
+<wsdl:output message="ns:searchShipmentsByDeliveryNameResponse" wsaw:Action="urn:searchShipmentsByDeliveryNameResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByBarcode">
+<wsdl:input message="ns:searchShipmentsByBarcodeRequest" wsaw:Action="urn:searchShipmentsByBarcode"/>
+<wsdl:output message="ns:searchShipmentsByBarcodeResponse" wsaw:Action="urn:searchShipmentsByBarcodeResponse"/>
+</wsdl:operation>
+<wsdl:operation name="savePreferenceAllShippers">
+<wsdl:input message="ns:savePreferenceAllShippersRequest" wsaw:Action="urn:savePreferenceAllShippers"/>
+<wsdl:output message="ns:savePreferenceAllShippersResponse" wsaw:Action="urn:savePreferenceAllShippersResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveFuel">
+<wsdl:input message="ns:saveFuelRequest" wsaw:Action="urn:saveFuel"/>
+<wsdl:output message="ns:saveFuelResponse" wsaw:Action="urn:saveFuelResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByCostCentre">
+<wsdl:input message="ns:searchShipmentsByCostCentreRequest" wsaw:Action="urn:searchShipmentsByCostCentre"/>
+<wsdl:output message="ns:searchShipmentsByCostCentreResponse" wsaw:Action="urn:searchShipmentsByCostCentreResponse"/>
+</wsdl:operation>
+<wsdl:operation name="importCostCentres">
+<wsdl:input message="ns:importCostCentresRequest" wsaw:Action="urn:importCostCentres"/>
+<wsdl:output message="ns:importCostCentresResponse" wsaw:Action="urn:importCostCentresResponse"/>
+</wsdl:operation>
+<wsdl:operation name="exportCommodities">
+<wsdl:input message="ns:exportCommoditiesRequest" wsaw:Action="urn:exportCommodities"/>
+<wsdl:output message="ns:exportCommoditiesResponse" wsaw:Action="urn:exportCommoditiesResponse"/>
+</wsdl:operation>
+<wsdl:operation name="exportCostCentres">
+<wsdl:input message="ns:exportCostCentresRequest" wsaw:Action="urn:exportCostCentres"/>
+<wsdl:output message="ns:exportCostCentresResponse" wsaw:Action="urn:exportCostCentresResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getLastManifestNumber">
+<wsdl:input message="ns:getLastManifestNumberRequest" wsaw:Action="urn:getLastManifestNumber"/>
+<wsdl:output message="ns:getLastManifestNumberResponse" wsaw:Action="urn:getLastManifestNumberResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByManifestNum">
+<wsdl:input message="ns:searchShipmentsByManifestNumRequest" wsaw:Action="urn:searchShipmentsByManifestNum"/>
+<wsdl:output message="ns:searchShipmentsByManifestNumResponse" wsaw:Action="urn:searchShipmentsByManifestNumResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveBox">
+<wsdl:input message="ns:saveBoxRequest" wsaw:Action="urn:saveBox"/>
+<wsdl:output message="ns:saveBoxResponse" wsaw:Action="urn:saveBoxResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deletePreference">
+<wsdl:input message="ns:deletePreferenceRequest" wsaw:Action="urn:deletePreference"/>
+<wsdl:output message="ns:deletePreferenceResponse" wsaw:Action="urn:deletePreferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryAddress">
+<wsdl:input message="ns:searchShipmentsByDeliveryAddressRequest" wsaw:Action="urn:searchShipmentsByDeliveryAddress"/>
+<wsdl:output message="ns:searchShipmentsByDeliveryAddressResponse" wsaw:Action="urn:searchShipmentsByDeliveryAddressResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getPreferences">
+<wsdl:input message="ns:getPreferencesRequest" wsaw:Action="urn:getPreferences"/>
+<wsdl:output message="ns:getPreferencesResponse" wsaw:Action="urn:getPreferencesResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryPostalCode">
+<wsdl:input message="ns:searchShipmentsByDeliveryPostalCodeRequest" wsaw:Action="urn:searchShipmentsByDeliveryPostalCode"/>
+<wsdl:output message="ns:searchShipmentsByDeliveryPostalCodeResponse" wsaw:Action="urn:searchShipmentsByDeliveryPostalCodeResponse"/>
+</wsdl:operation>
+<wsdl:operation name="voidShipment">
+<wsdl:input message="ns:voidShipmentRequest" wsaw:Action="urn:voidShipment"/>
+<wsdl:output message="ns:voidShipmentResponse" wsaw:Action="urn:voidShipmentResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getBoxes">
+<wsdl:input message="ns:getBoxesRequest" wsaw:Action="urn:getBoxes"/>
+<wsdl:output message="ns:getBoxesResponse" wsaw:Action="urn:getBoxesResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getFuels">
+<wsdl:input message="ns:getFuelsRequest" wsaw:Action="urn:getFuels"/>
+<wsdl:output message="ns:getFuelsResponse" wsaw:Action="urn:getFuelsResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getShipmentsAfterDay">
+<wsdl:input message="ns:getShipmentsAfterDayRequest" wsaw:Action="urn:getShipmentsAfterDay"/>
+<wsdl:output message="ns:getShipmentsAfterDayResponse" wsaw:Action="urn:getShipmentsAfterDayResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteUser">
+<wsdl:input message="ns:deleteUserRequest" wsaw:Action="urn:deleteUser"/>
+<wsdl:output message="ns:deleteUserResponse" wsaw:Action="urn:deleteUserResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteProforma">
+<wsdl:input message="ns:deleteProformaRequest" wsaw:Action="urn:deleteProforma"/>
+<wsdl:output message="ns:deleteProformaResponse" wsaw:Action="urn:deleteProformaResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteBox">
+<wsdl:input message="ns:deleteBoxRequest" wsaw:Action="urn:deleteBox"/>
+<wsdl:output message="ns:deleteBoxResponse" wsaw:Action="urn:deleteBoxResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveGlobalPreferenceAllUsers">
+<wsdl:input message="ns:saveGlobalPreferenceAllUsersRequest" wsaw:Action="urn:saveGlobalPreferenceAllUsers"/>
+<wsdl:output message="ns:saveGlobalPreferenceAllUsersResponse" wsaw:Action="urn:saveGlobalPreferenceAllUsersResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveCostCentre">
+<wsdl:input message="ns:saveCostCentreRequest" wsaw:Action="urn:saveCostCentre"/>
+<wsdl:output message="ns:saveCostCentreResponse" wsaw:Action="urn:saveCostCentreResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByPhone">
+<wsdl:input message="ns:searchAddressBookByPhoneRequest" wsaw:Action="urn:searchAddressBookByPhone"/>
+<wsdl:output message="ns:searchAddressBookByPhoneResponse" wsaw:Action="urn:searchAddressBookByPhoneResponse"/>
+</wsdl:operation>
+<wsdl:operation name="unvoidShipment">
+<wsdl:input message="ns:unvoidShipmentRequest" wsaw:Action="urn:unvoidShipment"/>
+<wsdl:output message="ns:unvoidShipmentResponse" wsaw:Action="urn:unvoidShipmentResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveProforma">
+<wsdl:input message="ns:saveProformaRequest" wsaw:Action="urn:saveProforma"/>
+<wsdl:output message="ns:saveProformaResponse" wsaw:Action="urn:saveProformaResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryCity">
+<wsdl:input message="ns:searchShipmentsByDeliveryCityRequest" wsaw:Action="urn:searchShipmentsByDeliveryCity"/>
+<wsdl:output message="ns:searchShipmentsByDeliveryCityResponse" wsaw:Action="urn:searchShipmentsByDeliveryCityResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByPostalCode">
+<wsdl:input message="ns:searchAddressBookByPostalCodeRequest" wsaw:Action="urn:searchAddressBookByPostalCode"/>
+<wsdl:output message="ns:searchAddressBookByPostalCodeResponse" wsaw:Action="urn:searchAddressBookByPostalCodeResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getUser">
+<wsdl:input message="ns:getUserRequest" wsaw:Action="urn:getUser"/>
+<wsdl:output message="ns:getUserResponse" wsaw:Action="urn:getUserResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteCommodity">
+<wsdl:input message="ns:deleteCommodityRequest" wsaw:Action="urn:deleteCommodity"/>
+<wsdl:output message="ns:deleteCommodityResponse" wsaw:Action="urn:deleteCommodityResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getCommodities">
+<wsdl:input message="ns:getCommoditiesRequest" wsaw:Action="urn:getCommodities"/>
+<wsdl:output message="ns:getCommoditiesResponse" wsaw:Action="urn:getCommoditiesResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByReference">
+<wsdl:input message="ns:searchAddressBookByReferenceRequest" wsaw:Action="urn:searchAddressBookByReference"/>
+<wsdl:output message="ns:searchAddressBookByReferenceResponse" wsaw:Action="urn:searchAddressBookByReferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByAlternativeReference">
+<wsdl:input message="ns:searchShipmentsByAlternativeReferenceRequest" wsaw:Action="urn:searchShipmentsByAlternativeReference"/>
+<wsdl:output message="ns:searchShipmentsByAlternativeReferenceResponse" wsaw:Action="urn:searchShipmentsByAlternativeReferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveSTO">
+<wsdl:input message="ns:saveSTORequest" wsaw:Action="urn:saveSTO"/>
+<wsdl:output message="ns:saveSTOResponse" wsaw:Action="urn:saveSTOResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getGlobalPreference">
+<wsdl:input message="ns:getGlobalPreferenceRequest" wsaw:Action="urn:getGlobalPreference"/>
+<wsdl:output message="ns:getGlobalPreferenceResponse" wsaw:Action="urn:getGlobalPreferenceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="importCommodities">
+<wsdl:input message="ns:importCommoditiesRequest" wsaw:Action="urn:importCommodities"/>
+<wsdl:output message="ns:importCommoditiesResponse" wsaw:Action="urn:importCommoditiesResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByShippingDate">
+<wsdl:input message="ns:searchShipmentsByShippingDateRequest" wsaw:Action="urn:searchShipmentsByShippingDate"/>
+<wsdl:output message="ns:searchShipmentsByShippingDateResponse" wsaw:Action="urn:searchShipmentsByShippingDateResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getConsolidatedProforma">
+<wsdl:input message="ns:getConsolidatedProformaRequest" wsaw:Action="urn:getConsolidatedProforma"/>
+<wsdl:output message="ns:getConsolidatedProformaResponse" wsaw:Action="urn:getConsolidatedProformaResponse"/>
+</wsdl:operation>
+<wsdl:operation name="endOfDay">
+<wsdl:input message="ns:endOfDayRequest" wsaw:Action="urn:endOfDay"/>
+<wsdl:output message="ns:endOfDayResponse" wsaw:Action="urn:endOfDayResponse"/>
+</wsdl:operation>
+<wsdl:operation name="saveCommodity">
+<wsdl:input message="ns:saveCommodityRequest" wsaw:Action="urn:saveCommodity"/>
+<wsdl:output message="ns:saveCommodityResponse" wsaw:Action="urn:saveCommodityResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getVersion">
+<wsdl:input message="ns:getVersionRequest" wsaw:Action="urn:getVersion"/>
+<wsdl:output message="ns:getVersionResponse" wsaw:Action="urn:getVersionResponse"/>
+</wsdl:operation>
+<wsdl:operation name="importBoxes">
+<wsdl:input message="ns:importBoxesRequest" wsaw:Action="urn:importBoxes"/>
+<wsdl:output message="ns:importBoxesResponse" wsaw:Action="urn:importBoxesResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressByPhone">
+<wsdl:input message="ns:searchAddressByPhoneRequest" wsaw:Action="urn:searchAddressByPhone"/>
+<wsdl:output message="ns:searchAddressByPhoneResponse" wsaw:Action="urn:searchAddressByPhoneResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteAddressBook">
+<wsdl:input message="ns:deleteAddressBookRequest" wsaw:Action="urn:deleteAddressBook"/>
+<wsdl:output message="ns:deleteAddressBookResponse" wsaw:Action="urn:deleteAddressBookResponse"/>
+</wsdl:operation>
+<wsdl:operation name="processShipment">
+<wsdl:input message="ns:processShipmentRequest" wsaw:Action="urn:processShipment"/>
+<wsdl:output message="ns:processShipmentResponse" wsaw:Action="urn:processShipmentResponse"/>
+</wsdl:operation>
+<wsdl:operation name="holdShipment">
+<wsdl:input message="ns:holdShipmentRequest" wsaw:Action="urn:holdShipment"/>
+<wsdl:output message="ns:holdShipmentResponse" wsaw:Action="urn:holdShipmentResponse"/>
+</wsdl:operation>
+<wsdl:operation name="exportBoxes">
+<wsdl:input message="ns:exportBoxesRequest" wsaw:Action="urn:exportBoxes"/>
+<wsdl:output message="ns:exportBoxesResponse" wsaw:Action="urn:exportBoxesResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteCostCentre">
+<wsdl:input message="ns:deleteCostCentreRequest" wsaw:Action="urn:deleteCostCentre"/>
+<wsdl:output message="ns:deleteCostCentreResponse" wsaw:Action="urn:deleteCostCentreResponse"/>
+</wsdl:operation>
+<wsdl:operation name="changePassword">
+<wsdl:input message="ns:changePasswordRequest" wsaw:Action="urn:changePassword"/>
+<wsdl:output message="ns:changePasswordResponse" wsaw:Action="urn:changePasswordResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getCostCentres">
+<wsdl:input message="ns:getCostCentresRequest" wsaw:Action="urn:getCostCentres"/>
+<wsdl:output message="ns:getCostCentresResponse" wsaw:Action="urn:getCostCentresResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getLabelsAdvanced">
+<wsdl:input message="ns:getLabelsAdvancedRequest" wsaw:Action="urn:getLabelsAdvanced"/>
+<wsdl:output message="ns:getLabelsAdvancedResponse" wsaw:Action="urn:getLabelsAdvancedResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByCostCentre">
+<wsdl:input message="ns:searchAddressBookByCostCentreRequest" wsaw:Action="urn:searchAddressBookByCostCentre"/>
+<wsdl:output message="ns:searchAddressBookByCostCentreResponse" wsaw:Action="urn:searchAddressBookByCostCentreResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByName">
+<wsdl:input message="ns:searchAddressBookByNameRequest" wsaw:Action="urn:searchAddressBookByName"/>
+<wsdl:output message="ns:searchAddressBookByNameResponse" wsaw:Action="urn:searchAddressBookByNameResponse"/>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryProvince">
+<wsdl:input message="ns:searchShipmentsByDeliveryProvinceRequest" wsaw:Action="urn:searchShipmentsByDeliveryProvince"/>
+<wsdl:output message="ns:searchShipmentsByDeliveryProvinceResponse" wsaw:Action="urn:searchShipmentsByDeliveryProvinceResponse"/>
+</wsdl:operation>
+<wsdl:operation name="getSTOs">
+<wsdl:input message="ns:getSTOsRequest" wsaw:Action="urn:getSTOs"/>
+<wsdl:output message="ns:getSTOsResponse" wsaw:Action="urn:getSTOsResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="CanshipBusinessServiceSoap11Binding" type="ns:CanshipBusinessServicePortType">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<wsdl:operation name="autorating">
+<soap:operation soapAction="urn:autorating" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getAddressBookLimit">
+<soap:operation soapAction="urn:getAddressBookLimit" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByProvince">
+<soap:operation soapAction="urn:searchAddressBookByProvince" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getManifest">
+<soap:operation soapAction="urn:getManifest" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportAddressBook">
+<soap:operation soapAction="urn:exportAddressBook" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByOrderId">
+<soap:operation soapAction="urn:searchShipmentsByOrderId" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="savePreference">
+<soap:operation soapAction="urn:savePreference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importAddressBook">
+<soap:operation soapAction="urn:importAddressBook" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveGlobalPreference">
+<soap:operation soapAction="urn:saveGlobalPreference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteGlobalPreference">
+<soap:operation soapAction="urn:deleteGlobalPreference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByReference">
+<soap:operation soapAction="urn:searchShipmentsByReference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLabels">
+<soap:operation soapAction="urn:getLabels" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByAddressId">
+<soap:operation soapAction="urn:searchAddressBookByAddressId" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getUsers">
+<soap:operation soapAction="urn:getUsers" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLabelsAdvancedV2">
+<soap:operation soapAction="urn:getLabelsAdvancedV2" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getProforma">
+<soap:operation soapAction="urn:getProforma" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="savePreferenceAllUsers">
+<soap:operation soapAction="urn:savePreferenceAllUsers" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteSTO">
+<soap:operation soapAction="urn:deleteSTO" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByCity">
+<soap:operation soapAction="urn:searchAddressBookByCity" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getShipmentsBeforeDay">
+<soap:operation soapAction="urn:getShipmentsBeforeDay" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryAddressId">
+<soap:operation soapAction="urn:searchShipmentsByDeliveryAddressId" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveAddressBook">
+<soap:operation soapAction="urn:saveAddressBook" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveUser">
+<soap:operation soapAction="urn:saveUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryName">
+<soap:operation soapAction="urn:searchShipmentsByDeliveryName" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByBarcode">
+<soap:operation soapAction="urn:searchShipmentsByBarcode" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="savePreferenceAllShippers">
+<soap:operation soapAction="urn:savePreferenceAllShippers" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveFuel">
+<soap:operation soapAction="urn:saveFuel" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByCostCentre">
+<soap:operation soapAction="urn:searchShipmentsByCostCentre" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importCostCentres">
+<soap:operation soapAction="urn:importCostCentres" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportCommodities">
+<soap:operation soapAction="urn:exportCommodities" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportCostCentres">
+<soap:operation soapAction="urn:exportCostCentres" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLastManifestNumber">
+<soap:operation soapAction="urn:getLastManifestNumber" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByManifestNum">
+<soap:operation soapAction="urn:searchShipmentsByManifestNum" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveBox">
+<soap:operation soapAction="urn:saveBox" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deletePreference">
+<soap:operation soapAction="urn:deletePreference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryAddress">
+<soap:operation soapAction="urn:searchShipmentsByDeliveryAddress" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getPreferences">
+<soap:operation soapAction="urn:getPreferences" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryPostalCode">
+<soap:operation soapAction="urn:searchShipmentsByDeliveryPostalCode" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="voidShipment">
+<soap:operation soapAction="urn:voidShipment" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getBoxes">
+<soap:operation soapAction="urn:getBoxes" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getFuels">
+<soap:operation soapAction="urn:getFuels" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getShipmentsAfterDay">
+<soap:operation soapAction="urn:getShipmentsAfterDay" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteUser">
+<soap:operation soapAction="urn:deleteUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteProforma">
+<soap:operation soapAction="urn:deleteProforma" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteBox">
+<soap:operation soapAction="urn:deleteBox" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveGlobalPreferenceAllUsers">
+<soap:operation soapAction="urn:saveGlobalPreferenceAllUsers" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveCostCentre">
+<soap:operation soapAction="urn:saveCostCentre" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByPhone">
+<soap:operation soapAction="urn:searchAddressBookByPhone" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="unvoidShipment">
+<soap:operation soapAction="urn:unvoidShipment" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveProforma">
+<soap:operation soapAction="urn:saveProforma" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryCity">
+<soap:operation soapAction="urn:searchShipmentsByDeliveryCity" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByPostalCode">
+<soap:operation soapAction="urn:searchAddressBookByPostalCode" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getUser">
+<soap:operation soapAction="urn:getUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteCommodity">
+<soap:operation soapAction="urn:deleteCommodity" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getCommodities">
+<soap:operation soapAction="urn:getCommodities" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByReference">
+<soap:operation soapAction="urn:searchAddressBookByReference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByAlternativeReference">
+<soap:operation soapAction="urn:searchShipmentsByAlternativeReference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveSTO">
+<soap:operation soapAction="urn:saveSTO" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getGlobalPreference">
+<soap:operation soapAction="urn:getGlobalPreference" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importCommodities">
+<soap:operation soapAction="urn:importCommodities" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByShippingDate">
+<soap:operation soapAction="urn:searchShipmentsByShippingDate" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getConsolidatedProforma">
+<soap:operation soapAction="urn:getConsolidatedProforma" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="endOfDay">
+<soap:operation soapAction="urn:endOfDay" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveCommodity">
+<soap:operation soapAction="urn:saveCommodity" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getVersion">
+<soap:operation soapAction="urn:getVersion" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importBoxes">
+<soap:operation soapAction="urn:importBoxes" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressByPhone">
+<soap:operation soapAction="urn:searchAddressByPhone" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteAddressBook">
+<soap:operation soapAction="urn:deleteAddressBook" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="processShipment">
+<soap:operation soapAction="urn:processShipment" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="holdShipment">
+<soap:operation soapAction="urn:holdShipment" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportBoxes">
+<soap:operation soapAction="urn:exportBoxes" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteCostCentre">
+<soap:operation soapAction="urn:deleteCostCentre" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="changePassword">
+<soap:operation soapAction="urn:changePassword" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getCostCentres">
+<soap:operation soapAction="urn:getCostCentres" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLabelsAdvanced">
+<soap:operation soapAction="urn:getLabelsAdvanced" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByCostCentre">
+<soap:operation soapAction="urn:searchAddressBookByCostCentre" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByName">
+<soap:operation soapAction="urn:searchAddressBookByName" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryProvince">
+<soap:operation soapAction="urn:searchShipmentsByDeliveryProvince" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getSTOs">
+<soap:operation soapAction="urn:getSTOs" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:binding name="CanshipBusinessServiceSoap12Binding" type="ns:CanshipBusinessServicePortType">
+<soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<wsdl:operation name="autorating">
+<soap12:operation soapAction="urn:autorating" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getAddressBookLimit">
+<soap12:operation soapAction="urn:getAddressBookLimit" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByProvince">
+<soap12:operation soapAction="urn:searchAddressBookByProvince" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getManifest">
+<soap12:operation soapAction="urn:getManifest" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportAddressBook">
+<soap12:operation soapAction="urn:exportAddressBook" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByOrderId">
+<soap12:operation soapAction="urn:searchShipmentsByOrderId" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="savePreference">
+<soap12:operation soapAction="urn:savePreference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importAddressBook">
+<soap12:operation soapAction="urn:importAddressBook" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveGlobalPreference">
+<soap12:operation soapAction="urn:saveGlobalPreference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteGlobalPreference">
+<soap12:operation soapAction="urn:deleteGlobalPreference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByReference">
+<soap12:operation soapAction="urn:searchShipmentsByReference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLabels">
+<soap12:operation soapAction="urn:getLabels" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByAddressId">
+<soap12:operation soapAction="urn:searchAddressBookByAddressId" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getUsers">
+<soap12:operation soapAction="urn:getUsers" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLabelsAdvancedV2">
+<soap12:operation soapAction="urn:getLabelsAdvancedV2" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getProforma">
+<soap12:operation soapAction="urn:getProforma" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="savePreferenceAllUsers">
+<soap12:operation soapAction="urn:savePreferenceAllUsers" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteSTO">
+<soap12:operation soapAction="urn:deleteSTO" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByCity">
+<soap12:operation soapAction="urn:searchAddressBookByCity" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getShipmentsBeforeDay">
+<soap12:operation soapAction="urn:getShipmentsBeforeDay" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryAddressId">
+<soap12:operation soapAction="urn:searchShipmentsByDeliveryAddressId" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveAddressBook">
+<soap12:operation soapAction="urn:saveAddressBook" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveUser">
+<soap12:operation soapAction="urn:saveUser" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryName">
+<soap12:operation soapAction="urn:searchShipmentsByDeliveryName" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByBarcode">
+<soap12:operation soapAction="urn:searchShipmentsByBarcode" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="savePreferenceAllShippers">
+<soap12:operation soapAction="urn:savePreferenceAllShippers" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveFuel">
+<soap12:operation soapAction="urn:saveFuel" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByCostCentre">
+<soap12:operation soapAction="urn:searchShipmentsByCostCentre" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importCostCentres">
+<soap12:operation soapAction="urn:importCostCentres" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportCommodities">
+<soap12:operation soapAction="urn:exportCommodities" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportCostCentres">
+<soap12:operation soapAction="urn:exportCostCentres" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLastManifestNumber">
+<soap12:operation soapAction="urn:getLastManifestNumber" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByManifestNum">
+<soap12:operation soapAction="urn:searchShipmentsByManifestNum" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveBox">
+<soap12:operation soapAction="urn:saveBox" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deletePreference">
+<soap12:operation soapAction="urn:deletePreference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryAddress">
+<soap12:operation soapAction="urn:searchShipmentsByDeliveryAddress" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getPreferences">
+<soap12:operation soapAction="urn:getPreferences" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryPostalCode">
+<soap12:operation soapAction="urn:searchShipmentsByDeliveryPostalCode" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="voidShipment">
+<soap12:operation soapAction="urn:voidShipment" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getBoxes">
+<soap12:operation soapAction="urn:getBoxes" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getFuels">
+<soap12:operation soapAction="urn:getFuels" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getShipmentsAfterDay">
+<soap12:operation soapAction="urn:getShipmentsAfterDay" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteUser">
+<soap12:operation soapAction="urn:deleteUser" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteProforma">
+<soap12:operation soapAction="urn:deleteProforma" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteBox">
+<soap12:operation soapAction="urn:deleteBox" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveGlobalPreferenceAllUsers">
+<soap12:operation soapAction="urn:saveGlobalPreferenceAllUsers" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveCostCentre">
+<soap12:operation soapAction="urn:saveCostCentre" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByPhone">
+<soap12:operation soapAction="urn:searchAddressBookByPhone" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="unvoidShipment">
+<soap12:operation soapAction="urn:unvoidShipment" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveProforma">
+<soap12:operation soapAction="urn:saveProforma" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryCity">
+<soap12:operation soapAction="urn:searchShipmentsByDeliveryCity" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByPostalCode">
+<soap12:operation soapAction="urn:searchAddressBookByPostalCode" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getUser">
+<soap12:operation soapAction="urn:getUser" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteCommodity">
+<soap12:operation soapAction="urn:deleteCommodity" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getCommodities">
+<soap12:operation soapAction="urn:getCommodities" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByReference">
+<soap12:operation soapAction="urn:searchAddressBookByReference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByAlternativeReference">
+<soap12:operation soapAction="urn:searchShipmentsByAlternativeReference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveSTO">
+<soap12:operation soapAction="urn:saveSTO" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getGlobalPreference">
+<soap12:operation soapAction="urn:getGlobalPreference" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importCommodities">
+<soap12:operation soapAction="urn:importCommodities" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByShippingDate">
+<soap12:operation soapAction="urn:searchShipmentsByShippingDate" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getConsolidatedProforma">
+<soap12:operation soapAction="urn:getConsolidatedProforma" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="endOfDay">
+<soap12:operation soapAction="urn:endOfDay" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveCommodity">
+<soap12:operation soapAction="urn:saveCommodity" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getVersion">
+<soap12:operation soapAction="urn:getVersion" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importBoxes">
+<soap12:operation soapAction="urn:importBoxes" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressByPhone">
+<soap12:operation soapAction="urn:searchAddressByPhone" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteAddressBook">
+<soap12:operation soapAction="urn:deleteAddressBook" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="processShipment">
+<soap12:operation soapAction="urn:processShipment" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="holdShipment">
+<soap12:operation soapAction="urn:holdShipment" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportBoxes">
+<soap12:operation soapAction="urn:exportBoxes" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteCostCentre">
+<soap12:operation soapAction="urn:deleteCostCentre" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="changePassword">
+<soap12:operation soapAction="urn:changePassword" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getCostCentres">
+<soap12:operation soapAction="urn:getCostCentres" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getLabelsAdvanced">
+<soap12:operation soapAction="urn:getLabelsAdvanced" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByCostCentre">
+<soap12:operation soapAction="urn:searchAddressBookByCostCentre" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByName">
+<soap12:operation soapAction="urn:searchAddressBookByName" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByDeliveryProvince">
+<soap12:operation soapAction="urn:searchShipmentsByDeliveryProvince" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getSTOs">
+<soap12:operation soapAction="urn:getSTOs" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:binding name="CanshipBusinessServiceHttpBinding" type="ns:CanshipBusinessServicePortType">
+<http:binding verb="POST"/>
+<wsdl:operation name="autorating">
+<http:operation location="CanshipBusinessService/autorating"/>
+<wsdl:input>
+<mime:content type="text/xml" part="autorating"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="autorating"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getAddressBookLimit">
+<http:operation location="CanshipBusinessService/getAddressBookLimit"/>
+<wsdl:input>
+<mime:content type="text/xml" part="getAddressBookLimit"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="getAddressBookLimit"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchAddressBookByProvince">
+<http:operation location="CanshipBusinessService/searchAddressBookByProvince"/>
+<wsdl:input>
+<mime:content type="text/xml" part="searchAddressBookByProvince"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="searchAddressBookByProvince"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="getManifest">
+<http:operation location="CanshipBusinessService/getManifest"/>
+<wsdl:input>
+<mime:content type="text/xml" part="getManifest"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="getManifest"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="exportAddressBook">
+<http:operation location="CanshipBusinessService/exportAddressBook"/>
+<wsdl:input>
+<mime:content type="text/xml" part="exportAddressBook"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="exportAddressBook"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="searchShipmentsByOrderId">
+<http:operation location="CanshipBusinessService/searchShipmentsByOrderId"/>
+<wsdl:input>
+<mime:content type="text/xml" part="searchShipmentsByOrderId"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="searchShipmentsByOrderId"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="savePreference">
+<http:operation location="CanshipBusinessService/savePreference"/>
+<wsdl:input>
+<mime:content type="text/xml" part="savePreference"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="savePreference"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="importAddressBook">
+<http:operation location="CanshipBusinessService/importAddressBook"/>
+<wsdl:input>
+<mime:content type="text/xml" part="importAddressBook"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="importAddressBook"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveGlobalPreference">
+<http:operation location="CanshipBusinessService/saveGlobalPreference"/>
+<wsdl:input>
+<mime:content type="text/xml" part="saveGlobalPreference"/>
+</wsdl:input>
+<wsdl:output>
+<mime:content type="text/xml" part="saveGlobalPreference"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteGlobalPreference">
+<http:operation location="CanshipBusinessService/deleteGlobalPreference"/>
+<wsdl:input>
+<mime:

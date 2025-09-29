@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS base_products CASCADE;
 DROP TABLE IF EXISTS components CASCADE;
 DROP TABLE IF EXISTS process_failures CASCADE;
 DROP TABLE IF EXISTS api_calls CASCADE;
+DROP TABLE IF EXISTS shipment_history CASCADE;
 DROP TABLE IF EXISTS shipments CASCADE;
 DROP TABLE IF EXISTS order_status_history CASCADE;
 DROP TABLE IF EXISTS order_lines CASCADE;
@@ -92,14 +93,25 @@ CREATE TABLE order_status_history (
 );
 
 -- Table to store shipment information, created when the shipping process begins.
+-- Table to store shipment information. One order can have multiple shipments (e.g. multiple boxes).
 CREATE TABLE shipments (
     shipment_id SERIAL PRIMARY KEY,
-    -- UNIQUE constraint ensures one shipment record per order, preventing duplicate labels.
-    order_id VARCHAR(255) NOT NULL UNIQUE REFERENCES orders(order_id) ON DELETE CASCADE,
+    -- A single order can have multiple shipments, so the UNIQUE constraint is removed.
+    order_id VARCHAR(255) NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
     tracking_pin VARCHAR(255) UNIQUE,
     label_pdf_path VARCHAR(1024),
-    cp_api_label_url VARCHAR(1024),
+    -- Renamed from cp_api_label_url to be carrier-agnostic.
+    carrier_label_url VARCHAR(1024),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- This table tracks the status of each individual shipment over time.
+CREATE TABLE shipment_history (
+    shipment_history_id SERIAL PRIMARY KEY,
+    shipment_id INTEGER NOT NULL REFERENCES shipments(shipment_id) ON DELETE CASCADE,
+    status VARCHAR(50) NOT NULL, -- e.g., 'in_transit', 'out_for_delivery', 'delivered', 'exception'
+    status_details TEXT, -- Carrier-provided details about the status
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =====================================================================================
@@ -183,6 +195,7 @@ CREATE TABLE shop_sku_map (
 -- Indexes for common query patterns and foreign keys.
 CREATE INDEX idx_order_status_history_order_id ON order_status_history(order_id);
 CREATE INDEX idx_shipments_order_id ON shipments(order_id);
+CREATE INDEX idx_shipment_history_shipment_id ON shipment_history(shipment_id);
 CREATE INDEX idx_api_calls_related_id ON api_calls(related_id);
 CREATE INDEX idx_process_failures_related_id ON process_failures(related_id);
 CREATE INDEX idx_shop_sku_map_variant_id ON shop_sku_map(variant_id);
