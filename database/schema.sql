@@ -99,8 +99,6 @@ CREATE TABLE shipments (
     tracking_pin VARCHAR(255) UNIQUE,
     label_pdf_path VARCHAR(1024),
     cp_api_label_url VARCHAR(1024),
-    status VARCHAR(50) DEFAULT 'created', -- e.g., 'created', 'cancelled', 'refund_requested', 'cancellation_failed'
-    notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 

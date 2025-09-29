@@ -28,6 +28,10 @@ REFUND_EMAIL = "test@example.com" # Placeholder for customer service/admin email
 def void_shipment(conn, cp_creds, shipment_id, shipment_details):
     """
     Voids a Canada Post shipment that has not been transmitted.
+    Returns:
+        - "voided": If the shipment was successfully voided.
+        - "transmitted": If the shipment has already been transmitted.
+        - "error": For any other failure.
     """
     print(f"INFO: Attempting to void shipment {shipment_id}...")
     label_url = shipment_details.get('cp_api_label_url')
@@ -39,8 +43,7 @@ def void_shipment(conn, cp_creds, shipment_id, shipment_details):
     else:
         print(f"WARNING: Could not determine shipment URL from label URL '{label_url}'. Using it as is.")
         shipment_url = label_url
-
-    auth_string = f"{cp_creds[0]}:{cp_creds[1]}"
+    auth_string = f"{cp_creds['api_user']}:{cp_creds['api_password']}"
     auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
     headers = {
         'Accept': 'application/vnd.cpc.shipment-v8+xml',
@@ -53,8 +56,8 @@ def void_shipment(conn, cp_creds, shipment_id, shipment_details):
         response = requests.delete(shipment_url, headers=headers, timeout=30)
         log_api_call(
             conn, 'CanadaPost', 'VoidShipment', order_id,
-            request_payload={'url': shipment_url},
-            response_body=response.text,
+            request_payload=shipment_url,
+            response_payload=response.text,
             status_code=response.status_code,
             is_success=(response.status_code == 204)
         )
@@ -68,19 +71,24 @@ def void_shipment(conn, cp_creds, shipment_id, shipment_details):
             try:
                 root = ET.fromstring(response.text)
                 ns = {'cp': 'http://www.canadapost.ca/ws/messages'}
+
+                # Find the message code, trying with namespace first, then without.
                 message_code_element = root.find("cp:message/cp:code", ns)
                 if message_code_element is None:
                     message_code_element = root.find("message/code")
+
                 if message_code_element is not None:
                     message_code = message_code_element.text
                     if message_code == '8064':
                         print("INFO: Shipment has already been transmitted. A refund must be requested.")
                         return "transmitted"
                     else:
+                        # Find description for other errors
                         message_desc_element = root.find("cp:message/cp:description", ns)
                         if message_desc_element is None:
                             message_desc_element = root.find("message/description")
                         message_details = message_desc_element.text if message_desc_element is not None else "No description provided."
+
                         print(f"ERROR: Canada Post API Error Code: {message_code} - {message_details}")
                         notes = f"Failed to void shipment. CP Error: {message_code} - {message_details}"
                         update_shipment_status_in_db(conn, shipment_id, 'cancellation_failed', notes)
@@ -95,8 +103,8 @@ def void_shipment(conn, cp_creds, shipment_id, shipment_details):
         print(f"ERROR: Network error while trying to void shipment {shipment_id}: {e}")
         log_api_call(
             conn, 'CanadaPost', 'VoidShipment', order_id,
-            request_payload={'url': shipment_url},
-            response_body=str(e),
+            request_payload=shipment_url,
+            response_payload=str(e),
             status_code=500,
             is_success=False
         )
@@ -106,6 +114,9 @@ def void_shipment(conn, cp_creds, shipment_id, shipment_details):
 def request_shipment_refund(conn, cp_creds, shipment_id, shipment_details):
     """
     Requests a refund for a Canada Post shipment that has already been transmitted.
+    Returns:
+        - "refund_requested": If the refund was successfully requested.
+        - "error": For any failure.
     """
     print(f"INFO: Attempting to request refund for shipment {shipment_id}...")
     label_url = shipment_details.get('cp_api_label_url')
@@ -120,7 +131,7 @@ def request_shipment_refund(conn, cp_creds, shipment_id, shipment_details):
 
     refund_url = f"{shipment_url}/refund"
 
-    auth_string = f"{cp_creds[0]}:{cp_creds[1]}"
+    auth_string = f"{cp_creds['api_user']}:{cp_creds['api_password']}"
     auth_b64 = base64.b64encode(auth_string.encode('utf-8')).decode('utf-8')
     headers = {
         'Accept': 'application/vnd.cpc.shipment-v8+xml',
@@ -139,14 +150,17 @@ def request_shipment_refund(conn, cp_creds, shipment_id, shipment_details):
     try:
         print(f"INFO: Sending POST request to {refund_url}")
         response = requests.post(refund_url, headers=headers, data=xml_payload.strip(), timeout=30)
+
         is_success = response.status_code == 200
+
         log_api_call(
             conn, 'CanadaPost', 'RequestShipmentRefund', order_id,
-            request_payload={'xml_payload': xml_payload},
-            response_body=response.text,
+            request_payload=xml_payload,
+            response_payload=response.text,
             status_code=response.status_code,
             is_success=is_success
         )
+
         if is_success:
             try:
                 root = ET.fromstring(response.text)
@@ -163,18 +177,21 @@ def request_shipment_refund(conn, cp_creds, shipment_id, shipment_details):
                 return "error"
         else:
             print(f"ERROR: Received HTTP {response.status_code} when trying to request refund for shipment {shipment_id}.")
+            # Further error handling based on response content
             return "error"
+
     except requests.exceptions.RequestException as e:
         print(f"ERROR: Network error while trying to request refund for shipment {shipment_id}: {e}")
         log_api_call(
             conn, 'CanadaPost', 'RequestShipmentRefund', order_id,
-            request_payload={'xml_payload': xml_payload},
-            response_body=str(e),
+            request_payload=xml_payload,
+            response_payload=str(e),
             status_code=500,
             is_success=False
         )
         update_shipment_status_in_db(conn, shipment_id, 'cancellation_failed', f"Network error during refund request: {e}")
         return "error"
+
 
 def process_single_shipment_cancellation(conn, cp_creds, shipment_details):
     """
@@ -201,6 +218,7 @@ def process_single_shipment_cancellation(conn, cp_creds, shipment_details):
         print(f"INFO: Shipment {shipment_id} was successfully cancelled (voided).")
     else:
         print(f"ERROR: Failed to cancel shipment {shipment_id}.")
+
 
 if __name__ == '__main__':
     import argparse
