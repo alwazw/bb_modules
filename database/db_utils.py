@@ -54,6 +54,7 @@ def initialize_database():
 def add_order_status_history(conn, order_id, new_status, notes=None):
     """
     Inserts a new record into the 'order_status_history' table.
+    This function does not commit the transaction; the calling function is responsible.
     """
     try:
         with conn.cursor() as cur:
@@ -61,11 +62,12 @@ def add_order_status_history(conn, order_id, new_status, notes=None):
                 "INSERT INTO order_status_history (order_id, status, notes) VALUES (%s, %s, %s);",
                 (order_id, new_status, notes)
             )
-        conn.commit()
         print(f"INFO: Order {order_id} status updated to '{new_status}'.")
     except Exception as e:
+        # We re-raise the exception to let the calling function know something went wrong,
+        # so it can decide whether to rollback the whole transaction.
         print(f"ERROR: Could not update order status for {order_id}. Reason: {e}")
-        conn.rollback()
+        raise
 
 def log_process_failure(conn, related_id, process_name, details, payload=None):
     """

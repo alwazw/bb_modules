@@ -39,40 +39,47 @@ def retrieve_awaiting_shipment_orders(api_key):
         print(f"ERROR: API request failed: {e}")
         return []
 
-def update_pending_shipping_file(new_orders):
-    """ Updates the orders_pending_shipping.json file with new orders, avoiding duplicates. """
-    os.makedirs(LOGS_DIR, exist_ok=True)
-    print(f"INFO: Updating {PENDING_SHIPPING_FILE}...")
+from database.db_utils import get_db_connection, add_order_status_history
 
-    existing_orders = []
-    if os.path.exists(PENDING_SHIPPING_FILE):
-        with open(PENDING_SHIPPING_FILE, 'r') as f:
-            try:
-                existing_orders = json.load(f)
-            except json.JSONDecodeError:
-                print("WARNING: orders_pending_shipping.json is corrupted. Starting fresh.")
-                existing_orders = []
-    else:
-        print("INFO: orders_pending_shipping.json not found. A new file will be created.")
-
-    existing_order_ids = {order['order_id'] for order in existing_orders}
+def save_new_orders_to_db(new_orders):
+    """
+    Saves new orders to the database, avoiding duplicates.
+    These orders are fetched from Best Buy with 'SHIPPING' status, so we mark them as 'accepted'
+    in our system, making them ready for label creation.
+    """
+    conn = get_db_connection()
+    if not conn:
+        print("CRITICAL: Could not connect to the database. Cannot save new orders.")
+        return
 
     added_count = 0
-    for order in new_orders:
-        if order['order_id'] not in existing_order_ids:
-            existing_orders.append(order)
-            existing_order_ids.add(order['order_id'])
-            added_count += 1
-            print(f"INFO: Added new order {order['order_id']} to pending shipping list.")
-
-    if added_count == 0:
-        print("INFO: No new orders awaiting shipment to add.")
-
-    with open(PENDING_SHIPPING_FILE, 'w') as f:
-        json.dump(existing_orders, f, indent=4)
+    try:
+        with conn.cursor() as cur:
+            for order in new_orders:
+                order_id = order['order_id']
+                # Use ON CONFLICT to gracefully handle orders that already exist.
+                cur.execute(
+                    "INSERT INTO orders (order_id, raw_order_data) VALUES (%s, %s) ON CONFLICT (order_id) DO NOTHING;",
+                    (order_id, json.dumps(order))
+                )
+                # cur.rowcount will be 1 if a new row was inserted, 0 otherwise.
+                if cur.rowcount > 0:
+                    # If the order was newly inserted, set its initial status to 'accepted'.
+                    add_order_status_history(conn, order_id, 'accepted', 'Order imported from Best Buy awaiting shipment.')
+                    added_count += 1
+                    print(f"INFO: Imported new order {order_id} and marked as 'accepted'.")
+        conn.commit()
+    except Exception as e:
+        print(f"ERROR: Database operation failed. Reason: {e}")
+        conn.rollback()
+    finally:
+        if conn:
+            conn.close()
 
     if added_count > 0:
-        print(f"SUCCESS: Added {added_count} new orders to orders_pending_shipping.json.")
+        print(f"SUCCESS: Imported {added_count} new orders into the database.")
+    else:
+        print("INFO: No new orders to import.")
 
 
 def main():
@@ -81,7 +88,8 @@ def main():
     api_key = get_best_buy_api_key()
     if api_key:
         awaiting_shipment_orders = retrieve_awaiting_shipment_orders(api_key)
-        update_pending_shipping_file(awaiting_shipment_orders)
+        if awaiting_shipment_orders:
+            save_new_orders_to_db(awaiting_shipment_orders)
     print("--- Retrieve Orders Pending Shipment Script Finished ---\n")
 
 if __name__ == '__main__':
