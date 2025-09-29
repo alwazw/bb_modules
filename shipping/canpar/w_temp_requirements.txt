@@ -3,24 +3,6 @@ https://canship.canpar.com/canshipws/services/CanshipBusinessService?wsdl
 https://canship.canpar.com/canshipws/services/CanparRatingService?wsdl 
 https://canship.canpar.com/canshipws/services/CanparAddonsService?wsdl what else do you need from me
 
-Let’s clean up Canpar directory a bit with something along those lines.
-Do not just copy it. analyze, correct, add, remove, enhance as appropriate...
-
-bb_modules 
-|- bb_canpar_main_scheduler.py
-	|-canpar 
-	|-… 
-		|- canpar_output_files
-			|- canpar_shipping_labels_pdf 
-				|- 111222333-A 
-			|- canpar_logs 
-				|- canpar_shipments_data_log.xml 
-				|- canpar_api_sent_queries_log.json
-				|- canpar_failed_shipping_creation_log.json
-		|- canpar_scripts 
-			|- canpar_bb_orders_labels_automation_api.py 
-			|- canpar_db_script.py ## i used json in this example that also needs to be complemented with proper backend integration with database
-
 
 requirements:
 1- proper integration with all project modules. ex. do not reduplicate order workflow management when it already exist and also backed by a db
@@ -44,6 +26,35 @@ steps:
 4- validate
 4-a confirm order status updated to shipped
 4-b confirm correct associated tracking number was used 
+
+
+
+Let’s clean up Canpar directory a bit with something along those lines.
+Do not just copy it. analyze, correct, add, remove, enhance as appropriate...
+
+bb_modules 
+|- bb_canpar_main_scheduler.py
+	|-canpar 
+	|-… 
+		|- canpar_output_files
+			|- canpar_shipping_labels_pdf 
+				|- 111222333-A 
+			|- canpar_logs 
+				|- canpar_shipments_data_log.xml 
+				|- canpar_api_sent_queries_log.json
+				|- canpar_failed_shipping_creation_log.json
+		|- canpar_scripts 
+			|- canpar_bb_orders_labels_automation_api.py 
+			|- canpar_db_script.py ## i used json in this example that also needs to be complemented with proper backend integration with database
+
+
+I provided my initial brainstorming thoughts in:
+shipping/canpar/canpar_create_labels_brainstorm_1.py
+it definetly needs refining. it includes suggestions for:
+- avoiding creating multiple labels for same order by mistake
+- mapping bb to canpar fields #ignore that it's an iput file given your focus is on api. this is just mapping example
+...
+modify so it raised errors do not stop orders with correct data from being created or interupting the entire automation cycle...
 
 
 
