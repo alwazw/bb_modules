@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<CanparAPIResponse>
+	<success>true</success>
+	<shipping_id>D261749204-A001</shipping_id>
+	<pdf_label>TVRoaXMgaXMgYSB0ZXN0IFBERiBmaWxlLg==</pdf_label>
+	<raw_response>
+		<return>
+			<error/>
+			<shipment>
+				<id>12345</id>
+				<order_id>261749204-A</order_id>
+				<packages>
+					<item>
+						<barcode>D261749204-A001</barcode>
+						<label>TVRoaXMgaXMgYSB0ZXN0IFBERiBmaWxlLg==</label>
+					</item>
+				</packages>
+			</shipment>
+		</return>
+	</raw_response>
+</CanparAPIResponse>
