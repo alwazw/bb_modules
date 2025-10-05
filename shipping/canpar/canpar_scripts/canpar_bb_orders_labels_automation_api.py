@@ -96,7 +96,13 @@ def process_single_order(order, conn):
 
         # 3. Save PDF label
         tracking_pin = api_result['shipping_id']
-        pdf_label_data = base64.b64decode(api_result['pdf_label'])
+        pdf_label_b64 = api_result['pdf_label']
+
+        # Strip whitespace from the base64 string before decoding to prevent corruption.
+        if isinstance(pdf_label_b64, str):
+            pdf_label_b64 = pdf_label_b64.strip()
+
+        pdf_label_data = base64.b64decode(pdf_label_b64)
         label_filename = f"{order_id}_{tracking_pin}.pdf"
         label_filepath = os.path.join(LABELS_DIR, label_filename)
         with open(label_filepath, 'wb') as f:
