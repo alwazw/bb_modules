@@ -54,7 +54,6 @@ def initialize_database():
 def add_order_status_history(conn, order_id, new_status, notes=None):
     """
     Inserts a new record into the 'order_status_history' table.
-    This function does not commit the transaction; the calling function is responsible.
     """
     try:
         with conn.cursor() as cur:
@@ -62,11 +61,11 @@ def add_order_status_history(conn, order_id, new_status, notes=None):
                 "INSERT INTO order_status_history (order_id, status, notes) VALUES (%s, %s, %s);",
                 (order_id, new_status, notes)
             )
+        conn.commit()
         print(f"INFO: Order {order_id} status updated to '{new_status}'.")
     except Exception as e:
-        # We re-raise the exception to let the calling function know something went wrong,
-        # so it can decide whether to rollback the whole transaction.
         print(f"ERROR: Could not update order status for {order_id}. Reason: {e}")
+        conn.rollback()
         raise
 
 def log_process_failure(conn, related_id, process_name, details, payload=None):
@@ -95,6 +94,8 @@ def log_api_call(conn, service, endpoint, related_id, request_payload, response_
         with conn.cursor() as cur:
             if isinstance(request_payload, dict):
                 request_payload = json.dumps(request_payload)
+            if isinstance(response_body, dict):
+                response_body = json.dumps(response_body)
             cur.execute(
                 "INSERT INTO api_calls (service, endpoint, related_id, request_payload, response_body, status_code, is_success) VALUES (%s, %s, %s, %s, %s, %s, %s);",
                 (service, endpoint, related_id, request_payload, response_body, status_code, is_success)
